@@ -6,9 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
-import com.cpm.g1.theacmeelectronicsshop.Product
 import com.cpm.g1.theacmeelectronicsshop.R
-import com.cpm.g1.theacmeelectronicsshop.ShopApp
 import com.cpm.g1.theacmeelectronicsshop.ui.BasketHelper
 
 class ScanFragment : Fragment() {
@@ -24,7 +22,13 @@ class ScanFragment : Fragment() {
     }
 
     private fun onClickButton(){
-        dbHelper.insert("Muni", "Nothing", "Eyes of different colors", 2.0F)
+        dbHelper.insert(
+            "iPad Pro (11'' - 128 GB - Wi-Fi - Gray)",
+            "Apple",
+            "The Apple iPad Pro is a 12.9-inch touch screen tablet PC that is larger and offers higher resolution than Apple's other iPad models. The iPad Pro was scheduled to debut in November 2015, running the iOS 9 operating system. Apple unveiled the device at a September 2015 event in San Francisco.",
+            909.99F,
+            1,
+            )
     }
 
 }

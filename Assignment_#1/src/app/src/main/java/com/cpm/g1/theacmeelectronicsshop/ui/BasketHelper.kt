@@ -14,18 +14,20 @@ class BasketHelper(context: Context?) :
         override fun onCreate(db: SQLiteDatabase) {
             db.execSQL("CREATE TABLE Product(" +
                     "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    "name TEXT, brand TEXT, description TEXT, price FLOAT)")
+                    "name TEXT, brand TEXT, description TEXT, price FLOAT, quantity Int)")
         }
 
     override fun onUpgrade(p0: SQLiteDatabase?, p1: Int, p2: Int) {
     }
 
-    fun insert(name: String, brand: String, description: String, price: Float): Long {
+    fun insert(name: String, brand: String, description: String, price: Float, quantity: Int): Long {
         val cv = ContentValues()
         cv.put("name", name)
         cv.put("brand", brand)
         cv.put("description", description)
         cv.put("price", price)
+        cv.put("quantity", quantity)
+/*        cv.put("barCode", barCode)*/
         return writableDatabase.insert("Product", "name", cv)
     }
 

@@ -7,15 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.loader.app.LoaderManager
-import androidx.loader.content.Loader
 import com.cpm.g1.theacmeelectronicsshop.MainActivity
-import com.cpm.g1.theacmeelectronicsshop.Product
 import com.cpm.g1.theacmeelectronicsshop.R
-import com.cpm.g1.theacmeelectronicsshop.ShopApp
-import com.cpm.g1.theacmeelectronicsshop.databinding.ActivityMainBinding
 import com.cpm.g1.theacmeelectronicsshop.ui.BasketHelper
 
 class BasketFragment : Fragment() {
@@ -37,7 +31,6 @@ class BasketFragment : Fragment() {
 
         productList.adapter = ProductAdapter(basketCursor)
         productList.emptyView = view.findViewById(R.id.empty_list)
-        //productList.setOnItemClickListener { _, _, _, l -> selectRestaurant(l) }
     }
 
     inner class ProductAdapter(c: Cursor) : CursorAdapter(activity, c,true) {
