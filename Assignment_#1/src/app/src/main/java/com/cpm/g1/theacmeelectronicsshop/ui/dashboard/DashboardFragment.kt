@@ -1,4 +1,4 @@
-package com.cpm.g1.theacmeelectronicsshop.ui.basket
+package com.cpm.g1.theacmeelectronicsshop.ui.dashboard
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.cpm.g1.theacmeelectronicsshop.databinding.FragmentBasketBinding
+import com.cpm.g1.theacmeelectronicsshop.databinding.FragmentDashboardBinding
 
-class BasketFragment : Fragment() {
+class DashboardFragment : Fragment() {
 
-    private var _binding: FragmentBasketBinding? = null
+    private var _binding: FragmentDashboardBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -22,14 +22,14 @@ class BasketFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val basketViewModel =
-            ViewModelProvider(this)[BasketViewModel::class.java]
+        val dashboardViewModel =
+            ViewModelProvider(this).get(DashboardViewModel::class.java)
 
-        _binding = FragmentBasketBinding.inflate(inflater, container, false)
+        _binding = FragmentDashboardBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textBasket
-        basketViewModel.text.observe(viewLifecycleOwner) {
+        val textView: TextView = binding.textDashboard
+        dashboardViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
         return root

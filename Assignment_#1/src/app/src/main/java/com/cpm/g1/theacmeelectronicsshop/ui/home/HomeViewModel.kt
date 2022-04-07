@@ -1,13 +1,13 @@
-package com.cpm.g1.theacmeelectronicsshop.ui.scan
+package com.cpm.g1.theacmeelectronicsshop.ui.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class ScanViewModel : ViewModel() {
+class HomeViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
-        value = "This is scan Fragment"
+        value = "This is home Fragment"
     }
     val text: LiveData<String> = _text
 }

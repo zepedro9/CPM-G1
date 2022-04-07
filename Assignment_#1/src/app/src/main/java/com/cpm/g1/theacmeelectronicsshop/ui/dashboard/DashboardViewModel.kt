@@ -1,13 +1,13 @@
-package com.cpm.g1.theacmeelectronicsshop.ui.basket
+package com.cpm.g1.theacmeelectronicsshop.ui.dashboard
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class BasketViewModel : ViewModel() {
+class DashboardViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
-        value = "This is basket Fragment"
+        value = "This is dashboard Fragment"
     }
     val text: LiveData<String> = _text
 }
