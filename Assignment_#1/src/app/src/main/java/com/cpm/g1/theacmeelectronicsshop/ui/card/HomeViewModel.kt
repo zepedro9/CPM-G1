@@ -1,4 +1,4 @@
-package com.cpm.g1.theacmeelectronicsshop.ui.home
+package com.cpm.g1.theacmeelectronicsshop.ui.card
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

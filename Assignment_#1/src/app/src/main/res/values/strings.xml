@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">The Acme Electronics Shop</string>
-    <string name="title_home">Home</string>
+    <string name="title_card">Card</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="product_name">Product Name</string>
+    <string name="product_brand">Brand</string>
+    <string name="product_price">20.99€</string>
+    <string name="empty_msg">Your card is empty</string>
 </resources>
