@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">The Acme Electronics Shop</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_scan">Scan</string>
+    <string name="title_basket">Basket</string>
 </resources>
