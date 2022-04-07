@@ -1,4 +1,4 @@
-package com.cpm.g1.theacmeelectronicsshop.ui.dashboard
+package com.cpm.g1.theacmeelectronicsshop.ui.scan
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,8 +9,10 @@ import androidx.fragment.app.Fragment
 import com.cpm.g1.theacmeelectronicsshop.Product
 import com.cpm.g1.theacmeelectronicsshop.R
 import com.cpm.g1.theacmeelectronicsshop.ShopApp
+import com.cpm.g1.theacmeelectronicsshop.ui.BasketHelper
 
 class ScanFragment : Fragment() {
+    private val dbHelper by lazy { BasketHelper(context) }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.fragment_scan, container, false)
@@ -22,9 +24,7 @@ class ScanFragment : Fragment() {
     }
 
     private fun onClickButton(){
-        val p = Product("Muni", 2.0F, "Nothing", "Eyes of different colors")
-        val app = activity?.application as ShopApp
-        app.adapter?.add(p)
+        dbHelper.insert("Muni", "Nothing", "Eyes of different colors", 2.0F)
     }
 
 }

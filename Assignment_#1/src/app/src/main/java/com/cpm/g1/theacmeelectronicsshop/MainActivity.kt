@@ -13,7 +13,7 @@ import com.cpm.g1.theacmeelectronicsshop.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    val app by lazy { application as ShopApp }
+    //val app by lazy { application as ShopApp }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +34,6 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
 
         // Init Product Adapter
-        app.adapter = ProductAdapter(this, app.products)
+        //app.adapter = ProductAdapter(this, app.products)
     }
 }

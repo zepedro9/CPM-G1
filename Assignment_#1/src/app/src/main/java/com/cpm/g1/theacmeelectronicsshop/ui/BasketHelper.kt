@@ -18,15 +18,14 @@ class BasketHelper(context: Context?) :
         }
 
     override fun onUpgrade(p0: SQLiteDatabase?, p1: Int, p2: Int) {
-        TODO("Not yet implemented")
     }
 
     fun insert(name: String, brand: String, description: String, price: Float): Long {
         val cv = ContentValues()
         cv.put("name", name)
         cv.put("brand", brand)
-        cv.put("type", description)
-        cv.put("notes", price)
+        cv.put("description", description)
+        cv.put("price", price)
         return writableDatabase.insert("Product", "name", cv)
     }
 
@@ -43,9 +42,25 @@ class BasketHelper(context: Context?) :
     fun getAll(): Cursor {
         return readableDatabase.rawQuery(
             "SELECT _id, name, brand, description, price " +
-                    "FROM Restaurants ORDER BY name",
+                    "FROM Product ORDER BY name",
             null
         )
+    }
+
+    fun getName(c: Cursor): String {
+        return c.getString(1)
+    }
+
+    fun getBrand(c: Cursor): String {
+        return c.getString(2)
+    }
+
+    fun getDescription(c: Cursor): String {
+        return c.getString(3)
+    }
+
+    fun getPrice(c: Cursor): String {
+        return c.getFloat(4).toString()
     }
 
 }
