@@ -11,6 +11,8 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: "${DB_USERNAME}"
       MONGO_INITDB_ROOT_PASSWORD: "${DB_PASSWORD}"
+    volumes:
+      - mongo_data:/data/db
       
 
   mongo-express:

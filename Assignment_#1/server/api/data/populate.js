@@ -3,7 +3,7 @@
  * node populate.js
  * 
  * This is will populate the database with the information necessary to run the 
- * project. 
+ * project.   
  */
 
 const mongoose = require('mongoose'); 
@@ -18,6 +18,7 @@ mongoose.connect(mongoDB)
 
 // Creating the schema 
 const productSchema = mongoose.Schema({
+    id: Number,
     name: String,
     brand: String, 
     price: Number,
@@ -32,6 +33,7 @@ async function createProducts() {
     console.log(productJSON)
   
     const product = new Product({
+      id: productJSON.id,
       name: productJSON.name,
       brand: productJSON.brand,
       price: productJSON.price,
@@ -42,5 +44,5 @@ async function createProducts() {
   }
 }
 
-//createProducts();
+createProducts();
 
