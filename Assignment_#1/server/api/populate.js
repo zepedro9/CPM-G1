@@ -1,19 +1,14 @@
 const mongoose = require('mongoose'); 
-const {Schema} = mongoose; 
 
 // Set up the mongoDB connection.  
-let mongoDB = 'mongodb://root:root@localhost:27017';
-mongoose.connect(mongoDB); 
-
-let db = mongoose.connection; 
-
-//Bind connection to error event (to get notification of connection errors)
-db.on('error', console.error.bind(console, 'MongoDB connection error:')); 
+let mongoDB = 'mongodb://root:root@localhost:27017/shop?authSource=admin';
+mongoose.connect(mongoDB)
+.then(() => console.log("Connected to MongoDB"))
+.catch(err => console.error("Could not connect to MongoDB...", err));
 
 
 // Creating the schema 
-const productSchema = Schema({
-    _id: Schema.Types.ObjectId,
+const productSchema = mongoose.Schema({
     name: String,
     brand: String, 
     price: Number,
@@ -21,24 +16,18 @@ const productSchema = Schema({
 }); 
 
 
-// "Compile" model from schema.
-const Product = mongoose.model('Product', productSchema); 
+const Product = mongoose.model('Product', productSchema);
 
+async function createProduct() {
+  const product = new Product({
+    name: "Surface Keyboard",
+    brand: "Microsoft",
+    price: 100,
+    description: "A keyboard that will not let your fingers down"
+  });
 
-// Create an instance of model SomeModel
-var awesome_instance = new Product({ 
-    _id: mongoose.Types.ObjectId(),
-    name: 'awesome', 
-    brand: 'awesome2', 
-    price: 1, 
-    description: 'just awesome'
-});
+  const result = await product.save();
+  console.log(result); 
+}
 
-
-// Save the new model instance, passing a callback
-awesome_instance.save(function (err) {
-  if (err) console.log(`error ${err}`);
-  // saved!
-});
-
-// process.exit(1);
+createProduct();
