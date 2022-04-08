@@ -1,0 +1,63 @@
+[{
+    "name": "Magic Keyboard", 
+    "brand": "Apple", 
+    "price": 109,
+    "description": "The magic keyboard don't let your fingers down!",
+    "image_url": "https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/MK2A3PO?wid=1000&hei=1000&fmt=jpeg&qlt=95&.v=1628010501000"
+},
+{
+    "name": "Ipad Air", 
+    "brand": "Apple", 
+    "price": 709,
+    "description": "The tablet that has changed everything!",
+    "image_url": "https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/ipad-air-select-202203?wid=1765&hei=2000&fmt=jpeg&qlt=95&.v=1645665079887"
+},
+{
+    "name": "Schwinn Bonafide Mens Mountain Bike", 
+    "brand": "Apple", 
+    "price": 339.99,
+    "description": "With big 29' tires and high profile alloy rims, this hardtail mountain bike is built for the trail. The alloy rims add durability without weighing you down, and the aluminum frame furthers the cause. With the lightweight frame and a powerful front suspension fork, you'll glide through trails and knife through brush as you lead the pack. With color-matching end plugs and rims, this 29er looks as cool as it rides. Owning the trail has never been this easy.",
+    "image_url": "https://m.media-amazon.com/images/I/71tdAQayFFS._AC_SL1500_.jpg"
+},{
+    "name": "keyboardGoPro HERO8 Black", 
+    "brand": "GoPro", 
+    "price": 284.99,
+    "description": "This is HERO8 Black—the most versatile, unshakable HERO camera ever. A streamlined design makes it more pocketable than ever, and swapping mounts takes just seconds, thanks to built-in folding fingers. And with the optional Media Mod, you get ultimate expandability to add more lighting, pro audio and even another screen. There’s also game-changing HyperSmooth 2.0 stabilization with jaw-dropping slo-mo.",
+    "image_url": "https://m.media-amazon.com/images/I/71jVq6t7DmL._AC_SL1500_.jpg"
+}
+,{
+    "name": "Ecobee Lite SmartThermostat, Black", 
+    "brand": "Ecobee", 
+    "price": 35.99,
+    "description": "Sleek design and elevated comfort meet impactful energy savings. Save up to 23% annually on heating and cooling costs with ecobee3 lite, the smart thermostat that helps you live smarter and save more. Get a new handle on control and convenience. Manage your comfort from anywhere with the ecobee app on your iOS or Android mobile device. Compared to a hold of 72°F. Occupancy detection manages temperature automatically.",
+    "image_url": "https://m.media-amazon.com/images/I/51w7w-cIySL._AC_SL1500_.jpg"
+},
+{
+    "name": "GE 6-Outlet Power Strip", 
+    "brand": "GE home electrical", 
+    "price": 10.99,
+    "description": "Expanded Power - Each extension cord comes in a bright white finish and features 6 grounded AC outlets to provide power from a distance — perfect for creating a centralized hub for your electronics at your home, office, workshop or garage.",
+    "image_url": "https://m.media-amazon.com/images/I/71EWj6kalgS._AC_SL1500_.jpg"
+},
+{
+    "name": "Sceptre Curved 30' 21:9 Gaming LED Monitor ", 
+    "brand": "Sceptre", 
+    "price": 249.97,
+    "description": "Blue light shift reduce your MONITORS Blue light to protect you from eye fatigue, irritation and strains. This enables you to work on you documents, watch movies, or play games more comfortably for extended periods.",
+    "image_url": "https://m.media-amazon.com/images/I/71mU5rpECpL._AC_SL1385_.jpg"
+},
+{
+    "name": "BlenderBottle Classic", 
+    "brand": "Blender Bottle", 
+    "price": 9.99,
+    "description": "The BlenderBottle Classic revolutionized the industry over a decade ago with its tight seal, iconic design, and the BlenderBall wire whisk. Now, with upgraded features and design, it’s still one of the best shakers on the market. Why? Because it works.",
+    "image_url": "https://m.media-amazon.com/images/I/61Rx91iwTqL._AC_SL1500_.jpg"
+},
+{
+    "name": "Instant Vortex Plus 6", 
+    "brand": "Instant Pot", 
+    "price": 109.99,
+    "description": "Air fry, roast, bake, broil and reheat food to perfection. Check on cooking progress without opening the bast wit hthe ClearCook window",
+    "image_url": "https://m.media-amazon.com/images/I/71VgHp7sgEL._AC_SL1500_.jpg"
+}
+]

@@ -1,4 +1,13 @@
+/**
+ * To run this script execute:
+ * node populate.js
+ * 
+ * This is will populate the database with the information necessary to run the 
+ * project. 
+ */
+
 const mongoose = require('mongoose'); 
+const dataProducts = require("./data/products.json");
 
 // Set up the mongoDB connection.  
 let mongoDB = 'mongodb://root:root@localhost:27017/shop?authSource=admin';
@@ -18,16 +27,20 @@ const productSchema = mongoose.Schema({
 
 const Product = mongoose.model('Product', productSchema);
 
-async function createProduct() {
-  const product = new Product({
-    name: "Surface Keyboard",
-    brand: "Microsoft",
-    price: 100,
-    description: "A keyboard that will not let your fingers down"
-  });
+async function createProducts() {
+  for (let productJSON of dataProducts){
+    console.log(productJSON)
+  
+    const product = new Product({
+      name: productJSON.name,
+      brand: productJSON.brand,
+      price: productJSON.price,
+      description: productJSON.description
+    });
 
-  const result = await product.save();
-  console.log(result); 
+    const result = await product.save();
+  }
 }
 
-createProduct();
+//createProducts();
+
