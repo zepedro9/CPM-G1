@@ -1,0 +1,10 @@
+FROM node:lts-bullseye-slim
+
+WORKDIR /app 
+
+COPY package.json ./  
+COPY app.js ./app.js
+RUN npm install 
+RUN npm install -g nodemon 
+
+CMD ["nodemon", "./app.js"]
