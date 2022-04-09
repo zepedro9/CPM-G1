@@ -6,4 +6,5 @@
     <string name="product_brand">Brand</string>
     <string name="product_price">20.99€</string>
     <string name="empty_msg">Your card is empty</string>
+    <string name="checkout_text">Checkout</string>
 </resources>

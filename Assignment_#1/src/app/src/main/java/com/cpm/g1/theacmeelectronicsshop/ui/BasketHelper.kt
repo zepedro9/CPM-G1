@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 
 const val DATABASE_NAME = "basket"
-const val SCHEMA_VERSION = 1
+const val SCHEMA_VERSION = 2
 
 class BasketHelper(context: Context?) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, SCHEMA_VERSION) {
@@ -17,7 +17,9 @@ class BasketHelper(context: Context?) :
                     "name TEXT, brand TEXT, description TEXT, price FLOAT, quantity Int)")
         }
 
-    override fun onUpgrade(p0: SQLiteDatabase?, p1: Int, p2: Int) {
+    override fun onUpgrade(db: SQLiteDatabase, old: Int, new: Int) {
+        db.execSQL("DROP TABLE IF EXISTS Product");
+        onCreate(db);
     }
 
     fun insert(name: String, brand: String, description: String, price: Float, quantity: Int): Long {

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,15 +11,20 @@
         android:id="@+id/basket_sv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="10dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginRight="10dp"></ListView>
+        android:layout_marginTop="9dp"
+        android:layout_above="@+id/checkout_btn"/>
 
     <TextView
         android:id="@+id/empty_list"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/empty_msg"
+        android:layout_above="@+id/checkout_btn"/>
+
+    <Button
+        android:id="@+id/checkout_btn"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/empty_msg" />
-</LinearLayout>
+        android:text="@string/checkout_text"
+        android:layout_alignParentBottom="true" />
+</RelativeLayout>

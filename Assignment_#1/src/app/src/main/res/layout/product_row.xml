@@ -15,8 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:orientation="horizontal"
-        android:padding="5dp"
-        android:paddingTop="2dp">
+        android:padding="5dp">
 
         <ImageView
             android:id="@+id/product_image"
@@ -24,6 +23,7 @@
             android:layout_height="90dp"
             android:adjustViewBounds="true"
             android:paddingEnd="4dp"
+            android:paddingStart="4dp"
             android:scaleType="fitCenter"
             app:srcCompat="@drawable/_1_inchspg_5000x_fb94854f_81c5_439e_b169_6bcbbc037fac_1200x" />
 
@@ -31,7 +31,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
-            android:layout_marginLeft="5dp"
             android:orientation="vertical">
 
             <TextView
@@ -84,6 +83,5 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-
 
 </androidx.cardview.widget.CardView>
