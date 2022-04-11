@@ -1,6 +1,6 @@
 version: "3"
 
-services:  
+services:   
   mongo:
     image: mongo:5.0.5
     restart: always
@@ -11,8 +11,6 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: "${DB_USERNAME}"
       MONGO_INITDB_ROOT_PASSWORD: "${DB_PASSWORD}"
-    volumes:
-      - mongo_data:/data/db
       
 
   mongo-express:
@@ -22,6 +20,8 @@ services:
     restart: always
     ports:
       - 8081:8081
+    depends_on:
+      - mongo
     environment:
       ME_CONFIG_MONGODB_ADMINUSERNAME: "${DB_USERNAME}"
       ME_CONFIG_MONGODB_ADMINPASSWORD: "${DB_PASSWORD}"
@@ -33,3 +33,7 @@ services:
       - 3000:3000
     volumes:
       - ./api/app.js:/app/app.js
+    depends_on:
+      - mongo-express
+      - mongo
+    command: bash -c "node ./data/populate.js && nodemon ./app.js"

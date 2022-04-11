@@ -7,10 +7,10 @@
  */
 
 const mongoose = require('mongoose'); 
-const dataProducts = require("./data/products.json");
+const dataProducts = require("./products.json");
 
 // Set up the mongoDB connection.  
-let mongoDB = 'mongodb://root:root@localhost:27017/shop?authSource=admin';
+let mongoDB = 'mongodb://root:root@mongo:27017/shop?authSource=admin';
 mongoose.connect(mongoDB)
 .then(() => console.log("Connected to MongoDB"))
 .catch(err => console.error("Could not connect to MongoDB...", err));
@@ -28,7 +28,7 @@ const productSchema = mongoose.Schema({
 
 const Product = mongoose.model('Product', productSchema);
 
-async function createProducts() {
+async function createProducts() { 
   for (let productJSON of dataProducts){
     console.log(productJSON)
   
@@ -41,8 +41,9 @@ async function createProducts() {
     });
 
     const result = await product.save();
-  }
+  } 
+  process.exit(0);
 }
 
-createProducts();
+setTimeout(() => createProducts(), 4000);
 
