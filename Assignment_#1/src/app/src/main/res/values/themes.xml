@@ -14,5 +14,15 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
     </style>
 
-    <color name="light_background">#E2E2E2</color>
+    <style name="CustomCardview" parent="CardView">
+        <item name="cardBackgroundColor">@color/white</item>
+    </style>
+
+    <style name="CardText" parent="android:Widget.TextView">
+        <item name="android:textColor">@color/dark_gray</item>
+    </style>
+
+    <style name="CardSecondaryText" parent="android:Widget.TextView">
+        <item name="android:textColor">@color/details_gray</item>
+    </style>
 </resources>

@@ -2,6 +2,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/CustomCardview"
     android:id="@+id/product_row"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -22,8 +23,8 @@
             android:layout_width="@dimen/product_thumbnail_side"
             android:layout_height="@dimen/product_thumbnail_side"
             android:adjustViewBounds="true"
-            android:paddingEnd="@dimen/padding_medium"
             android:paddingStart="@dimen/padding_medium"
+            android:paddingEnd="@dimen/padding_medium"
             android:scaleType="fitCenter"
             app:srcCompat="@drawable/_1_inchspg_5000x_fb94854f_81c5_439e_b169_6bcbbc037fac_1200x" />
 
@@ -34,21 +35,21 @@
             android:orientation="vertical">
 
             <TextView
+                style="@style/CardText"
                 android:id="@+id/name_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_medium"
                 android:text="@string/product_name"
-                android:textColor="@color/dark_gray"
                 android:textSize="@dimen/product_thumbnail_text" />
 
             <TextView
+                style="@style/CardSecondaryText"
                 android:id="@+id/brand_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto"
                 android:text="@string/product_brand"
-                android:textColor="@color/details_gray"
                 android:textSize="@dimen/product_thumbnail_text" />
 
             <LinearLayout
@@ -57,13 +58,13 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    style="@style/CardText"
                     android:id="@+id/price_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:fontFamily="@font/roboto_medium"
                     android:text="@string/product_price"
-                    android:textColor="@color/dark_gray"
                     android:textSize="17sp" />
 
                 <EditText
