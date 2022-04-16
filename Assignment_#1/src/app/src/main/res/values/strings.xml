@@ -4,7 +4,8 @@
     <string name="title_scan">Scan</string>
     <string name="product_name">Product Name</string>
     <string name="product_brand">Brand</string>
-    <string name="product_price">20.99€</string>
+    <string name="product_price">%1$.2f€</string>
     <string name="empty_msg">Your card is empty</string>
     <string name="checkout_text">Checkout</string>
+    <string name="product_quantity">1</string>
 </resources>

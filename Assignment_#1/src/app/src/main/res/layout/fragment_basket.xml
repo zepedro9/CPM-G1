@@ -18,13 +18,17 @@
         android:id="@+id/empty_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/empty_msg"
-        android:layout_above="@+id/checkout_btn"/>
+        android:layout_above="@+id/checkout_btn"
+        android:text="@string/empty_msg" />
 
     <Button
         android:id="@+id/checkout_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/checkout_text"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="@dimen/padding_default"
+        android:layout_marginLeft="@dimen/padding_default"
+        android:layout_marginEnd="@dimen/padding_default"
+        android:layout_marginRight="@dimen/padding_default"
+        android:text="@string/checkout_text" />
 </RelativeLayout>

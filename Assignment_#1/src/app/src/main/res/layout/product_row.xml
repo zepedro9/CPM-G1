@@ -7,30 +7,30 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="10dp"
     android:orientation="horizontal"
-    app:cardCornerRadius="5dp"
-    app:cardElevation="4dp">
+    app:cardCornerRadius="@dimen/corner_radius"
+    app:cardElevation="@dimen/cardview_default_elevation">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="@dimen/padding_medium"
         android:orientation="horizontal"
-        android:padding="5dp">
+        android:padding="@dimen/padding_low">
 
         <ImageView
             android:id="@+id/product_image"
-            android:layout_width="90dp"
-            android:layout_height="90dp"
+            android:layout_width="@dimen/product_thumbnail_side"
+            android:layout_height="@dimen/product_thumbnail_side"
             android:adjustViewBounds="true"
-            android:paddingEnd="4dp"
-            android:paddingStart="4dp"
+            android:paddingEnd="@dimen/padding_medium"
+            android:paddingStart="@dimen/padding_medium"
             android:scaleType="fitCenter"
             app:srcCompat="@drawable/_1_inchspg_5000x_fb94854f_81c5_439e_b169_6bcbbc037fac_1200x" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
+            android:layout_marginStart="@dimen/padding_low"
             android:orientation="vertical">
 
             <TextView
@@ -40,7 +40,7 @@
                 android:fontFamily="@font/roboto_medium"
                 android:text="@string/product_name"
                 android:textColor="@color/dark_gray"
-                android:textSize="18sp" />
+                android:textSize="@dimen/product_thumbnail_text" />
 
             <TextView
                 android:id="@+id/brand_text"
@@ -49,7 +49,7 @@
                 android:fontFamily="@font/roboto"
                 android:text="@string/product_brand"
                 android:textColor="@color/details_gray"
-                android:textSize="18sp" />
+                android:textSize="@dimen/product_thumbnail_text" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -67,18 +67,27 @@
                     android:textSize="17sp" />
 
                 <EditText
-                    android:id="@+id/quantity"
+                    android:id="@+id/quantity_ef"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/padding_low"
+                    android:layout_marginRight="@dimen/padding_low"
                     android:background="@android:drawable/editbox_background"
-                    android:drawablePadding="0dp"
                     android:fontFamily="@font/roboto_medium"
                     android:inputType="number"
                     android:maxLines="1"
-                    android:minHeight="35dp"
-                    android:text="1"
+                    android:minHeight="@dimen/product_option_height"
+                    android:text="@string/product_quantity"
                     android:textAlignment="center"
                     android:textColor="@android:color/darker_gray" />
+
+                <ImageButton
+                    android:id="@+id/product_delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/product_option_height"
+                    android:background="#00FFFFFF"
+                    android:cropToPadding="false"
+                    android:src="@android:drawable/ic_delete" />
 
             </LinearLayout>
         </LinearLayout>
