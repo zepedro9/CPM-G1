@@ -52,45 +52,92 @@
                 android:text="@string/product_brand"
                 android:textSize="@dimen/product_thumbnail_text" />
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:layout_marginTop="@dimen/padding_medium">
+
+                <ImageButton
+                    android:id="@+id/product_delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#00FFFFFF"
+                    android:cropToPadding="false"
+                    android:src="@drawable/ic_baseline_delete_outline_30"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/quantity_selector"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="20dp"
+                    app:flow_verticalAlign="center"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/product_delete"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageButton
+                        android:id="@+id/minus_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="#00FFFFFF"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_baseline_remove_24" />
+
+                    <TextView
+                        android:id="@+id/product_quantity"
+                        android:layout_width="40dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:background="@android:drawable/editbox_background"
+                        android:fontFamily="@font/roboto_medium"
+                        android:includeFontPadding="true"
+                        android:paddingStart="12dp"
+                        android:paddingLeft="12dp"
+                        android:paddingTop="8dp"
+                        android:paddingEnd="12dp"
+                        android:paddingRight="12dp"
+                        android:paddingBottom="8dp"
+                        android:text="@string/product_quantity"
+                        android:textAlignment="center"
+                        android:textSize="16sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/plus_button"
+                        app:layout_constraintStart_toEndOf="@id/minus_button"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageButton
+                        android:id="@+id/plus_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:background="#00FFFFFF"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/product_quantity"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_baseline_add_24" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <TextView
                     style="@style/CardText"
                     android:id="@+id/price_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
+                    android:layout_marginEnd="4dp"
                     android:fontFamily="@font/roboto_medium"
                     android:text="@string/product_price"
-                    android:textSize="17sp" />
+                    android:textSize="17sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                <EditText
-                    android:id="@+id/quantity_ef"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/padding_low"
-                    android:layout_marginRight="@dimen/padding_low"
-                    android:background="@android:drawable/editbox_background"
-                    android:fontFamily="@font/roboto_medium"
-                    android:inputType="number"
-                    android:maxLines="1"
-                    android:minHeight="@dimen/product_option_height"
-                    android:text="@string/product_quantity"
-                    android:textAlignment="center"
-                    android:textColor="@android:color/darker_gray" />
-
-                <ImageButton
-                    android:id="@+id/product_delete"
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/product_option_height"
-                    android:background="#00FFFFFF"
-                    android:cropToPadding="false"
-                    android:src="@android:drawable/ic_delete" />
-
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
     </LinearLayout>
 
