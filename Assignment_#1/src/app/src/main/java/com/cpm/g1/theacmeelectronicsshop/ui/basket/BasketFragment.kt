@@ -28,12 +28,12 @@ class BasketFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Card Product Adapter
         val productList = view.findViewById<ListView>(R.id.basket_sv)
         val basketCursor = dbHelper.getAll()
         val mainActivity = activity as MainActivity
         mainActivity.startManagingCursor(basketCursor)
 
+        // Basket Adapter
         productList.adapter = ProductAdapter(basketCursor)
         productList.emptyView = view.findViewById(R.id.empty_list)
     }
@@ -69,17 +69,14 @@ class BasketFragment : Fragment() {
         }
 
         private fun onPlusClickListener(row: View, c: Cursor) {
-            System.out.println("HERE1")
             val quantityText = row.findViewById<TextView>(R.id.product_quantity)
             val newQuantity = quantityText.text.toString().toInt() + 1
             quantityText.text = newQuantity.toString()
             dbHelper.updateQuantity(dbHelper.getId(c), newQuantity)
-            System.out.println("HERE2")
         }
 
         private fun onMinusClickListener(row: View, c: Cursor){
             val quantityText = row.findViewById<TextView>(R.id.product_quantity)
-            val deleteButton = row.findViewById<ImageButton>(R.id.product_delete)
             val newQuantity = quantityText.text.toString().toInt() - 1
 
             if(newQuantity == 0){
