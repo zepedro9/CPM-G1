@@ -1,6 +1,17 @@
 <resources>
     <string name="app_name">The Acme Electronics Shop</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_basket">Basket</string>
+    <string name="title_scan">Scan</string>
+    <string name="product_name">Product Name</string>
+    <string name="product_brand">Brand</string>
+    <string name="product_price">%1$.2f€</string>
+    <string name="empty_msg">Your card is empty</string>
+    <string name="checkout_text">Checkout</string>
+    <string name="product_quantity">1</string>
+    <string name="showing_code_in_fragment">Showing Code in Fragment</string>
+    <string name="scan_product">Scan product</string>
+    <string name="name">Name</string>
+    <string name="empty">---</string>
+    <string name="desc">Description</string>
+    <string name="result_not_found">Result not found</string>
 </resources>
