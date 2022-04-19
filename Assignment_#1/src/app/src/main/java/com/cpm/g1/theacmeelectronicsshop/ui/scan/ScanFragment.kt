@@ -3,6 +3,8 @@ package com.cpm.g1.theacmeelectronicsshop.ui.scan
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -59,7 +61,7 @@ class ScanFragment : Fragment() {
             Activity.RESULT_OK -> {
                 val prodID: String? = data?.getStringExtra(Intents.Scan.RESULT)
 
-                makeGetRequest(prodID, this)
+                makeGetRequest(prodID)
             }
             Activity.RESULT_CANCELED -> {
                 Toast.makeText(this.context, "Scan canceled", Toast.LENGTH_SHORT).show()
@@ -70,13 +72,10 @@ class ScanFragment : Fragment() {
         }
     }
 
-    private fun makeGetRequest(prodID: String?, scanFragment: ScanFragment) {
+    private fun makeGetRequest(prodID: String?) {
         val networkService: ExecutorService = Executors.newFixedThreadPool(4)
 
         networkService.execute {
-            val url = URL("http://127.0.0.1:3000/api/products/${prodID?.dropLast(1)}")
-            val connection = url.openConnection()
-
             try {
                 val jsonObject = JSONArray(URL("http://127.0.0.1:3000/api/products/${prodID?.dropLast(1)}").readText()).getJSONObject(0)
 
@@ -92,12 +91,17 @@ class ScanFragment : Fragment() {
                 val prodDesc = jsonObject.getString("description")
                 Log.i("Description: ", prodDesc)
 
-                scanFragment.run {
+                activity?.runOnUiThread {
                     view?.findViewById<TextView>(R.id.nameContent)!!.text = prodName
                     view?.findViewById<TextView>(R.id.descContent)!!.text = prodDesc
                 }
             } catch (e: Exception) {
-                Toast.makeText(this.context, e.toString(), Toast.LENGTH_LONG).show()
+                Log.e("ScanGetRequest", e.toString())
+                val handler = Handler(Looper.getMainLooper())
+                handler.post {
+                    // TODO: Tornar os possíveis erros (ligação à internet, ao servidor, etc) user-friendly
+                    Toast.makeText(this.context, e.toString(), Toast.LENGTH_LONG).show()
+                }
             }
         }
     }
