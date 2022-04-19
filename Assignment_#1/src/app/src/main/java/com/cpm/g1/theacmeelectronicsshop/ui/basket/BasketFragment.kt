@@ -28,6 +28,8 @@ class BasketFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        tempAddProducts()
+
         val productList = view.findViewById<ListView>(R.id.basket_sv)
         val basketCursor = dbHelper.getAll()
         val mainActivity = activity as MainActivity
@@ -36,6 +38,23 @@ class BasketFragment : Fragment() {
         // Basket Adapter
         productList.adapter = ProductAdapter(basketCursor)
         productList.emptyView = view.findViewById(R.id.empty_list)
+    }
+
+    private fun tempAddProducts() {
+        dbHelper.insert(
+            "iPad Pro (11'' - 128 GB - Gray)",
+            "Apple",
+            "The Apple iPad Pro is a 12.9-inch touch screen tablet PC that is larger and offers higher resolution than Apple's other iPad models. The iPad Pro was scheduled to debut in November 2015, running the iOS 9 operating system. Apple unveiled the device at a September 2015 event in San Francisco.",
+            909.99F,
+            1,
+        )
+        dbHelper.insert(
+            "iPad Pro (13'' - 128 GB - Gray)",
+            "Apple",
+            "The Apple iPad Pro is a 12.9-inch touch screen tablet PC that is larger and offers higher resolution than Apple's other iPad models. The iPad Pro was scheduled to debut in November 2015, running the iOS 9 operating system. Apple unveiled the device at a September 2015 event in San Francisco.",
+            909.99F,
+            1,
+        )
     }
 
     inner class ProductAdapter(c: Cursor) : CursorAdapter(activity, c,true) {
