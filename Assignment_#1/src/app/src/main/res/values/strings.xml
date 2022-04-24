@@ -14,4 +14,6 @@
     <string name="empty">---</string>
     <string name="desc">Description</string>
     <string name="result_not_found">Result not found</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

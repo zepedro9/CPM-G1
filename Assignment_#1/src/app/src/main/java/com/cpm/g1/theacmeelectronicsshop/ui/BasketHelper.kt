@@ -42,7 +42,7 @@ class BasketHelper(context: Context?) :
         return writableDatabase.update("Product", cv, "_id = ?", args)
     }
 
-    fun delete(id: String) {
+    fun deleteById(id: String) {
         val args = arrayOf(id)
         writableDatabase.delete("Product", "_id = ?", args)
     }
@@ -50,7 +50,7 @@ class BasketHelper(context: Context?) :
     fun getAll(): Cursor {
         return readableDatabase.rawQuery(
             "SELECT _id, name, brand, description, price, quantity " +
-                    "FROM Product ORDER BY date",
+                    "FROM Product ORDER BY date DESC",
             null
         )
     }
