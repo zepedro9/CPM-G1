@@ -10,8 +10,14 @@
     <string name="product_quantity">1</string>
     <string name="showing_code_in_fragment">Showing Code in Fragment</string>
     <string name="scan_product">Scan product</string>
+    <string name="scan_no_scanned">No product currently scanned</string>
+    <string name="scan_cancelled">The scan has been cancelled</string>
+    <string name="scan_failed">The scan has failed</string>
     <string name="name">Name</string>
     <string name="empty">---</string>
     <string name="desc">Description</string>
     <string name="result_not_found">Result not found</string>
+    <string name="add_to_basket">Add to basket</string>
+    <string name="brand">Brand</string>
+    <string name="price">Price</string>
 </resources>
