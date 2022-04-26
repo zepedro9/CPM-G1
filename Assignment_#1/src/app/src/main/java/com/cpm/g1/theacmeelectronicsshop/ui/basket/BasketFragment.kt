@@ -3,19 +3,14 @@ package com.cpm.g1.theacmeelectronicsshop.ui.basket
 import android.content.Context
 import android.database.Cursor
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.core.widget.addTextChangedListener
-import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
-import com.cpm.g1.theacmeelectronicsshop.MainActivity
+import com.cpm.g1.theacmeelectronicsshop.RegisterActivity
 import com.cpm.g1.theacmeelectronicsshop.R
 import com.cpm.g1.theacmeelectronicsshop.ui.BasketHelper
-import java.nio.file.Files.delete
 
 class BasketFragment : Fragment() {
     private val dbHelper by lazy { BasketHelper(context) }
@@ -30,7 +25,7 @@ class BasketFragment : Fragment() {
 
         val productList = view.findViewById<ListView>(R.id.basket_sv)
         val basketCursor = dbHelper.getAll()
-        val mainActivity = activity as MainActivity
+        val mainActivity = activity as RegisterActivity
         mainActivity.startManagingCursor(basketCursor)
 
         // Basket Adapter

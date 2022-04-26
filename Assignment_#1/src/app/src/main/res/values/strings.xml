@@ -24,4 +24,5 @@
     <string name="card_number">Number</string>
     <string name="card_expiration_date">Expiration Date</string>
     <string name="reg_instructions">All the fields in this form are mandatory.</string>
+    <string name="register">Register</string>
 </resources>

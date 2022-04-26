@@ -1,24 +1,24 @@
 package com.cpm.g1.theacmeelectronicsshop
 
-import android.os.Bundle
-import android.widget.ListView
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
 import androidx.navigation.findNavController
+import androidx.navigation.ui.setupWithNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
-import com.cpm.g1.theacmeelectronicsshop.databinding.ActivityMainBinding
+import com.cpm.g1.theacmeelectronicsshop.databinding.ActivityAppBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
+
+    private lateinit var binding:ActivityAppBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         // Visualize View
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityAppBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         // Bottom Navigation View
@@ -31,8 +31,5 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
-
-        // Init Product Adapter
-        //app.adapter = ProductAdapter(this, app.products)
     }
 }
