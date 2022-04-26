@@ -2,15 +2,23 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_marginHorizontal="10dp">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:text="@string/info"
         android:textSize="20sp"
         android:textStyle="bold" />
 
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="@string/reg_instructions" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,7 +28,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/name" />
+            android:text="@string/reg_name" />
 
         <EditText
             android:id="@+id/name_etxt"
@@ -36,7 +44,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/address" />
+            android:text="@string/reg_address" />
 
         <EditText
             android:id="@+id/address_etxt"
@@ -52,7 +60,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/nif" />
+            android:text="@string/reg_nif" />
 
         <EditText
             android:id="@+id/nif_etxt"
@@ -64,10 +72,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/credit_card"
-
+        android:layout_marginTop="15dp"
         android:textSize="20sp"
         android:textStyle="bold" />
-
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -85,7 +92,6 @@
             android:layout_height="wrap_content" />
     </LinearLayout>
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -101,7 +107,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>
-
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -119,5 +124,18 @@
             android:layout_height="wrap_content" />
 
     </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Submit" />
+    </RelativeLayout>
+
 
 </LinearLayout>

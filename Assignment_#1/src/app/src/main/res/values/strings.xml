@@ -14,11 +14,14 @@
     <string name="empty">---</string>
     <string name="desc">Description</string>
     <string name="result_not_found">Result not found</string>
-    <string name="nif">NIF</string>
-    <string name="address">Address</string>
+
+    <string name="reg_name">Name</string>
+    <string name="reg_nif">NIF</string>
+    <string name="reg_address">Address</string>
     <string name="credit_card">Credit Card</string>
     <string name="info">Info</string>
     <string name="card_type">Card Type</string>
     <string name="card_number">Number</string>
     <string name="card_expiration_date">Expiration Date</string>
+    <string name="reg_instructions">All the fields in this form are mandatory.</string>
 </resources>
