@@ -24,9 +24,11 @@ class ProductDetailsFragment : Fragment() {
         val productCursor = dbHelper.getById(pos!!)
         productCursor.moveToFirst()
 
+        val priceText = getString(R.string.product_price, dbHelper.getPrice(productCursor))
+
         view.findViewById<TextView>(R.id.name).text = dbHelper.getName(productCursor)
         view.findViewById<TextView>(R.id.brandContent).text = dbHelper.getBrand(productCursor)
-        view.findViewById<TextView>(R.id.priceContent).text = dbHelper.getPrice(productCursor).toString()
+        view.findViewById<TextView>(R.id.priceContent).text = priceText
         view.findViewById<TextView>(R.id.descriptionContent).text =dbHelper.getDescription(productCursor)
         return view
     }

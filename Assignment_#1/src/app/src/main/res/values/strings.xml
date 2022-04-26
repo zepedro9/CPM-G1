@@ -16,4 +16,6 @@
     <string name="result_not_found">Result not found</string>
     <string name="brand">Brand</string>
     <string name="price">Price</string>
+    <string name="total_label">Total</string>
+    <string name="total">0</string>
 </resources>

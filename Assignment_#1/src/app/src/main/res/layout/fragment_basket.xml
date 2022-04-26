@@ -11,15 +11,47 @@
         android:id="@+id/basket_sv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="9dp"
-        android:layout_above="@+id/checkout_btn"/>
+        android:layout_above="@+id/total_view"
+        android:layout_marginTop="9dp" />
 
     <TextView
         android:id="@+id/empty_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:padding="@dimen/padding_low"
+        android:layout_above="@+id/total_view"
+        android:text="@string/empty_msg"
+        android:fontFamily="@font/roboto"/>
+
+    <LinearLayout
+        android:id="@+id/total_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:layout_above="@+id/checkout_btn"
-        android:text="@string/empty_msg" />
+        android:layout_marginStart="@dimen/padding_default"
+        android:layout_marginLeft="@dimen/padding_default"
+        android:layout_marginEnd="@dimen/padding_default"
+        android:layout_marginRight="@dimen/padding_default">
+
+        <TextView
+            android:id="@+id/totalLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/total_label"
+            android:textSize="@dimen/product_page_subtitle"
+            android:fontFamily="@font/roboto_medium"/>
+
+        <TextView
+            android:id="@+id/total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:text="@string/total"
+            android:textSize="@dimen/product_thumbnail_text"
+            android:fontFamily="@font/roboto"/>
+    </LinearLayout>
 
     <Button
         android:id="@+id/checkout_btn"
