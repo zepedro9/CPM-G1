@@ -20,4 +20,5 @@
     <string name="add_to_basket">Add to basket</string>
     <string name="brand">Brand</string>
     <string name="price">Price</string>
+    <string name="product_image_content_description">Product Image</string>
 </resources>

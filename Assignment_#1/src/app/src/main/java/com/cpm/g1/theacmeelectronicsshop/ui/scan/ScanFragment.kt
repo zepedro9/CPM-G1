@@ -21,7 +21,7 @@ import com.cpm.g1.theacmeelectronicsshop.ui.BasketHelper
 import com.google.zxing.client.android.Intents
 import com.journeyapps.barcodescanner.CaptureActivity
 import org.json.JSONArray
-import java.net.SocketException
+import java.io.Serializable
 import java.net.URL
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -29,7 +29,8 @@ import java.util.concurrent.Executors
 class ScanFragment : Fragment() {
     private val dbHelper by lazy { BasketHelper(context) }
 
-    class ScannedProduct(val name: String, val brand: String, val desc: String, val price: Float)
+    class ScannedProduct(val name: String, val brand: String, val desc: String, val price: Float) :
+        Serializable
 
     private var currentProduct: ScannedProduct? = null
 
@@ -63,25 +64,18 @@ class ScanFragment : Fragment() {
 
     override fun onSaveInstanceState(state: Bundle) {
         super.onSaveInstanceState(state)
-        if(currentProduct != null) {
-            state.putString("scannedName", currentProduct!!.name)
-            state.putString("scannedBrand", currentProduct!!.brand)
-            state.putString("scannedDesc", currentProduct!!.desc)
-            state.putFloat("scannedPrice", currentProduct!!.price)
-        }
+        if(currentProduct != null)
+            state.putSerializable("currentProduct", currentProduct)
     }
 
     override fun onViewStateRestored(state: Bundle?) {
         super.onViewStateRestored(state)
-        if(state?.getString("scannedName") != null &&
-            state.getString("scannedBrand") != null &&
-            state.getString("scannedDesc") != null
-        ) {
-            currentProduct = ScannedProduct(state.getString("scannedName")!!, state.getString("scannedBrand")!!, state.getString("scannedDesc")!!, state.getFloat("scannedPrice"))
-            view?.findViewById<TextView>(R.id.nameContent)!!.text = state.getString("scannedName")!!
-            view?.findViewById<TextView>(R.id.brandContent)!!.text = state.getString("scannedBrand")!!
-            view?.findViewById<TextView>(R.id.descContent)!!.text = state.getString("scannedDesc")!!
-            view?.findViewById<TextView>(R.id.priceContent)!!.text = state.getFloat("scannedPrice").toString()
+        if(state?.getSerializable("currentProduct") != null) {
+            currentProduct = state.getSerializable("currentProduct") as ScannedProduct?
+            view?.findViewById<TextView>(R.id.nameContent)!!.text = currentProduct?.name
+            view?.findViewById<TextView>(R.id.brandContent)!!.text = currentProduct?.brand
+            view?.findViewById<TextView>(R.id.descContent)!!.text = currentProduct?.desc
+            view?.findViewById<TextView>(R.id.priceContent)!!.text = currentProduct?.price.toString()
             view?.findViewById<ImageView>(R.id.imageContent)!!.visibility = View.VISIBLE
         }
     }
@@ -129,19 +123,12 @@ class ScanFragment : Fragment() {
 
         networkService.execute {
             try {
-                val jsonObject = JSONArray(URL("http://127.0.0.1:3000/api/products/${prodID?.dropLast(1)}").readText()).getJSONObject(0)
+                val jsonProduct = JSONArray(URL("http://127.0.0.1:3000/api/products/${prodID?.dropLast(1)}").readText()).getJSONObject(0)
 
-                val prodName = jsonObject.getString("name")
-                Log.i("Name: ", prodName)
-
-                val prodBrand = jsonObject.getString("brand")
-                Log.i("Brand: ", prodBrand)
-
-                val prodPrice = jsonObject.getString("price")
-                Log.i("Price: ", prodPrice)
-
-                val prodDesc = jsonObject.getString("description")
-                Log.i("Description: ", prodDesc)
+                val prodName = jsonProduct.getString("name")
+                val prodBrand = jsonProduct.getString("brand")
+                val prodPrice = jsonProduct.getString("price")
+                val prodDesc = jsonProduct.getString("description")
 
                 activity?.runOnUiThread {
                     currentProduct = ScannedProduct(prodName, prodBrand, prodDesc, prodPrice.toFloat())
