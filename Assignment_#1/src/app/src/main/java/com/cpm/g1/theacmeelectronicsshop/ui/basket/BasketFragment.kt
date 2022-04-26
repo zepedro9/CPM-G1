@@ -96,7 +96,6 @@ class BasketFragment : Fragment() {
             deleteButton?.setOnClickListener { onDeleteClickListener(id) }
             plusButton?.setOnClickListener{ onPlusClickListener(view, id) }
             minusButton?.setOnClickListener{ onMinusClickListener(view, id) }
-
         }
 
 

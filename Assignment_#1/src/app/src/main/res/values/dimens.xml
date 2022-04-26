@@ -9,6 +9,8 @@
     <dimen name="padding_highest">40dp</dimen>
     <dimen name="corner_radius">5dp</dimen>
     <dimen name="product_thumbnail_side">90dp</dimen>
-    <dimen name="product_thumbnail_text">17dp</dimen>
-    <dimen name="product_option_height">35dp</dimen>
+    <dimen name="product_thumbnail_text">17sp</dimen>
+    <dimen name="product_page_title">22dp</dimen>
+    <dimen name="product_option_height">35sp</dimen>
+    <dimen name="product_page_subtitle">18sp</dimen>
 </resources>
