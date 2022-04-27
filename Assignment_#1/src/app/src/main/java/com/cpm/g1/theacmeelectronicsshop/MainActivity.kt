@@ -31,8 +31,5 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
-
-        // Init Product Adapter
-        //app.adapter = ProductAdapter(this, app.products)
     }
 }

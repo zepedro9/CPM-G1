@@ -64,6 +64,20 @@ class BasketHelper(context: Context?) :
         )
     }
 
+    fun getBasketTotal() : Float {
+        val cursor = readableDatabase.rawQuery(
+            "SELECT SUM(quantity*price) " +
+                "FROM Product",
+            null
+        )
+
+        if(cursor.moveToFirst()){
+            return cursor.getFloat(0)
+        }
+
+        return 0F
+    }
+
     fun getId(c: Cursor): String {
         return c.getString(0)
     }

@@ -1,6 +1,5 @@
 package com.cpm.g1.theacmeelectronicsshop.ui.basket
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.database.Cursor
@@ -36,7 +35,12 @@ class BasketFragment : Fragment() {
         // Basket Adapter
         productList.adapter = ProductAdapter(basketCursor)
         productList.emptyView = view.findViewById(R.id.empty_list)
+
+        // Product click
         productList.setOnItemClickListener { _, _, _, l -> onProductClick(l) }
+
+        // Total
+        setTotalPrice()
     }
 
     private fun tempAddProducts() {
@@ -128,4 +132,9 @@ class BasketFragment : Fragment() {
         }
     }
 
+    private fun setTotalPrice(){
+        val total = dbHelper.getBasketTotal()
+        val priceText = getString(R.string.product_price, total)
+        view?.findViewById<TextView>(R.id.total)?.text = priceText
+    }
 }
