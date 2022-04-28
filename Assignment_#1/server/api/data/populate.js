@@ -22,7 +22,8 @@ const productSchema = mongoose.Schema({
     name: String,
     brand: String, 
     price: Number,
-    description: String
+    description: String,
+    image_url: String
 }); 
 
 
@@ -37,7 +38,8 @@ async function createProducts() {
       name: productJSON.name,
       brand: productJSON.brand,
       price: productJSON.price,
-      description: productJSON.description
+      description: productJSON.description,
+      image_url: productJSON.image_url
     });
 
     const result = await product.save();

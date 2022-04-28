@@ -1,7 +1,8 @@
 const express = require('express');
 const app = express();
 const product = require("./routes/products"); 
-const mongoose = require('mongoose'); 
+const mongoose = require('mongoose');
+const path = require('path');
 
 let mongoDB = 'mongodb://root:root@mongo:27017/shop?authSource=admin';
 mongoose.connect(mongoDB)
@@ -10,8 +11,7 @@ mongoose.connect(mongoDB)
 
 app.use(express.json()); 
 app.use('/api/products', product); 
-
-
+app.use('/api', express.static(path.join(__dirname, 'public')))
 
 const port = process.env.PORT || 3000
 app.listen(port, () => console.log(`Listening on port ${port}...`));

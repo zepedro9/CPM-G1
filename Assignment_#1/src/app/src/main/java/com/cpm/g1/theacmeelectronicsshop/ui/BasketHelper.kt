@@ -6,7 +6,7 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 const val DATABASE_NAME = "basket"
-const val SCHEMA_VERSION = 13
+const val SCHEMA_VERSION = 15
 
 class BasketHelper(context: Context?) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, SCHEMA_VERSION) {
@@ -18,6 +18,7 @@ class BasketHelper(context: Context?) :
                     "description TEXT NOT NULL, " +
                     "price FLOAT NOT NULL, " +
                     "quantity INTEGER DEFAULT 1, " +
+                    "image_url String NOT NULL, " +
                     "date TEXT DEFAULT CURRENT_TIMESTAMP)")
         }
 
@@ -26,14 +27,14 @@ class BasketHelper(context: Context?) :
         onCreate(db)
     }
 
-    fun insert(name: String, brand: String, description: String, price: Float, quantity: Int): Long {
+    fun insert(name: String, brand: String, description: String, price: Float, quantity: Int, imageUrl: String): Long {
         val cv = ContentValues()
         cv.put("name", name)
         cv.put("brand", brand)
         cv.put("description", description)
         cv.put("price", price)
         cv.put("quantity", quantity)
-        /*cv.put("barCode", barCode)*/
+        cv.put("image_url", imageUrl)
         return writableDatabase.insert("Product", "name", cv)
     }
 
@@ -52,13 +53,13 @@ class BasketHelper(context: Context?) :
     fun getById(id: String) : Cursor {
         val args = arrayOf(id)
         return readableDatabase.rawQuery(
-            "SELECT _id, name, brand, description, price FROM Product " +
+            "SELECT _id, name, brand, description, price, quantity, image_url FROM Product " +
                     "WHERE _id = ?", args)
     }
 
     fun getAll(): Cursor {
         return readableDatabase.rawQuery(
-            "SELECT _id, name, brand, description, price, quantity " +
+            "SELECT _id, name, brand, description, price, quantity, image_url " +
                     "FROM Product ORDER BY date DESC",
             null
         )
@@ -98,8 +99,12 @@ class BasketHelper(context: Context?) :
         return c.getFloat(4)
     }
 
-    fun getQuantity(c: Cursor): String {
-        return c.getInt(5).toString()
+    fun getQuantity(c: Cursor): Int {
+        return c.getInt(5)
+    }
+
+    fun getImageUrl(c: Cursor): String {
+        return c.getString(6)
     }
 
 }

@@ -5,7 +5,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
+import coil.imageLoader
+import coil.request.ImageRequest
 import com.cpm.g1.theacmeelectronicsshop.R
 import com.cpm.g1.theacmeelectronicsshop.ui.BasketHelper
 
@@ -30,6 +33,15 @@ class ProductDetailsFragment : Fragment() {
         view.findViewById<TextView>(R.id.brandContent).text = dbHelper.getBrand(productCursor)
         view.findViewById<TextView>(R.id.priceContent).text = priceText
         view.findViewById<TextView>(R.id.descriptionContent).text =dbHelper.getDescription(productCursor)
+        view.findViewById<TextView>(R.id.descriptionContent).text =dbHelper.getDescription(productCursor)
+        val image = view.findViewById<ImageView>(R.id.image)
+
+        val request = ImageRequest.Builder(requireContext())
+            .data(dbHelper.getImageUrl(productCursor))
+            .target(image)
+            .build()
+
+        context?.imageLoader?.enqueue(request)
         return view
     }
 

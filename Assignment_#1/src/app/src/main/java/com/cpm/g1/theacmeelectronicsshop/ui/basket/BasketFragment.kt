@@ -18,6 +18,7 @@ import com.cpm.g1.theacmeelectronicsshop.ui.BasketHelper
 
 class BasketFragment : Fragment() {
     private val dbHelper by lazy { BasketHelper(context) }
+    private var totalView: TextView? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.fragment_basket, container, false)
@@ -42,7 +43,8 @@ class BasketFragment : Fragment() {
         productList.setOnItemClickListener { _, _, _, l -> onProductClick(l) }
 
         // Total
-        setTotalPrice()
+        totalView = view.findViewById(R.id.total)
+        setTotalPrice(dbHelper.getBasketTotal())
     }
 
     private fun tempAddProducts() {
@@ -52,6 +54,7 @@ class BasketFragment : Fragment() {
             "The Apple iPad Pro is a 12.9-inch touch screen tablet PC that is larger and offers higher resolution than Apple's other iPad models. The iPad Pro was scheduled to debut in November 2015, running the iOS 9 operating system. Apple unveiled the device at a September 2015 event in San Francisco.",
             909.99F,
             1,
+            "http://127.0.0.1:3000/api/images/1048891954.jpg"
         )
         dbHelper.insert(
             "Item 2",
@@ -59,6 +62,7 @@ class BasketFragment : Fragment() {
             "The Apple iPad Pro is a 12.9-inch touch screen tablet PC that is larger and offers higher resolution than Apple's other iPad models. The iPad Pro was scheduled to debut in November 2015, running the iOS 9 operating system. Apple unveiled the device at a September 2015 event in San Francisco.",
             909.99F,
             3,
+            "http://127.0.0.1:3000/api/images/26761059180.jpg"
         )
         dbHelper.insert(
             "Item 3",
@@ -66,6 +70,7 @@ class BasketFragment : Fragment() {
             "The Apple iPad Pro is a 12.9-inch touch screen tablet PC that is larger and offers higher resolution than Apple's other iPad models. The iPad Pro was scheduled to debut in November 2015, running the iOS 9 operating system. Apple unveiled the device at a September 2015 event in San Francisco.",
             909.99F,
             2,
+            "http://127.0.0.1:3000/api/images/39555064294.jpg"
         )
     }
 
@@ -84,7 +89,8 @@ class BasketFragment : Fragment() {
         }
 
         override fun bindView(view: View, context: Context, cursor: Cursor) {
-            val priceText = getString(R.string.product_price, dbHelper.getPrice(cursor))
+            val quantity = dbHelper.getQuantity(cursor)
+            val priceText = getString(R.string.product_price, dbHelper.getPrice(cursor)*quantity)
             val plusButton = view.findViewById<ImageButton>(R.id.plus_button)
             val minusButton = view.findViewById<ImageButton>(R.id.minus_button)
             val deleteButton = view.findViewById<ImageButton>(R.id.product_delete)
@@ -94,11 +100,11 @@ class BasketFragment : Fragment() {
             view.findViewById<TextView>(R.id.name_text)?.text = dbHelper.getName(cursor)
             view.findViewById<TextView>(R.id.price_text)?.text = priceText
             view.findViewById<TextView>(R.id.brand_text)?.text = dbHelper.getBrand(cursor)
-            view.findViewById<TextView>(R.id.product_quantity)?.text = dbHelper.getQuantity(cursor)
+            view.findViewById<TextView>(R.id.product_quantity)?.text = quantity.toString()
             val image = view.findViewById<ImageView>(R.id.product_image)
 
             val request = ImageRequest.Builder(context)
-                .data("https://cdn.maikoapp.com/3d4b/4qgko/f200.jpg")
+                .data(dbHelper.getImageUrl(cursor))
                 .target(image)
                 .build()
             context.imageLoader.enqueue(request)
@@ -114,18 +120,29 @@ class BasketFragment : Fragment() {
             dbHelper.deleteById(id)
             cursor.requery()
             notifyDataSetChanged()
+
+            // TODO: Update total price
         }
 
-        private fun onPlusClickListener(view: View, id: String) {
-            val quantityText = view.findViewById<TextView>(R.id.product_quantity)
+        private fun onPlusClickListener(productView: View, id: String) {
+            val quantityText = productView.findViewById<TextView>(R.id.product_quantity)
             val newQuantity = quantityText.text.toString().toInt() + 1
+            val price = productView.findViewById<TextView>(R.id.price_text).text.toString().dropLast(1).toFloat()
             quantityText.text = newQuantity.toString()
             dbHelper.updateQuantity(id, newQuantity)
+
+            // Update total price
+            val newTotal = totalView!!.text.toString().dropLast(1).toFloat() + price
+            setTotalPrice(newTotal)
+
+            // TODO: update price of items
         }
 
-        private fun onMinusClickListener(view: View, id: String){
-            val quantityText = view.findViewById<TextView>(R.id.product_quantity)
+        private fun onMinusClickListener(productView: View, id: String){
+            val quantityText = productView.findViewById<TextView>(R.id.product_quantity)
+            val price = productView.findViewById<TextView>(R.id.price_text).text.toString().dropLast(1).toFloat()
             val newQuantity = quantityText.text.toString().toInt() - 1
+            val newTotal = totalView!!.text.toString().dropLast(1).toFloat() - price
 
             if(newQuantity == 0) {
                 onDeleteClickListener(id)
@@ -133,14 +150,15 @@ class BasketFragment : Fragment() {
             else {
                 quantityText.text = newQuantity.toString()
                 dbHelper.updateQuantity(id, newQuantity)
+                setTotalPrice(newTotal)
+                // TODO: update price of items
             }
-
         }
     }
 
-    private fun setTotalPrice(){
-        val total = dbHelper.getBasketTotal()
+    private fun setTotalPrice(total: Float){
         val priceText = getString(R.string.product_price, total)
-        view?.findViewById<TextView>(R.id.total)?.text = priceText
+        totalView!!.text = priceText
     }
+
 }

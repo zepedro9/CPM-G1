@@ -19,8 +19,12 @@
 
     <ImageView
         android:id="@+id/image"
-        android:layout_width="wrap_content"
-        android:layout_height="200dp"
+        android:padding="@dimen/padding_medium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxHeight="300dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerInside"
         android:src="@drawable/_1_inchspg_5000x_fb94854f_81c5_439e_b169_6bcbbc037fac_1200x" />
 
 
