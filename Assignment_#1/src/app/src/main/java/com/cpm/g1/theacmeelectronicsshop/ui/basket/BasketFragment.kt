@@ -10,6 +10,8 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import coil.imageLoader
+import coil.request.ImageRequest
 import com.cpm.g1.theacmeelectronicsshop.MainActivity
 import com.cpm.g1.theacmeelectronicsshop.R
 import com.cpm.g1.theacmeelectronicsshop.ui.BasketHelper
@@ -81,25 +83,29 @@ class BasketFragment : Fragment() {
             return layoutInflater.inflate(R.layout.product_row, parent, false)
         }
 
-        override fun bindView(view: View?, context: Context?, cursor: Cursor?) {
-            val priceText = getString(R.string.product_price, cursor?.let { dbHelper.getPrice(it) })
-            val plusButton = view?.findViewById<ImageButton>(R.id.plus_button)
-            val minusButton = view?.findViewById<ImageButton>(R.id.minus_button)
-            val deleteButton = view?.findViewById<ImageButton>(R.id.product_delete)
+        override fun bindView(view: View, context: Context, cursor: Cursor) {
+            val priceText = getString(R.string.product_price, dbHelper.getPrice(cursor))
+            val plusButton = view.findViewById<ImageButton>(R.id.plus_button)
+            val minusButton = view.findViewById<ImageButton>(R.id.minus_button)
+            val deleteButton = view.findViewById<ImageButton>(R.id.product_delete)
 
-            if(cursor == null) return
             val id = dbHelper.getId(cursor)
 
-            view?.findViewById<TextView>(R.id.name_text)?.text = dbHelper.getName(cursor)
-            view?.findViewById<TextView>(R.id.price_text)?.text = priceText
-            view?.findViewById<TextView>(R.id.brand_text)?.text = dbHelper.getBrand(cursor)
-            view?.findViewById<TextView>(R.id.product_quantity)?.text = dbHelper.getQuantity(cursor)
-            //val image = view.findViewById<ImageView>(R.id.product_image)
-            //image.setImageResource(R.drawable.ic_test)
+            view.findViewById<TextView>(R.id.name_text)?.text = dbHelper.getName(cursor)
+            view.findViewById<TextView>(R.id.price_text)?.text = priceText
+            view.findViewById<TextView>(R.id.brand_text)?.text = dbHelper.getBrand(cursor)
+            view.findViewById<TextView>(R.id.product_quantity)?.text = dbHelper.getQuantity(cursor)
+            val image = view.findViewById<ImageView>(R.id.product_image)
 
-            deleteButton?.setOnClickListener { onDeleteClickListener(id) }
-            plusButton?.setOnClickListener{ onPlusClickListener(view, id) }
-            minusButton?.setOnClickListener{ onMinusClickListener(view, id) }
+            val request = ImageRequest.Builder(context)
+                .data("https://cdn.maikoapp.com/3d4b/4qgko/f200.jpg")
+                .target(image)
+                .build()
+            context.imageLoader.enqueue(request)
+
+            deleteButton.setOnClickListener { onDeleteClickListener(id) }
+            plusButton.setOnClickListener{ onPlusClickListener(view, id) }
+            minusButton.setOnClickListener{ onMinusClickListener(view, id) }
         }
 
 

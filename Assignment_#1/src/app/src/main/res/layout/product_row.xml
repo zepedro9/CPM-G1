@@ -26,14 +26,16 @@
             android:adjustViewBounds="true"
             android:paddingStart="@dimen/padding_medium"
             android:paddingEnd="@dimen/padding_medium"
-            android:scaleType="fitCenter"
-            app:srcCompat="@drawable/_1_inchspg_5000x_fb94854f_81c5_439e_b169_6bcbbc037fac_1200x" />
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/_1_inchspg_5000x_fb94854f_81c5_439e_b169_6bcbbc037fac_1200x"
+            android:paddingTop="@dimen/padding_default" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/padding_low"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingTop="@dimen/padding_default">
 
             <TextView
                 style="@style/CardText"
