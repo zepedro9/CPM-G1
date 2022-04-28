@@ -28,21 +28,23 @@ class BasketFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //tempAddProducts()
+        // TODO: delete this when connection with server is set
+        tempAddProducts()
 
-        val productList = view.findViewById<ListView>(R.id.basket_sv)
-        val basketCursor = dbHelper.getAll()
+        // Get basket products
         val mainActivity = activity as MainActivity
+        val basketCursor = dbHelper.getAll()
         mainActivity.startManagingCursor(basketCursor)
 
         // Basket Adapter
+        val productList = view.findViewById<ListView>(R.id.basket_sv)
         productList.adapter = ProductAdapter(basketCursor)
         productList.emptyView = view.findViewById(R.id.empty_list)
 
         // Product click
         productList.setOnItemClickListener { _, _, _, l -> onProductClick(l) }
 
-        // Total
+        // Set Basket Total
         totalView = view.findViewById(R.id.total)
         setTotalPrice(dbHelper.getBasketTotal())
     }
@@ -89,70 +91,100 @@ class BasketFragment : Fragment() {
         }
 
         override fun bindView(view: View, context: Context, cursor: Cursor) {
-            val quantity = dbHelper.getQuantity(cursor)
-            val priceText = getString(R.string.product_price, dbHelper.getPrice(cursor)*quantity)
+            // Product Buttons
             val plusButton = view.findViewById<ImageButton>(R.id.plus_button)
             val minusButton = view.findViewById<ImageButton>(R.id.minus_button)
             val deleteButton = view.findViewById<ImageButton>(R.id.product_delete)
 
+            // Set product details
             val id = dbHelper.getId(cursor)
+            val quantity = dbHelper.getQuantity(cursor)
+            val price = dbHelper.getPrice(cursor)
+            val priceText = getString(R.string.product_price, price*quantity)
 
-            view.findViewById<TextView>(R.id.name_text)?.text = dbHelper.getName(cursor)
             view.findViewById<TextView>(R.id.price_text)?.text = priceText
-            view.findViewById<TextView>(R.id.brand_text)?.text = dbHelper.getBrand(cursor)
             view.findViewById<TextView>(R.id.product_quantity)?.text = quantity.toString()
-            val image = view.findViewById<ImageView>(R.id.product_image)
+            view.findViewById<TextView>(R.id.name_text)?.text = dbHelper.getName(cursor)
+            view.findViewById<TextView>(R.id.brand_text)?.text = dbHelper.getBrand(cursor)
 
+            // Set product image from URL
+            val image = view.findViewById<ImageView>(R.id.product_image)
             val request = ImageRequest.Builder(context)
                 .data(dbHelper.getImageUrl(cursor))
-                .target(image)
-                .build()
+                .target(image).build()
             context.imageLoader.enqueue(request)
 
-            deleteButton.setOnClickListener { onDeleteClickListener(id) }
+            // Buttons click listeners
+            deleteButton.setOnClickListener { onDeleteClickListener(view, id) }
             plusButton.setOnClickListener{ onPlusClickListener(view, id) }
             minusButton.setOnClickListener{ onMinusClickListener(view, id) }
         }
 
 
         @Suppress("DEPRECATION")
-        private fun onDeleteClickListener(id: String){
+        private fun onDeleteClickListener(productView: View, id: String){
+            // Update total price
+            val price = priceViewToFloat(productView.findViewById(R.id.price_text))
+            val newTotal = priceViewToFloat(totalView!!) - price
+            setTotalPrice(newTotal)
+
+            // Delete Item
             dbHelper.deleteById(id)
             cursor.requery()
             notifyDataSetChanged()
-
-            // TODO: Update total price
         }
 
         private fun onPlusClickListener(productView: View, id: String) {
+            val priceView = productView.findViewById<TextView>(R.id.price_text)
             val quantityText = productView.findViewById<TextView>(R.id.product_quantity)
-            val newQuantity = quantityText.text.toString().toInt() + 1
-            val price = productView.findViewById<TextView>(R.id.price_text).text.toString().dropLast(1).toFloat()
+            val quantity = quantityText.text.toString().toInt()
+            val price = priceViewToFloat(priceView)
+            val unitPrice = price / quantity
+            val newQuantity = quantity + 1
+            val newTotal = priceViewToFloat(totalView!!) + unitPrice
+
+            // Update quantity
             quantityText.text = newQuantity.toString()
             dbHelper.updateQuantity(id, newQuantity)
 
             // Update total price
-            val newTotal = totalView!!.text.toString().dropLast(1).toFloat() + price
             setTotalPrice(newTotal)
 
-            // TODO: update price of items
+            // Update item price
+            val newPrice = price + unitPrice
+            val priceText = getString(R.string.product_price, newPrice)
+            priceView.text = priceText
         }
 
         private fun onMinusClickListener(productView: View, id: String){
             val quantityText = productView.findViewById<TextView>(R.id.product_quantity)
-            val price = productView.findViewById<TextView>(R.id.price_text).text.toString().dropLast(1).toFloat()
-            val newQuantity = quantityText.text.toString().toInt() - 1
-            val newTotal = totalView!!.text.toString().dropLast(1).toFloat() - price
+            val quantity = quantityText.text.toString().toInt()
+            val newQuantity = quantity - 1
 
             if(newQuantity == 0) {
-                onDeleteClickListener(id)
+                // Delete item from basket
+                onDeleteClickListener(productView, id)
+                return
             }
-            else {
-                quantityText.text = newQuantity.toString()
-                dbHelper.updateQuantity(id, newQuantity)
-                setTotalPrice(newTotal)
-                // TODO: update price of items
-            }
+
+            // Delete one unit
+            val priceView = productView.findViewById<TextView>(R.id.price_text)
+            val price = priceViewToFloat(priceView)
+            val unitPrice = price / quantity
+
+            // Update quantity
+            quantityText.text = newQuantity.toString()
+            dbHelper.updateQuantity(id, newQuantity)
+
+            // Update total
+            val newTotal =  priceViewToFloat(totalView!!) - unitPrice
+            setTotalPrice(newTotal)
+
+            // Update item price
+            val newPrice = price - unitPrice
+            val priceText = getString(R.string.product_price, newPrice)
+            priceView.text = priceText
+
         }
     }
 
@@ -161,4 +193,13 @@ class BasketFragment : Fragment() {
         totalView!!.text = priceText
     }
 
+
+    // Utils
+    private fun priceViewToFloat(priceView: TextView): Float {
+        return priceStringToFloat(priceView.text.toString())
+    }
+
+    private fun priceStringToFloat(strPrice: String): Float {
+        return strPrice.dropLast(1).toFloat()
+    }
 }
