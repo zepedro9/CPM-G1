@@ -5,26 +5,39 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:layout_margin="@dimen/padding_default"
     tools:context=".ui.scan.ScanFragment">
 
     <Button
         android:id="@+id/btnScan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:text="@string/scan_product"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageView
+        android:id="@+id/imageContent"
+        android:layout_width="wrap_content"
+        android:layout_height="128dp"
+        android:src="@drawable/_1_inchspg_5000x_fb94854f_81c5_439e_b169_6bcbbc037fac_1200x"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnScan"
+        android:contentDescription="@string/product_image_content_description" />
+
     <TextView
         android:id="@+id/nameKey"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/padding_default"
+        android:paddingBottom="@dimen/padding_low"
         android:text="@string/name"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnScan" />
+        app:layout_constraintTop_toBottomOf="@+id/imageContent" />
 
     <TextView
         android:id="@+id/nameContent"
@@ -35,14 +48,32 @@
         app:layout_constraintTop_toBottomOf="@+id/nameKey" />
 
     <TextView
-        android:id="@+id/descKey"
+        android:id="@+id/brandKey"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/padding_default"
-        android:text="@string/desc"
+        android:paddingBottom="@dimen/padding_low"
+        android:text="@string/brand"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nameContent" />
+
+    <TextView
+        android:id="@+id/brandContent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/padding_default"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/brandKey" />
+
+    <TextView
+        android:id="@+id/descKey"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/padding_low"
+        android:text="@string/desc"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/brandContent" />
 
     <TextView
         android:id="@+id/descContent"
@@ -51,5 +82,33 @@
         android:paddingBottom="@dimen/padding_default"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/descKey" />
+
+    <TextView
+        android:id="@+id/priceKey"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/padding_low"
+        android:text="@string/price"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/descContent" />
+
+    <TextView
+        android:id="@+id/priceContent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/padding_default"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/priceKey" />
+
+    <Button
+        android:id="@+id/btnAddToBasket"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="@string/add_to_basket"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
