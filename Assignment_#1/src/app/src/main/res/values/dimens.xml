@@ -11,4 +11,7 @@
     <dimen name="product_thumbnail_side">90dp</dimen>
     <dimen name="product_thumbnail_text">17dp</dimen>
     <dimen name="product_option_height">35dp</dimen>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="fragment_horizontal_margin">16dp</dimen>
+    <dimen name="fragment_vertical_margin">16dp</dimen>
 </resources>
