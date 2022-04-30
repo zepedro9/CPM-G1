@@ -15,6 +15,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import coil.imageLoader
+import coil.request.ImageRequest
 import com.cpm.g1.theacmeelectronicsshop.R
 import com.cpm.g1.theacmeelectronicsshop.ui.BasketHelper
 import com.google.zxing.client.android.Intents
@@ -122,17 +124,25 @@ class ScanFragment : Fragment() {
                 val prodId = jsonProduct.getInt("id").toString()
                 val prodName = jsonProduct.getString("name")
                 val prodBrand = jsonProduct.getString("brand")
-                val prodPrice = jsonProduct.getString("price")
+                val prodPrice = jsonProduct.getString("price").toFloat()
                 val prodDesc = jsonProduct.getString("description")
                 val prodImage = jsonProduct.getString("image_url")
 
                 activity?.runOnUiThread {
-                    currentProduct = ScannedProduct(prodId, prodName, prodBrand, prodDesc, prodPrice.toFloat(), prodImage)
+                    currentProduct = ScannedProduct(prodId, prodName, prodBrand, prodDesc, prodPrice, prodImage)
                     view?.findViewById<TextView>(R.id.nameContent)!!.text = prodName
                     view?.findViewById<TextView>(R.id.brandContent)!!.text = prodBrand
                     view?.findViewById<TextView>(R.id.descContent)!!.text = prodDesc
-                    view?.findViewById<TextView>(R.id.priceContent)!!.text = prodPrice
-                    view?.findViewById<ImageView>(R.id.imageContent)!!.visibility = View.VISIBLE
+                    val priceText = getString(R.string.product_price, prodPrice)
+                    view?.findViewById<TextView>(R.id.priceContent)!!.text = priceText
+
+                    // Set product image from URL
+                    val image = view?.findViewById<ImageView>(R.id.imageContent)
+                    image!!.visibility = View.VISIBLE
+                    val request = ImageRequest.Builder(requireContext())
+                        .data(prodImage)
+                        .target(image).build()
+                    context?.imageLoader?.enqueue(request)
                 }
             } catch (e: Exception) {
                 Log.e("ScanGetRequest", e.toString())

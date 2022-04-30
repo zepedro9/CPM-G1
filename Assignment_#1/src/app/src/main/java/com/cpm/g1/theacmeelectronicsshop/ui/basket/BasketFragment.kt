@@ -3,11 +3,14 @@ package com.cpm.g1.theacmeelectronicsshop.ui.basket
 import android.content.Context
 import android.content.Intent
 import android.database.Cursor
+import android.icu.text.NumberFormat
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import coil.imageLoader
@@ -15,10 +18,8 @@ import coil.request.ImageRequest
 import com.cpm.g1.theacmeelectronicsshop.MainActivity
 import com.cpm.g1.theacmeelectronicsshop.R
 import com.cpm.g1.theacmeelectronicsshop.ui.BasketHelper
-import java.text.DecimalFormat
-import java.text.NumberFormat
-import java.util.*
 
+@RequiresApi(Build.VERSION_CODES.N)
 class BasketFragment : Fragment() {
     private val dbHelper by lazy { BasketHelper(context) }
     private var totalView: TextView? = null
