@@ -13,21 +13,21 @@ class RegisterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         // Hide action bar
         supportActionBar?.hide()
+
         // Visualize View
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         findViewById<Button>(R.id.login_btn).setOnClickListener { onLoginPressed() }
-        findViewById<Button>(R.id.signup_btn).setOnClickListener { onSignUpPressed() }
     }
 
-    fun onLoginPressed(){
+    private fun onLoginPressed(){
        val transaction = supportFragmentManager.beginTransaction()
         //transaction.replace()
         transaction.commit()
     }
 
-   fun onSignUpPressed(){
+   private fun onSignUpPressed(){
 
    }
 }

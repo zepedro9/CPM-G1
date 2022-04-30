@@ -36,8 +36,12 @@
     <string name="login_failed">"Login failed"</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="sign_up">Sign Up</string>
+    <!-- LOGIN -->
     <string name="acme">ACME</string>
     <string name="shop">Shop</string>
-    <string name="sign_up">Sign Up</string>
     <string name="login">Login</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="don_t_have_an_account">Don\'t have an account?</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.cpm.g1.theacmeelectronicsshop.ui.register
+package com.cpm.g1.theacmeelectronicsshop.ui.login
 
 import android.os.Bundle
 import android.view.LayoutInflater
