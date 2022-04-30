@@ -15,10 +15,14 @@ import coil.request.ImageRequest
 import com.cpm.g1.theacmeelectronicsshop.MainActivity
 import com.cpm.g1.theacmeelectronicsshop.R
 import com.cpm.g1.theacmeelectronicsshop.ui.BasketHelper
+import java.text.DecimalFormat
+import java.text.NumberFormat
+import java.util.*
 
 class BasketFragment : Fragment() {
     private val dbHelper by lazy { BasketHelper(context) }
     private var totalView: TextView? = null
+    private val nf: NumberFormat = NumberFormat.getNumberInstance()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.fragment_basket, container, false)
@@ -27,9 +31,6 @@ class BasketFragment : Fragment() {
     @Suppress("DEPRECATION")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // TODO: delete this when connection with server is set
-        tempAddProducts()
 
         // Get basket products
         val mainActivity = activity as MainActivity
@@ -47,33 +48,6 @@ class BasketFragment : Fragment() {
         // Set Basket Total
         totalView = view.findViewById(R.id.total)
         setTotalPrice(dbHelper.getBasketTotal())
-    }
-
-    private fun tempAddProducts() {
-        dbHelper.insert(
-            "Item 1",
-            "Apple",
-            "The Apple iPad Pro is a 12.9-inch touch screen tablet PC that is larger and offers higher resolution than Apple's other iPad models. The iPad Pro was scheduled to debut in November 2015, running the iOS 9 operating system. Apple unveiled the device at a September 2015 event in San Francisco.",
-            909.99F,
-            1,
-            "http://127.0.0.1:3000/api/images/1048891954.jpg"
-        )
-        dbHelper.insert(
-            "Item 2",
-            "Apple",
-            "The Apple iPad Pro is a 12.9-inch touch screen tablet PC that is larger and offers higher resolution than Apple's other iPad models. The iPad Pro was scheduled to debut in November 2015, running the iOS 9 operating system. Apple unveiled the device at a September 2015 event in San Francisco.",
-            909.99F,
-            3,
-            "http://127.0.0.1:3000/api/images/26761059180.jpg"
-        )
-        dbHelper.insert(
-            "Item 3",
-            "Apple",
-            "The Apple iPad Pro is a 12.9-inch touch screen tablet PC that is larger and offers higher resolution than Apple's other iPad models. The iPad Pro was scheduled to debut in November 2015, running the iOS 9 operating system. Apple unveiled the device at a September 2015 event in San Francisco.",
-            909.99F,
-            2,
-            "http://127.0.0.1:3000/api/images/39555064294.jpg"
-        )
     }
 
     private fun onProductClick(id: Long){
@@ -200,6 +174,6 @@ class BasketFragment : Fragment() {
     }
 
     private fun priceStringToFloat(strPrice: String): Float {
-        return strPrice.dropLast(1).toFloat()
+        return nf.parse(strPrice.dropLast(1)).toFloat()
     }
 }

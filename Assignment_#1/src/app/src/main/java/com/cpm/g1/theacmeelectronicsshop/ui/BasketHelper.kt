@@ -27,16 +27,17 @@ class BasketHelper(context: Context?) :
         onCreate(db)
     }
 
-    fun insert(name: String, brand: String, description: String, price: Float, quantity: Int, imageUrl: String): Long {
+    fun insert(id: String, name: String, brand: String, description: String, price: Float, imageUrl: String): Long {
         val cv = ContentValues()
+        cv.put("_id", id)
         cv.put("name", name)
         cv.put("brand", brand)
         cv.put("description", description)
         cv.put("price", price)
-        cv.put("quantity", quantity)
         cv.put("image_url", imageUrl)
-        return writableDatabase.insert("Product", "name", cv)
+        return writableDatabase.insert("Product", "_id", cv)
     }
+
 
     fun updateQuantity(id: String, quantity: Int): Int {
         val cv = ContentValues()

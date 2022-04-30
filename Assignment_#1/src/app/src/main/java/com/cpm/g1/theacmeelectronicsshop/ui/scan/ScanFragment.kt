@@ -2,7 +2,6 @@ package com.cpm.g1.theacmeelectronicsshop.ui.scan
 
 import android.app.Activity
 import android.content.Intent
-import android.database.Cursor
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -29,7 +28,7 @@ import java.util.concurrent.Executors
 class ScanFragment : Fragment() {
     private val dbHelper by lazy { BasketHelper(context) }
 
-    class ScannedProduct(val name: String, val brand: String, val desc: String, val price: Float) :
+    class ScannedProduct(val id: String, val name: String, val brand: String, val desc: String, val price: Float, val imageUrl: String) :
         Serializable
 
     private var currentProduct: ScannedProduct? = null
@@ -55,7 +54,7 @@ class ScanFragment : Fragment() {
         val addToBasketButton = view.findViewById<Button>(R.id.btnAddToBasket)
         addToBasketButton.setOnClickListener {
             if(currentProduct != null) {
-                addToBasket(currentProduct!!.name, currentProduct!!.brand, currentProduct!!.desc, currentProduct!!.price)
+                addToBasket(currentProduct!!.id, currentProduct!!.name, currentProduct!!.brand, currentProduct!!.desc, currentProduct!!.price, currentProduct!!.imageUrl )
             } else {
                 Toast.makeText(this.context, getText(R.string.scan_no_scanned), Toast.LENGTH_SHORT).show()
             }
@@ -98,23 +97,18 @@ class ScanFragment : Fragment() {
             }
         }
 
-    private fun addToBasket(name: String, brand: String, desc: String, price: Float) {
-        val c: Cursor = dbHelper.getAll()
-        c.moveToFirst()
-        while (!c.isAfterLast) {
-            if(dbHelper.getName(c) == name) {
-                dbHelper.updateQuantity(dbHelper.getId(c), dbHelper.getQuantity(c).toInt() + 1)
-                return
-            }
-            c.moveToNext()
+    private fun addToBasket(id: String, name: String, brand: String, desc: String, price: Float, imageUrl: String) {
+        val productCursor = dbHelper.getById(id)
+
+        if(!productCursor.moveToFirst()){
+            // New product
+            dbHelper.insert(id,name,brand,desc,price,imageUrl)
+        } else {
+            // Update quantity
+            val quantity = dbHelper.getQuantity(productCursor) + 1
+            dbHelper.updateQuantity(id, quantity)
         }
-        dbHelper.insert(
-            name,
-            brand,
-            desc,
-            price,
-            1,
-        )
+
     }
 
     private fun makeGetRequest(prodID: String?) {
@@ -125,13 +119,15 @@ class ScanFragment : Fragment() {
             try {
                 val jsonProduct = JSONArray(URL("http://127.0.0.1:3000/api/products/${prodID?.dropLast(1)}").readText()).getJSONObject(0)
 
+                val prodId = jsonProduct.getInt("id").toString()
                 val prodName = jsonProduct.getString("name")
                 val prodBrand = jsonProduct.getString("brand")
                 val prodPrice = jsonProduct.getString("price")
                 val prodDesc = jsonProduct.getString("description")
+                val prodImage = jsonProduct.getString("image_url")
 
                 activity?.runOnUiThread {
-                    currentProduct = ScannedProduct(prodName, prodBrand, prodDesc, prodPrice.toFloat())
+                    currentProduct = ScannedProduct(prodId, prodName, prodBrand, prodDesc, prodPrice.toFloat(), prodImage)
                     view?.findViewById<TextView>(R.id.nameContent)!!.text = prodName
                     view?.findViewById<TextView>(R.id.brandContent)!!.text = prodBrand
                     view?.findViewById<TextView>(R.id.descContent)!!.text = prodDesc
