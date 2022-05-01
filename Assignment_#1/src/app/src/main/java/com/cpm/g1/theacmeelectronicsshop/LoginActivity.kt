@@ -3,9 +3,18 @@ package com.cpm.g1.theacmeelectronicsshop
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.add
+import androidx.fragment.app.commit
 import com.cpm.g1.theacmeelectronicsshop.databinding.ActivityMainBinding
+import com.cpm.g1.theacmeelectronicsshop.ui.LoginFragment
+import com.cpm.g1.theacmeelectronicsshop.ui.RegisterFragment
 
-class RegisterActivity : AppCompatActivity() {
+
+/**
+ * This is the initial fragment of the program.
+ * The activity remains active until the user logs in.
+ */
+class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
@@ -18,16 +27,10 @@ class RegisterActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        findViewById<Button>(R.id.login_btn).setOnClickListener { onLoginPressed() }
+        // Add fragment
+        supportFragmentManager.commit {
+            add<LoginFragment>(R.id.main_fragment_container)
+        }
     }
 
-    private fun onLoginPressed(){
-       val transaction = supportFragmentManager.beginTransaction()
-        //transaction.replace()
-        transaction.commit()
-    }
-
-   private fun onSignUpPressed(){
-
-   }
 }

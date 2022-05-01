@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
-import com.cpm.g1.theacmeelectronicsshop.RegisterActivity
+import com.cpm.g1.theacmeelectronicsshop.LoginActivity
 import com.cpm.g1.theacmeelectronicsshop.R
 import com.cpm.g1.theacmeelectronicsshop.ui.BasketHelper
 
@@ -25,7 +25,7 @@ class BasketFragment : Fragment() {
 
         val productList = view.findViewById<ListView>(R.id.basket_sv)
         val basketCursor = dbHelper.getAll()
-        val mainActivity = activity as RegisterActivity
+        val mainActivity = activity as LoginActivity
         mainActivity.startManagingCursor(basketCursor)
 
         // Basket Adapter

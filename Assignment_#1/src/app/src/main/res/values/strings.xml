@@ -14,14 +14,14 @@
     <string name="empty">---</string>
     <string name="desc">Description</string>
     <string name="result_not_found">Result not found</string>
-
+    <!-- REGISTER -->
     <string name="reg_name">Name</string>
     <string name="reg_nif">NIF</string>
     <string name="reg_address">Address</string>
     <string name="credit_card">Credit Card</string>
     <string name="info">Info</string>
     <string name="card_type">Card Type</string>
-    <string name="card_number">Number</string>
+    <string name="card_number">Card Number</string>
     <string name="card_expiration_date">Expiration Date</string>
     <string name="reg_instructions">All the fields in this form are mandatory.</string>
     <string name="register">Register</string>
@@ -44,4 +44,6 @@
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="don_t_have_an_account">Don\'t have an account?</string>
+    <string name="card_info">Card Info</string>
+    <string name="already_have_an_account">Already have an account?</string>
 </resources>
