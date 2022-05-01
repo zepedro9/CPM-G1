@@ -37,11 +37,15 @@ class LoginFragment : Fragment() {
 
     }
 
-    fun onClickSignUp(view: View) {
+    /**
+     * When the sign up button is pressed, the loginFragment is replaced by the registerFragment.
+     */
+    private fun onClickSignUp(view: View) {
         val registerFragment = RegisterFragment()
         val fragmentManager = activity?.supportFragmentManager
         val fragmentTransaction = fragmentManager?.beginTransaction()
         fragmentTransaction?.replace(R.id.main_fragment_container, registerFragment)
+        fragmentTransaction?.addToBackStack(null)
         fragmentTransaction?.commit();
     }
 }

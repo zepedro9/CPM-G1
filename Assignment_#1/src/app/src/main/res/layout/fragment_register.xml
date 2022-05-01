@@ -209,7 +209,7 @@
 
         <!-- SIGN UP BUTTON -->
         <Button
-            android:id="@+id/login_btn"
+            android:id="@+id/signup_btn"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:padding="12dp"
@@ -231,7 +231,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/login_btn">
+            app:layout_constraintTop_toBottomOf="@+id/signup_btn">
 
             <TextView
                 android:layout_width="match_parent"
@@ -242,7 +242,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/login_btn" />
 
             <Button
-                android:id="@+id/signup_btn"
+                android:id="@+id/login_btn"
                 style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
