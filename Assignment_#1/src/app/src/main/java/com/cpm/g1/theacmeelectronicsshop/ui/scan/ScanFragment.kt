@@ -15,17 +15,20 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation.findNavController
+import androidx.navigation.findNavController
 import coil.imageLoader
 import coil.request.ImageRequest
+import com.cpm.g1.theacmeelectronicsshop.MainActivity
 import com.cpm.g1.theacmeelectronicsshop.R
+import com.cpm.g1.theacmeelectronicsshop.readStream
 import com.cpm.g1.theacmeelectronicsshop.ui.BasketHelper
 import com.google.zxing.client.android.Intents
 import com.journeyapps.barcodescanner.CaptureActivity
 import org.json.JSONArray
 import java.io.Serializable
+import java.net.HttpURLConnection
 import java.net.URL
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
 
 class ScanFragment : Fragment() {
     private val dbHelper by lazy { BasketHelper(context) }
@@ -57,6 +60,9 @@ class ScanFragment : Fragment() {
         addToBasketButton.setOnClickListener {
             if(currentProduct != null) {
                 addToBasket(currentProduct!!.id, currentProduct!!.name, currentProduct!!.brand, currentProduct!!.desc, currentProduct!!.price, currentProduct!!.imageUrl )
+                val mainActivity = activity as MainActivity
+                val navController = findNavController(mainActivity, R.id.nav_host_fragment_activity_main)
+                navController.navigate(R.id.navigation_basket)
             } else {
                 Toast.makeText(this.context, getText(R.string.scan_no_scanned), Toast.LENGTH_SHORT).show()
             }
@@ -114,43 +120,69 @@ class ScanFragment : Fragment() {
     }
 
     private fun makeGetRequest(prodID: String?) {
-        val networkService: ExecutorService = Executors.newFixedThreadPool(4)
-        val ct = context
+        Thread(prodID?.let { GetProduct(it) }).start()
+    }
 
-        networkService.execute {
+    private fun showProduct(payload: String) {
+        val jsonProduct = JSONArray(payload).getJSONObject(0)
+
+        val prodId = jsonProduct.getInt("id").toString()
+        val prodName = jsonProduct.getString("name")
+        val prodBrand = jsonProduct.getString("brand")
+        val prodPrice = jsonProduct.getString("price").toFloat()
+        val prodDesc = jsonProduct.getString("description")
+        val prodImage = jsonProduct.getString("image_url")
+
+        activity?.runOnUiThread {
+            currentProduct =
+                ScannedProduct(prodId, prodName, prodBrand, prodDesc, prodPrice, prodImage)
+            view?.findViewById<TextView>(R.id.nameContent)!!.text = prodName
+            view?.findViewById<TextView>(R.id.brandContent)!!.text = prodBrand
+            view?.findViewById<TextView>(R.id.descContent)!!.text = prodDesc
+            val priceText = getString(R.string.product_price, prodPrice)
+            view?.findViewById<TextView>(R.id.priceContent)!!.text = priceText
+
+            // Set product image from URL
+            val image = view?.findViewById<ImageView>(R.id.imageContent)
+            image!!.visibility = View.VISIBLE
+            val request = ImageRequest.Builder(requireContext())
+                .data(prodImage)
+                .target(image).build()
+            context?.imageLoader?.enqueue(request)
+        }
+    }
+
+    inner class GetProduct(val prodID: String) : Runnable {
+        override fun run() {
+            val url: URL
+            var urlConnection: HttpURLConnection? = null
             try {
-                val jsonProduct = JSONArray(URL("http://127.0.0.1:3000/api/products/${prodID?.dropLast(1)}").readText()).getJSONObject(0)
+                url = URL("http://127.0.0.1:3000/api/products/${prodID.dropLast(1)}")
 
-                val prodId = jsonProduct.getInt("id").toString()
-                val prodName = jsonProduct.getString("name")
-                val prodBrand = jsonProduct.getString("brand")
-                val prodPrice = jsonProduct.getString("price").toFloat()
-                val prodDesc = jsonProduct.getString("description")
-                val prodImage = jsonProduct.getString("image_url")
+                urlConnection = url.openConnection() as HttpURLConnection
+                urlConnection.doInput = true
+                urlConnection.setRequestProperty("Content-Type", "application/json")
+                urlConnection.useCaches = false
+                val responseCode = urlConnection.responseCode
 
-                activity?.runOnUiThread {
-                    currentProduct = ScannedProduct(prodId, prodName, prodBrand, prodDesc, prodPrice, prodImage)
-                    view?.findViewById<TextView>(R.id.nameContent)!!.text = prodName
-                    view?.findViewById<TextView>(R.id.brandContent)!!.text = prodBrand
-                    view?.findViewById<TextView>(R.id.descContent)!!.text = prodDesc
-                    val priceText = getString(R.string.product_price, prodPrice)
-                    view?.findViewById<TextView>(R.id.priceContent)!!.text = priceText
-
-                    // Set product image from URL
-                    val image = view?.findViewById<ImageView>(R.id.imageContent)
-                    image!!.visibility = View.VISIBLE
-                    val request = ImageRequest.Builder(requireContext())
-                        .data(prodImage)
-                        .target(image).build()
-                    context?.imageLoader?.enqueue(request)
-                }
+                if (responseCode == 200)
+                    showProduct(readStream(urlConnection.inputStream))
+                else
+                    Toast.makeText(context, context?.getText(R.string.scan_failed) ?: "The scan has failed", Toast.LENGTH_LONG).show()
             } catch (e: Exception) {
                 Log.e("ScanGetRequest", e.toString())
                 val handler = Handler(Looper.getMainLooper())
                 handler.post {
-                    Toast.makeText(ct, ct?.getText(R.string.scan_failed) ?: "The scan has failed", Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        context,
+                        context?.getText(R.string.scan_failed) ?: "The scan has failed",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
+            } finally {
+                urlConnection?.disconnect()
             }
         }
     }
+
 }
