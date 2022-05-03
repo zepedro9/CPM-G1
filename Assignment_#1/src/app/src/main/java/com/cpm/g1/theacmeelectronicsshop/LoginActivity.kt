@@ -15,6 +15,8 @@ import com.cpm.g1.theacmeelectronicsshop.ui.auth.LoginFragment
  */
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    var keysGenerated = false       // tells if the security keys have been generated.
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

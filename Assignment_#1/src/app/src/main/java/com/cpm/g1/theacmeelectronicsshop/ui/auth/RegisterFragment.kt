@@ -7,8 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import com.cpm.g1.theacmeelectronicsshop.LoginActivity
-import com.cpm.g1.theacmeelectronicsshop.R
+import com.cpm.g1.theacmeelectronicsshop.*
 import com.cpm.g1.theacmeelectronicsshop.dataClasses.Card
 import com.cpm.g1.theacmeelectronicsshop.dataClasses.User
 import com.cpm.g1.theacmeelectronicsshop.httpService.Auth
@@ -51,7 +50,7 @@ class RegisterFragment : Fragment() {
 
     private fun onClickSignup(view: View){
         val user = createUserObj(view)
-        Thread(Auth.SignUp(activity as LoginActivity?, "localhost", user)).start()
+        Thread(Auth.SignUp(activity as LoginActivity?, ConfigHTTP.BASE_ADDRESS, user)).start()
     }
 
 
@@ -62,7 +61,9 @@ class RegisterFragment : Fragment() {
         var email = view.findViewById<EditText>(R.id.reg_email_ed).text.toString()
         var password = view.findViewById<EditText>(R.id.reg_password_ed).text.toString()
         var card = createCardObj(view)
-        return User(name, address, nif, email, password, card)
+        Cryptography().generateKey(activity as LoginActivity);
+        val pk = Cryptography().getPubKey();
+        return User(pk, name, address, nif, email, password, card)
     }
 
     private fun createCardObj(view: View): Card {
