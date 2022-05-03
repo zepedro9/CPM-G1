@@ -1,12 +1,14 @@
 package com.cpm.g1.theacmeelectronicsshop.ui.auth
 
 import android.os.Bundle
+import android.util.Patterns
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import com.cpm.g1.theacmeelectronicsshop.*
 import com.cpm.g1.theacmeelectronicsshop.dataClasses.Card
 import com.cpm.g1.theacmeelectronicsshop.dataClasses.User
@@ -35,7 +37,6 @@ class RegisterFragment : Fragment() {
     }
 
 
-
     /**
      * When login button is pressed, the registerFragment is replaced by the loginFragment.
      */
@@ -48,16 +49,19 @@ class RegisterFragment : Fragment() {
         fragmentTransaction?.commit()
     }
 
-    private fun onClickSignup(view: View){
-        val user = createUserObj(view)
-        Thread(Auth.SignUp(activity as LoginActivity?, ConfigHTTP.BASE_ADDRESS, user)).start()
+    private fun onClickSignup(view: View) {
+        val isValidFields = validateFields(view)
+        if (isValidFields) {
+            val user = createUserObj(view)
+            Thread(Auth.SignUp(activity as LoginActivity?, ConfigHTTP.BASE_ADDRESS, user)).start()
+        }
     }
 
 
     private fun createUserObj(view: View): User {
         var name = view.findViewById<EditText>(R.id.reg_name_ed).text.toString()
         var address = view.findViewById<EditText>(R.id.reg_address_ed).text.toString()
-        var nif = view.findViewById<EditText>(R.id.reg_nif_ed).text.toString().toInt()
+        var nif = view.findViewById<EditText>(R.id.reg_nif_ed).toString().toInt()
         var email = view.findViewById<EditText>(R.id.reg_email_ed).text.toString()
         var password = view.findViewById<EditText>(R.id.reg_password_ed).text.toString()
         var card = createCardObj(view)
@@ -66,11 +70,95 @@ class RegisterFragment : Fragment() {
         return User(pk, name, address, nif, email, password, card)
     }
 
+
     private fun createCardObj(view: View): Card {
         var type = view.findViewById<EditText>(R.id.reg_card_type_ed).text.toString()
         var number = view.findViewById<EditText>(R.id.reg_card_number_ed).text.toString()
-        var expirationDate = view.findViewById<EditText>(R.id.reg_card_expiration_ed).text.toString()
+        var expirationDate =
+            view.findViewById<EditText>(R.id.reg_card_expiration_ed).text.toString()
         return Card(type, number, expirationDate)
+    }
+
+    // FIELDS VALIDATION ==============================
+
+    private fun validateFields(view: View): Boolean {
+        var containsError = false
+        val fields = arrayOf(
+            R.id.reg_name_ed,
+            R.id.reg_address_ed,
+            R.id.reg_nif_ed,
+            R.id.reg_email_ed,
+            R.id.reg_password_ed,
+            R.id.reg_card_type_ed,
+            R.id.reg_card_number_ed,
+            R.id.reg_card_expiration_ed
+        )
+
+        val fieldSizes = arrayOf(
+            -1, 10, 9, 5, 7, -1, 15, -1
+        )
+
+        if (!checkFieldsFilled(view, fields)) containsError = true
+        if (!checkSizes(view, fieldSizes, fields)) containsError = true
+
+        // Check email pattern.
+        val emailField = view.findViewById<EditText>(R.id.reg_email_ed)
+        if (!Patterns.EMAIL_ADDRESS.matcher(emailField.text.toString()).matches()) {
+            addErrorMessage(emailField, "Invalid email format")
+            containsError = true
+        }
+
+        return !containsError
+
+    }
+
+    /**
+     * Check the sizes of each.
+     * @param fieldSize Size of the fields. Fields with negative values are considered of not
+     * having minimum size.
+     */
+    private fun checkSizes(view: View, fieldSize: Array<Int>, fields: Array<Int>): Boolean {
+        var hasMinSize = true
+        for (i in 0..fieldSize.size-1) {
+            val field: EditText = view.findViewById<EditText>(fields[i])
+            if (fieldSize[i] != -1 && field.text.length < fieldSize[i]) {
+                addErrorMessage(field, "Minimum size is " + fieldSize[i])
+                hasMinSize = false
+            }
+        }
+        return hasMinSize
+    }
+
+    private fun addErrorMessage(field: EditText, errorMessage: String){
+        var splitChar = " "
+        if (field.error.toString().isNotEmpty())
+            splitChar = "\n"
+        field.error = field.error.toString() + splitChar + errorMessage
+    }
+
+    /**
+     * Check if all fields are filled.
+     * All the fields must be checked before returning.
+     */
+    private fun checkFieldsFilled(view: View, fields: Array<Int>): Boolean {
+        var isFilled = true
+        for (field in fields) {
+            if (!checkMandatoryField(view.findViewById(field)))
+                isFilled = false
+        }
+
+        return isFilled;
+    }
+
+    /**
+     * Checks if a mandatory field is filled.
+     */
+    private fun checkMandatoryField(field: EditText): Boolean {
+        if (field.text.toString().isEmpty()) {
+            field.error = "Field is required";
+            return false
+        }
+        return true;
     }
 }
 
