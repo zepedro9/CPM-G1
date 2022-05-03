@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:clickable="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -59,6 +60,7 @@
                 tools:layout_editor_absoluteX="20dp">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/reg_name_ed"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black" />
@@ -77,6 +79,7 @@
                 app:startIconDrawable="@drawable/ic_baseline_location_on_24">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/reg_address_ed"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
@@ -95,6 +98,7 @@
                 app:startIconDrawable="@drawable/ic_baseline_assignment_ind_24">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/reg_nif_ed"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
@@ -114,6 +118,7 @@
                 app:startIconDrawable="@drawable/ic_baseline_email_24">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/reg_email_ed"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black" />
@@ -131,6 +136,7 @@
                 app:startIconDrawable="@drawable/ic_baseline_lock_24">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/reg_password_ed"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black" />
@@ -161,6 +167,7 @@
                 app:startIconDrawable="@drawable/ic_baseline_assignment_ind_24">
 
                 <AutoCompleteTextView
+                    android:id="@+id/reg_card_type_ed"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="none"
@@ -179,6 +186,7 @@
                 app:startIconDrawable="@drawable/ic_baseline_credit_card_24">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/reg_card_number_ed"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
@@ -188,7 +196,7 @@
 
             <!-- EXPIRATION DATE -->
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/reg_card_validity"
+                android:id="@+id/reg_card_expiration"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -197,6 +205,7 @@
                 app:startIconDrawable="@drawable/ic_baseline_date_range_24">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/reg_card_expiration_ed"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="date"
@@ -209,7 +218,7 @@
 
         <!-- SIGN UP BUTTON -->
         <Button
-            android:id="@+id/signup_btn"
+            android:id="@+id/reg_signup_btn"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:padding="12dp"
@@ -231,7 +240,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/signup_btn">
+            app:layout_constraintTop_toBottomOf="@+id/reg_signup_btn">
 
             <TextView
                 android:layout_width="match_parent"
