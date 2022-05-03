@@ -33,6 +33,8 @@ services:
       - 3000:3000
     volumes:
       - ./api/app.js:/app/app.js
+      - ./api/routes/:/app/routes/
+      - ./api/models/:/app/models/
     depends_on:
       - mongo-express
       - mongo
