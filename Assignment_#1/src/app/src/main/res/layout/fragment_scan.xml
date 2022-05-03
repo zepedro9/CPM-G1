@@ -20,14 +20,17 @@
 
     <ImageView
         android:id="@+id/imageContent"
-        android:layout_width="wrap_content"
-        android:layout_height="128dp"
-        android:src="@drawable/_1_inchspg_5000x_fb94854f_81c5_439e_b169_6bcbbc037fac_1200x"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxHeight="180dp"
         android:visibility="gone"
+        android:scaleType="centerInside"
+        android:adjustViewBounds="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnScan"
-        android:contentDescription="@string/product_image_content_description" />
+        android:contentDescription="@string/product_image_content_description"
+        android:src="@drawable/_1_inchspg_5000x_fb94854f_81c5_439e_b169_6bcbbc037fac_1200x" />
 
     <TextView
         android:id="@+id/nameKey"

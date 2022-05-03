@@ -16,7 +16,6 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation.findNavController
-import androidx.navigation.findNavController
 import coil.imageLoader
 import coil.request.ImageRequest
 import com.cpm.g1.theacmeelectronicsshop.MainActivity
@@ -82,8 +81,13 @@ class ScanFragment : Fragment() {
             view?.findViewById<TextView>(R.id.nameContent)!!.text = currentProduct?.name
             view?.findViewById<TextView>(R.id.brandContent)!!.text = currentProduct?.brand
             view?.findViewById<TextView>(R.id.descContent)!!.text = currentProduct?.desc
-            view?.findViewById<TextView>(R.id.priceContent)!!.text = currentProduct?.price.toString()
-            view?.findViewById<ImageView>(R.id.imageContent)!!.visibility = View.VISIBLE
+            view?.findViewById<TextView>(R.id.priceContent)!!.text = getString(R.string.product_price, currentProduct?.price)
+            val image = view?.findViewById<ImageView>(R.id.imageContent)
+            image!!.visibility = View.VISIBLE
+            val request = ImageRequest.Builder(requireContext())
+                .data(currentProduct?.imageUrl)
+                .target(image).build()
+            context?.imageLoader?.enqueue(request)
         }
     }
 
