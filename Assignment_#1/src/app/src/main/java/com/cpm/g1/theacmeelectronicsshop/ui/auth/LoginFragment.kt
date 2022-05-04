@@ -11,6 +11,7 @@ import com.cpm.g1.theacmeelectronicsshop.LoginActivity
 import com.cpm.g1.theacmeelectronicsshop.R
 import com.cpm.g1.theacmeelectronicsshop.dataClasses.UserLogin
 import com.cpm.g1.theacmeelectronicsshop.httpService.Auth
+import com.google.android.material.textfield.TextInputEditText
 import com.google.gson.Gson
 
 // TODO: Rename parameter arguments, choose names that match
@@ -38,12 +39,12 @@ class LoginFragment : Fragment() {
     }
 
     fun onClickLogin(view: View) {
-        val email = view.findViewById<Button>(R.id.login_email_ed).text.toString()
-        val password = view.findViewById<Button>(R.id.login_password_ed).text.toString()
+        val email = view.findViewById<TextInputEditText>(R.id.login_email_ed).text.toString()
+        val password = view.findViewById<TextInputEditText>(R.id.login_password_ed).text.toString()
 
         val userJson = Gson().toJson(UserLogin(email, password))
-        val address = "https://" + ConfigHTTP.BASE_ADDRESS + ":3000/api/auth/signin"
-        Thread(Auth.SignUp(activity as LoginActivity?, address , userJson)).start()
+        val address = "http://" + ConfigHTTP.BASE_ADDRESS + ":3000/api/auth/signin"
+        Thread(Auth.Login(activity as LoginActivity?, address , userJson)).start()
     }
 
     /**
