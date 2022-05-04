@@ -6,9 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
+import android.widget.*
 import com.cpm.g1.theacmeelectronicsshop.*
 import com.cpm.g1.theacmeelectronicsshop.dataClasses.Card
 import com.cpm.g1.theacmeelectronicsshop.dataClasses.User
@@ -26,16 +24,23 @@ class RegisterFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view: View = inflater.inflate(R.layout.fragment_register, container, false)
+        setupCardType(view)
         view.findViewById<Button>(R.id.login_btn).setOnClickListener { onClickLogin() }
         view.findViewById<Button>(R.id.reg_signup_btn).setOnClickListener { onClickSignup(view) }
         return view
+    }
+
+    fun setupCardType(view: View){
+        val textField = view.findViewById<AutoCompleteTextView>(R.id.reg_card_type_ed)
+        val items = listOf("Credit", "Debit")
+        val adapter = ArrayAdapter(requireContext(), R.layout.list_item, items)
+        textField?.setAdapter(adapter)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
     }
-
 
     /**
      * When login button is pressed, the registerFragment is replaced by the loginFragment.

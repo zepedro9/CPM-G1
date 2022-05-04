@@ -11,12 +11,11 @@ router.post('/signup', async (req, res) => {
             password: hashedPassword
         });
 
-    const result = await user.save(function (err, doc) {
+    await user.save(function (err, doc) {
         if (err) return res.status(400).send(err)
-        console.log("Document inserted succussfully!");
+        console.log("User registered with success!");
     });
 
-    console.log(result);
     res.status(200).send({
         message: "Registered with success!", 
     });   
