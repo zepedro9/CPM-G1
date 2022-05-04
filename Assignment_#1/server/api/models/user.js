@@ -1,8 +1,7 @@
 const mongoose = require('mongoose');
-const autoIncrement = require('mongoose-auto-increment');
+const AutoIncrement = require('mongoose-sequence')(mongoose);
 
 const UserSchema = mongoose.Schema({
-    uuid: Number,
     pk: {
         exponent: [Number],
         modulus: [Number]
@@ -17,10 +16,10 @@ const UserSchema = mongoose.Schema({
         number: String,
         expirationDate: String,
     }
-})
+});
 
 
-UserSchema.plugin(autoIncrement.plugin, { model: 'User', field: 'uui', startAt: 1 })
+UserSchema.plugin(AutoIncrement, {inc_field: 'uuid'});
 const User = mongoose.model('User', UserSchema);
 
 exports.User = User; 

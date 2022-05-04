@@ -11,7 +11,8 @@ mongoose.connect(mongoDB)
 .catch(err => console.error("Could not connect to MongoDB...", err));
 
 app.use(express.json()); 
-app.use('/api', express.static(path.join(__dirname, 'public')))
+app.use('/api', express.static(path.join(__dirname, 'public')));
+
 app.use('/api/products', product);  // The products API
 app.use('/api/auth', auth);         // The user authentication API
 

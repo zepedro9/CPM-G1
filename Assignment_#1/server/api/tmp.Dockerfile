@@ -1,0 +1,14 @@
+FROM node:lts-bullseye-slim
+
+WORKDIR /app 
+
+COPY package.json ./  
+COPY app.js ./app.js
+COPY data ./data
+COPY public ./public
+COPY models ./models
+COPY routes ./routes
+
+RUN npm install 
+RUN npm install -g nodemon 
+
