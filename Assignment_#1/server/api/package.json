@@ -9,8 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.3",
-    "mongoose": "^6.2.10",
-    "nodemon": "^2.0.15"
+    "express": "^4.18.1",
+    "mongoose": "^6.3.2",
+    "mongoose-sequence": "^5.3.1"
   }
 }

@@ -25,7 +25,7 @@ class RegisterFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        var view: View = inflater.inflate(R.layout.fragment_register, container, false)
+        val view: View = inflater.inflate(R.layout.fragment_register, container, false)
         view.findViewById<Button>(R.id.login_btn).setOnClickListener { onClickLogin() }
         view.findViewById<Button>(R.id.reg_signup_btn).setOnClickListener { onClickSignup(view) }
         return view
