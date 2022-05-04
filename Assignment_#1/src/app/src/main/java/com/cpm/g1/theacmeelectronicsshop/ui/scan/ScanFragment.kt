@@ -10,21 +10,32 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation.findNavController
+import coil.imageLoader
+import coil.request.ImageRequest
+import com.cpm.g1.theacmeelectronicsshop.MainActivity
 import com.cpm.g1.theacmeelectronicsshop.R
+import com.cpm.g1.theacmeelectronicsshop.readStream
 import com.cpm.g1.theacmeelectronicsshop.ui.BasketHelper
 import com.google.zxing.client.android.Intents
 import com.journeyapps.barcodescanner.CaptureActivity
 import org.json.JSONArray
+import java.io.Serializable
+import java.net.HttpURLConnection
 import java.net.URL
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
-
 
 class ScanFragment : Fragment() {
     private val dbHelper by lazy { BasketHelper(context) }
+
+    class ScannedProduct(val id: String, val name: String, val brand: String, val desc: String, val price: Float, val imageUrl: String) :
+        Serializable
+
+    private var currentProduct: ScannedProduct? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.fragment_scan, container, false)
@@ -41,68 +52,141 @@ class ScanFragment : Fragment() {
                 "UPC_A"
             )
             intent.action = Intents.Scan.ACTION
-            startActivityForResult(intent, 0)
+            openScan.launch(intent)
+        }
+
+        val addToBasketButton = view.findViewById<Button>(R.id.btnAddToBasket)
+        addToBasketButton.setOnClickListener {
+            if(currentProduct != null) {
+                addToBasket(currentProduct!!.id, currentProduct!!.name, currentProduct!!.brand, currentProduct!!.desc, currentProduct!!.price, currentProduct!!.imageUrl )
+                val mainActivity = activity as MainActivity
+                val navController = findNavController(mainActivity, R.id.nav_host_fragment_activity_main)
+                navController.navigate(R.id.navigation_basket)
+            } else {
+                Toast.makeText(this.context, getText(R.string.scan_no_scanned), Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
-    private fun onClickButton() {
-        dbHelper.insert(
-            "iPad Pro (11'' - 128 GB - Gray)",
-            "Apple",
-            "The Apple iPad Pro is a 12.9-inch touch screen tablet PC that is larger and offers higher resolution than Apple's other iPad models. The iPad Pro was scheduled to debut in November 2015, running the iOS 9 operating system. Apple unveiled the device at a September 2015 event in San Francisco.",
-            909.99F,
-            1,
-        )
+    override fun onSaveInstanceState(state: Bundle) {
+        super.onSaveInstanceState(state)
+        if(currentProduct != null)
+            state.putSerializable("currentProduct", currentProduct)
     }
 
-    @Deprecated("Deprecated in Java")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        when (resultCode) {
-            Activity.RESULT_OK -> {
-                val prodID: String? = data?.getStringExtra(Intents.Scan.RESULT)
+    override fun onViewStateRestored(state: Bundle?) {
+        super.onViewStateRestored(state)
+        if(state?.getSerializable("currentProduct") != null) {
+            currentProduct = state.getSerializable("currentProduct") as ScannedProduct?
+            view?.findViewById<TextView>(R.id.nameContent)!!.text = currentProduct?.name
+            view?.findViewById<TextView>(R.id.brandContent)!!.text = currentProduct?.brand
+            view?.findViewById<TextView>(R.id.descContent)!!.text = currentProduct?.desc
+            view?.findViewById<TextView>(R.id.priceContent)!!.text = getString(R.string.product_price, currentProduct?.price)
+            val image = view?.findViewById<ImageView>(R.id.imageContent)
+            image!!.visibility = View.VISIBLE
+            val request = ImageRequest.Builder(requireContext())
+                .data(currentProduct?.imageUrl)
+                .target(image).build()
+            context?.imageLoader?.enqueue(request)
+        }
+    }
 
-                makeGetRequest(prodID)
-            }
-            Activity.RESULT_CANCELED -> {
-                Toast.makeText(this.context, "Scan canceled", Toast.LENGTH_SHORT).show()
-            }
-            else -> {
-                Toast.makeText(this.context, "Scan failed", Toast.LENGTH_SHORT).show()
+    private val openScan =
+        registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) {
+            when (it.resultCode) {
+                Activity.RESULT_OK -> {
+                    val prodID: String? = it.data?.getStringExtra(Intents.Scan.RESULT)
+                    makeGetRequest(prodID)
+                }
+                Activity.RESULT_CANCELED -> {
+                    Toast.makeText(this.context, getText(R.string.scan_cancelled), Toast.LENGTH_SHORT).show()
+                }
+                else -> {
+                    Toast.makeText(this.context, getText(R.string.scan_failed), Toast.LENGTH_SHORT).show()
+                }
             }
         }
+
+    private fun addToBasket(id: String, name: String, brand: String, desc: String, price: Float, imageUrl: String) {
+        val productCursor = dbHelper.getById(id)
+
+        if(!productCursor.moveToFirst()){
+            // New product
+            dbHelper.insert(id,name,brand,desc,price,imageUrl)
+        } else {
+            // Update quantity
+            val quantity = dbHelper.getQuantity(productCursor) + 1
+            dbHelper.updateQuantity(id, quantity)
+        }
+
     }
 
     private fun makeGetRequest(prodID: String?) {
-        val networkService: ExecutorService = Executors.newFixedThreadPool(4)
+        Thread(prodID?.let { GetProduct(it) }).start()
+    }
 
-        networkService.execute {
+    private fun showProduct(payload: String) {
+        val jsonProduct = JSONArray(payload).getJSONObject(0)
+
+        val prodId = jsonProduct.getInt("id").toString()
+        val prodName = jsonProduct.getString("name")
+        val prodBrand = jsonProduct.getString("brand")
+        val prodPrice = jsonProduct.getString("price").toFloat()
+        val prodDesc = jsonProduct.getString("description")
+        val prodImage = jsonProduct.getString("image_url")
+
+        activity?.runOnUiThread {
+            currentProduct =
+                ScannedProduct(prodId, prodName, prodBrand, prodDesc, prodPrice, prodImage)
+            view?.findViewById<TextView>(R.id.nameContent)!!.text = prodName
+            view?.findViewById<TextView>(R.id.brandContent)!!.text = prodBrand
+            view?.findViewById<TextView>(R.id.descContent)!!.text = prodDesc
+            val priceText = getString(R.string.product_price, prodPrice)
+            view?.findViewById<TextView>(R.id.priceContent)!!.text = priceText
+
+            // Set product image from URL
+            val image = view?.findViewById<ImageView>(R.id.imageContent)
+            image!!.visibility = View.VISIBLE
+            val request = ImageRequest.Builder(requireContext())
+                .data(prodImage)
+                .target(image).build()
+            context?.imageLoader?.enqueue(request)
+        }
+    }
+
+    inner class GetProduct(val prodID: String) : Runnable {
+        override fun run() {
+            val url: URL
+            var urlConnection: HttpURLConnection? = null
             try {
-                val jsonObject = JSONArray(URL("http://127.0.0.1:3000/api/products/${prodID?.dropLast(1)}").readText()).getJSONObject(0)
+                url = URL("http://127.0.0.1:3000/api/products/${prodID.dropLast(1)}")
 
-                val prodName = jsonObject.getString("name")
-                Log.i("Name: ", prodName)
+                urlConnection = url.openConnection() as HttpURLConnection
+                urlConnection.doInput = true
+                urlConnection.setRequestProperty("Content-Type", "application/json")
+                urlConnection.useCaches = false
+                val responseCode = urlConnection.responseCode
 
-                val prodBrand = jsonObject.getString("brand")
-                Log.i("Brand: ", prodBrand)
-
-                val prodPrice = jsonObject.getString("price")
-                Log.i("Price: ", prodPrice)
-
-                val prodDesc = jsonObject.getString("description")
-                Log.i("Description: ", prodDesc)
-
-                activity?.runOnUiThread {
-                    view?.findViewById<TextView>(R.id.nameContent)!!.text = prodName
-                    view?.findViewById<TextView>(R.id.descContent)!!.text = prodDesc
-                }
+                if (responseCode == 200)
+                    showProduct(readStream(urlConnection.inputStream))
+                else
+                    Toast.makeText(context, context?.getText(R.string.scan_failed) ?: "The scan has failed", Toast.LENGTH_LONG).show()
             } catch (e: Exception) {
                 Log.e("ScanGetRequest", e.toString())
                 val handler = Handler(Looper.getMainLooper())
                 handler.post {
-                    // TODO: Tornar os possíveis erros (ligação à internet, ao servidor, etc) user-friendly
-                    Toast.makeText(this.context, e.toString(), Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        context,
+                        context?.getText(R.string.scan_failed) ?: "The scan has failed",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
+            } finally {
+                urlConnection?.disconnect()
             }
         }
     }
+
 }

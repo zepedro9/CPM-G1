@@ -5,6 +5,7 @@ WORKDIR /app
 COPY package.json ./  
 COPY app.js ./app.js
 COPY data ./data
+COPY public ./public
 COPY models ./models
 COPY routes ./routes
 

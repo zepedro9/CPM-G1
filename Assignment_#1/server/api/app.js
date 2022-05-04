@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const product = require("./routes/products"); 
+const path = require('path');
 const auth = require("./routes/auth"); 
 const mongoose = require('mongoose'); 
 
@@ -10,6 +11,7 @@ mongoose.connect(mongoDB)
 .catch(err => console.error("Could not connect to MongoDB...", err));
 
 app.use(express.json()); 
+app.use('/api', express.static(path.join(__dirname, 'public')))
 app.use('/api/products', product);  // The products API
 app.use('/api/auth', auth);         // The user authentication API
 
