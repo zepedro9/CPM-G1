@@ -10,16 +10,18 @@ const UserSchema = mongoose.Schema({
     address: String,
     NIF: Number,
     email: String,
-    password: String,           // encrypted
+    password: String,           // Encrypted
     card: {
         type: String,
         number: String,
         expirationDate: String,
     }
-});
+},
+    { typeKey: '$type' }        // Type is a reserved word. 
+);
 
 
-UserSchema.plugin(AutoIncrement, {inc_field: 'uuid'});
+UserSchema.plugin(AutoIncrement, { inc_field: 'uuid' });
 const User = mongoose.model('User', UserSchema);
 
 exports.User = User; 
