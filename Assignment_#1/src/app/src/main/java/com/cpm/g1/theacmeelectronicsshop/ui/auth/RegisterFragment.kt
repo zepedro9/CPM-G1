@@ -53,7 +53,9 @@ class RegisterFragment : Fragment() {
         val isValidFields = validateFields(view)
         if (isValidFields) {
             val user = createUserObj(view)
-            Thread(Auth.SignUp(activity as LoginActivity?, ConfigHTTP.BASE_ADDRESS, user)).start()
+            val userJson = Gson().toJson(user)
+            val address = "https://" + ConfigHTTP.BASE_ADDRESS + ":3000/api/auth/signup"
+            Thread(Auth.SignUp(activity as LoginActivity?, address , userJson)).start()
         }
     }
 

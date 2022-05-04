@@ -59,11 +59,12 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/username"
+            android:hint="@string/email"
             app:startIconDrawable="@drawable/ic_baseline_person_24"
             tools:layout_editor_absoluteX="20dp">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/login_email_ed"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"/>
@@ -81,6 +82,7 @@
             app:startIconDrawable="@drawable/ic_baseline_lock_24">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/login_password_ed"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"

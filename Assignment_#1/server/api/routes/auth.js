@@ -12,25 +12,31 @@ router.post('/signup', async (req, res) => {
         });
 
     const result = await user.save(function (err, doc) {
-        if (err) return console.error(err);
+        if (err) return res.status(400).send(err)
         console.log("Document inserted succussfully!");
     });
 
     console.log(result);
-    res.send(user.uuid);
+    res.status(200).send({
+        message: "Registered with success!", 
+    });   
 });
 
 router.post('/signin', async (req, res) => {
     try {
-        let user = await User.findOne({ uuid: req.body.uuid });
+        let user = await User.findOne({ email: req.body.email});
         console.log(user.password);
         if (!(await bcrypt.compare(req.body.password, user.password)))
-            res.status(401).send("Wrong credentials.");
-        else 
-            res.status(200).send("Logged with success!");
+            res.status(401).send({message: "Wrong credentials."});
+        else {
+            res.status(200).send({
+                message: "Logged with success!", 
+                uuid: user.uuid
+            });     
+        }
     } catch (err) {
         console.log(err);
-        res.status(400).send("Something went wrong. Check the credentials.");
+        res.status(400).send({message: "Something went wrong. Check the credentials."});
     }
 });
 

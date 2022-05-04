@@ -2,7 +2,10 @@ package com.cpm.g1.theacmeelectronicsshop.httpService
 
 import android.util.JsonWriter
 import com.cpm.g1.theacmeelectronicsshop.LoginActivity
+import com.cpm.g1.theacmeelectronicsshop.R
 import com.cpm.g1.theacmeelectronicsshop.dataClasses.User
+import com.cpm.g1.theacmeelectronicsshop.ui.auth.LoginFragment
+import com.cpm.g1.theacmeelectronicsshop.ui.auth.RegisterFragment
 import com.google.gson.Gson
 import java.io.*
 import java.net.HttpURLConnection
@@ -26,17 +29,17 @@ class Auth {
         return response.toString()
     }
 
+
     /**
-     * Register a user in the platform.
+     * Make a request to the server
      * https://documenter.getpostman.com/view/15267940/UyrHetKC#776e1031-4d70-4576-9749-ecce8b39248e
      */
-    class SignUp(val act: LoginActivity?, val baseAddress: String, val user: User) : Runnable {
+    class SignUp(val act: LoginActivity?, val address: String, val body: String) : Runnable {
         override fun run() {
             val url: URL
             var urlConnection: HttpURLConnection? = null
             try {
-                url = URL("http://$baseAddress:3000/api/auth/signup")
-
+                url = URL(address)
                 urlConnection = url.openConnection() as HttpURLConnection
                 urlConnection.requestMethod = "POST"
                 urlConnection.setRequestProperty("Content-Type", "application/json")
@@ -46,7 +49,6 @@ class Auth {
 
                 val outputStream = DataOutputStream(urlConnection.outputStream)
 
-                val body: String = Gson().toJson(user);
                 outputStream.writeBytes(body)
                 outputStream.flush()
                 outputStream.close()
@@ -54,10 +56,56 @@ class Auth {
                 // get response
                 val responseCode = urlConnection.responseCode
 
+                if (responseCode == 200) {
+                    changeToSignInFragment(act)
+                }
+            } catch (err: Exception) {
+                println(err);
             } finally {
                 urlConnection?.disconnect()
             }
         }
+
+        fun changeToSignInFragment(activity: LoginActivity?){
+            val loginFragment= LoginFragment()
+            val fragmentManager = activity?.supportFragmentManager
+            val fragmentTransaction = fragmentManager?.beginTransaction()
+            fragmentTransaction?.replace(R.id.main_fragment_container, loginFragment)
+            fragmentTransaction?.addToBackStack(null)
+            fragmentTransaction?.commit();
+        }
     }
+
+    class Login(val act: LoginActivity?, val address: String, val body: String) : Runnable {
+        override fun run() {
+            val url: URL
+            var urlConnection: HttpURLConnection? = null
+            try {
+                url = URL(address)
+                urlConnection = url.openConnection() as HttpURLConnection
+                urlConnection.requestMethod = "POST"
+                urlConnection.setRequestProperty("Content-Type", "application/json")
+                urlConnection.doOutput = true
+                urlConnection.doInput = true
+                urlConnection.useCaches = false
+
+                val outputStream = DataOutputStream(urlConnection.outputStream)
+
+                outputStream.writeBytes(body)
+                outputStream.flush()
+                outputStream.close()
+
+                // get response
+                val responseCode = urlConnection.responseCode
+            } catch (err: Exception) {
+                println(err);
+            } finally {
+                urlConnection?.disconnect()
+            }
+        }
+
+
+    }
+
 
 }
