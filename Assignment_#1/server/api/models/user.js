@@ -1,27 +1,27 @@
-const mongoose = require('mongoose');
-const AutoIncrement = require('mongoose-sequence')(mongoose);
+const mongoose = require("mongoose");
+const uuid = require('node-uuid');
 
-const UserSchema = mongoose.Schema({
+const UserSchema = mongoose.Schema(
+  {
+    _id: { type: String, default: ()=>{return uuid.v1()}},
     pk: {
-        exponent: [Number],
-        modulus: [Number]
+      exponent: [Number],
+      modulus: [Number],
     },
     name: String,
     address: String,
     NIF: Number,
     email: String,
-    password: String,           // Encrypted
+    password: String, // Encrypted
     card: {
-        type: String,
-        number: String,
-        expirationDate: String,
-    }
-},
-    { typeKey: '$type' }        // Type is a reserved word. 
+      type: {type: String},
+      number: String,
+      expirationDate: String,
+    },
+  },
+  { id: false }
 );
 
+const User = mongoose.model("User", UserSchema);
 
-UserSchema.plugin(AutoIncrement, { inc_field: 'uuid' });
-const User = mongoose.model('User', UserSchema);
-
-exports.User = User; 
+exports.User = User;

@@ -10,9 +10,9 @@ router.post('/signup', async (req, res) => {
             ...req.body,
             password: hashedPassword
         });
-
+    
     await user.save(function (err, doc) {
-        if (err) return res.status(400).send(err)
+        if (err) return res.status(400).send({message: err})
         console.log("User registered with success!");
     });
 
@@ -30,7 +30,7 @@ router.post('/signin', async (req, res) => {
         else {
             res.status(200).send({
                 message: "Logged with success!", 
-                uuid: user.uuid
+                uuid: user._id
             });     
         }
     } catch (err) {
