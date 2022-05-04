@@ -55,11 +55,11 @@ class RegisterFragment : Fragment() {
     }
 
     private fun onClickSignup(view: View) {
-        val isValidFields = validateFields(view)
+        val isValidFields = true //validateFields(view)
         if (isValidFields) {
             val user = createUserObj(view)
             val userJson = Gson().toJson(user)
-            val address = "https://" + ConfigHTTP.BASE_ADDRESS + ":3000/api/auth/signup"
+            val address = "http://" + ConfigHTTP.BASE_ADDRESS + ":3000/api/auth/signup"
             Thread(Auth.SignUp(activity as LoginActivity?, address , userJson)).start()
         }
     }
@@ -68,7 +68,8 @@ class RegisterFragment : Fragment() {
     private fun createUserObj(view: View): User {
         var name = view.findViewById<EditText>(R.id.reg_name_ed).text.toString()
         var address = view.findViewById<EditText>(R.id.reg_address_ed).text.toString()
-        var nif = view.findViewById<EditText>(R.id.reg_nif_ed).toString().toInt()
+        println(view.findViewById<EditText>(R.id.reg_nif_ed).text.toString())
+        var nif = view.findViewById<EditText>(R.id.reg_nif_ed).text.toString().toInt()
         var email = view.findViewById<EditText>(R.id.reg_email_ed).text.toString()
         var password = view.findViewById<EditText>(R.id.reg_password_ed).text.toString()
         var card = createCardObj(view)

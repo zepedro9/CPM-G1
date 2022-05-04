@@ -40,6 +40,8 @@ class Auth {
             var urlConnection: HttpURLConnection? = null
             try {
                 url = URL(address)
+                println(address)
+                println(body)
                 urlConnection = url.openConnection() as HttpURLConnection
                 urlConnection.requestMethod = "POST"
                 urlConnection.setRequestProperty("Content-Type", "application/json")
