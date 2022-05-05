@@ -2,30 +2,15 @@ package com.cpm.g1.theacmeelectronicsshop.httpService
 
 import com.cpm.g1.theacmeelectronicsshop.LoginActivity
 import com.cpm.g1.theacmeelectronicsshop.R
+import com.cpm.g1.theacmeelectronicsshop.readStream
 import com.cpm.g1.theacmeelectronicsshop.ui.auth.LoginFragment
+import org.json.JSONArray
+import org.json.JSONObject
 import java.io.*
 import java.net.HttpURLConnection
 import java.net.URL
 
 class Auth {
-
-    private fun readStream(input: InputStream): String {
-        var reader: BufferedReader? = null
-        var line: String?
-        val response = StringBuilder()
-        try {
-            reader = BufferedReader(InputStreamReader(input))
-            while (reader.readLine().also { line = it } != null)
-                response.append(line)
-        } catch (e: IOException) {
-            return "readStream: " + e.message
-        } finally {
-            reader?.close()
-        }
-        return response.toString()
-    }
-
-
     /**
      * Make a request to the server
      * https://documenter.getpostman.com/view/15267940/UyrHetKC#776e1031-4d70-4576-9749-ecce8b39248e
@@ -95,6 +80,12 @@ class Auth {
 
                 // get response
                 val responseCode = urlConnection.responseCode
+
+                if(responseCode == 200){
+                    val response = readStream(urlConnection.inputStream)
+                    val jsonResponse = JSONObject(response)
+                    val uuid = jsonResponse.getString("uuid")
+                }
             } catch (err: Exception) {
                 println(err);
             } finally {
