@@ -3,6 +3,7 @@ package com.cpm.g1.theacmeelectronicsshop.httpService
 import android.app.Activity
 import com.cpm.g1.theacmeelectronicsshop.LoginActivity
 import com.cpm.g1.theacmeelectronicsshop.readStream
+import com.cpm.g1.theacmeelectronicsshop.ui.basket.CheckoutActivity
 import org.json.JSONObject
 
 import java.io.*
@@ -59,9 +60,20 @@ class SignUp(private val act: LoginActivity?, private val uri: String, val body:
     }
 }
 
-class Login(private val act: LoginActivity?, val uri: String, val body: String) : Runnable {
+/**
+ * Makes a signin request to the server.
+ */
+class Login(private val act: LoginActivity?, private val uri: String, private val body: String) : Runnable {
     override fun run() {
         sendPostRequest(act as Activity, uri, body, act::toMainActivity)
     }
 }
 
+/**
+ * Makes a checkout request to the server.
+ */
+class Checkout(private val act: CheckoutActivity?, private val uri: String, private val body: String) : Runnable {
+    override fun run() {
+        sendPostRequest(act as Activity, uri, body, act::generateQrCode)
+    }
+}

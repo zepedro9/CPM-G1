@@ -38,7 +38,6 @@ class BasketHelper(context: Context?) :
         return writableDatabase.insert("Product", "_id", cv)
     }
 
-
     fun updateQuantity(id: String, quantity: Int): Int {
         val cv = ContentValues()
         val args = arrayOf(id)
@@ -62,6 +61,13 @@ class BasketHelper(context: Context?) :
         return readableDatabase.rawQuery(
             "SELECT _id, name, brand, description, price, quantity, image_url " +
                     "FROM Product ORDER BY date DESC",
+            null
+        )
+    }
+
+    fun getBasketProducts(): Cursor {
+        return readableDatabase.rawQuery(
+            "SELECT _id, quantity FROM Product",
             null
         )
     }

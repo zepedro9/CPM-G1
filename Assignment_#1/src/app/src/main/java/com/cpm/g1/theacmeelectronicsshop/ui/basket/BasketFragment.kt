@@ -61,33 +61,9 @@ class BasketFragment : Fragment() {
     }
 
     private fun onCheckoutButtonClick(){
-        val sharedPreferences = getEncryptedSharedPreferences(requireContext())
-        val uuid = sharedPreferences.getString("uuid", "NOT FOUND")
-        val address = "http://" + ConfigHTTP.BASE_ADDRESS + ":3000/api/basket/checkout"
-
-        val rootObject= JSONObject()
-        val dataObject= JSONObject()
-        dataObject.put("uuid", uuid)
-        dataObject.put("basket", "random")
-        rootObject.put("data",dataObject)
-
-        val signature = Cryptography().signContent(dataObject.toString())
-        rootObject.put("signature",signature)
-
-        val userJson = rootObject.toString()
-        println(userJson)
-        Thread(Checkout(address , userJson)).start()
-    }
-
-    inner class Checkout(val uri: String, val body: String) : Runnable {
-        override fun run() {
-            activity?.let { sendPostRequest(it, uri, body , this::test) }
-        }
-
-
-        private fun test(ac: Activity, jsonObject: JSONObject){
-
-        }
+        parentFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        val intent = Intent(context, CheckoutActivity::class.java)
+        startActivity(intent)
     }
 
     private fun onProductClick(id: Long){
@@ -206,7 +182,6 @@ class BasketFragment : Fragment() {
         val priceText = getString(R.string.product_price, total)
         totalView!!.text = priceText
     }
-
 
     // Utils
     private fun priceViewToFloat(priceView: TextView): Float {

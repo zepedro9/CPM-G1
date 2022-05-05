@@ -5,20 +5,26 @@ const crypto = require('crypto');
 const router = express.Router();
 
 router.post('/checkout', async (req, res) => {
-  
+
     // Validate request body params
-    if(!req.body.data || !req.body.signature){
+    if(!req.body.basket || !req.body.signature){
         return res.status(400).send({message: "Please provide the signed basket and uuid"})
     }   
+
+    const uuid = req.body.basket.userUUID
+    const products = req.body.basket.products
 
     // Check siganature
     try {
         const verifier = crypto.createVerify('RSA-SHA256')
 
-        let user = await User.findOne({ _id: req.body.data.uuid});
-        verifier.update(JSON.stringify(req.body.data))
+        let user = await User.findOne({ _id: uuid});
+        let jsonBasket = JSON.stringify(req.body.basket)
+        console.log(jsonBasket)
+        verifier.update(jsonBasket)
 
         const result = verifier.verify(user.pk, req.body.signature, 'hex')
+
         console.log(result)
         return res.status(200).send({"message": "Niceeeeee"})
     } catch(err){
