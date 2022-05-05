@@ -49,6 +49,6 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'androidx.annotation:annotation:1.2.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation group: 'com.google.code.gson', name: 'gson', version: '2.7'
+    implementation 'com.google.code.gson:gson:2.8.7'
 
 }

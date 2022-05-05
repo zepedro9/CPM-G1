@@ -38,7 +38,7 @@ class LoginFragment : Fragment() {
         view.findViewById<Button>(R.id.signup_btn).setOnClickListener { onClickSignUp(view) }
     }
 
-    fun onClickLogin(view: View) {
+    private fun onClickLogin(view: View) {
         val email = view.findViewById<TextInputEditText>(R.id.login_email_ed).text.toString()
         val password = view.findViewById<TextInputEditText>(R.id.login_password_ed).text.toString()
 

@@ -16,7 +16,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TheAcmeElectronicsShop"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"
         tools:targetApi="n">
         <activity
             android:name=".MainActivity"
@@ -25,10 +25,8 @@
             android:name=".LoginActivity"
             android:configChanges="uiMode"
             android:exported="true"
-            android:label="@string/app_name">
             android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity"
-            android:configChanges="uiMode">
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

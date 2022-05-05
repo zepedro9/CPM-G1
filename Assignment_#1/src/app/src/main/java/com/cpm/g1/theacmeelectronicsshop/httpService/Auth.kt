@@ -1,12 +1,8 @@
 package com.cpm.g1.theacmeelectronicsshop.httpService
 
-import android.util.JsonWriter
 import com.cpm.g1.theacmeelectronicsshop.LoginActivity
 import com.cpm.g1.theacmeelectronicsshop.R
-import com.cpm.g1.theacmeelectronicsshop.dataClasses.User
 import com.cpm.g1.theacmeelectronicsshop.ui.auth.LoginFragment
-import com.cpm.g1.theacmeelectronicsshop.ui.auth.RegisterFragment
-import com.google.gson.Gson
 import java.io.*
 import java.net.HttpURLConnection
 import java.net.URL
