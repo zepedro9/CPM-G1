@@ -10,8 +10,7 @@ import android.widget.*
 import com.cpm.g1.theacmeelectronicsshop.*
 import com.cpm.g1.theacmeelectronicsshop.dataClasses.Card
 import com.cpm.g1.theacmeelectronicsshop.dataClasses.User
-import com.cpm.g1.theacmeelectronicsshop.httpService.Auth
-import com.cpm.g1.theacmeelectronicsshop.ui.auth.LoginFragment
+import com.cpm.g1.theacmeelectronicsshop.httpService.SignUp
 import com.google.gson.Gson
 
 class RegisterFragment : Fragment() {
@@ -60,7 +59,7 @@ class RegisterFragment : Fragment() {
             val user = createUserObj(view)
             val userJson = Gson().toJson(user)
             val address = "http://" + ConfigHTTP.BASE_ADDRESS + ":3000/api/auth/signup"
-            Thread(Auth.SignUp(activity as LoginActivity?, address , userJson)).start()
+            Thread(SignUp(activity as LoginActivity?, address , userJson)).start()
         }
     }
 

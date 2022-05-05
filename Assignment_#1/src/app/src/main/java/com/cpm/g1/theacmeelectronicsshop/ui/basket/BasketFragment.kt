@@ -17,6 +17,7 @@ import coil.imageLoader
 import coil.request.ImageRequest
 import com.cpm.g1.theacmeelectronicsshop.MainActivity
 import com.cpm.g1.theacmeelectronicsshop.R
+import com.cpm.g1.theacmeelectronicsshop.getEncryptedSharedPreferences
 import com.cpm.g1.theacmeelectronicsshop.ui.BasketHelper
 
 @RequiresApi(Build.VERSION_CODES.N)
@@ -49,6 +50,15 @@ class BasketFragment : Fragment() {
         // Set Basket Total
         totalView = view.findViewById(R.id.total)
         setTotalPrice(dbHelper.getBasketTotal())
+
+        // Checkout
+        view.findViewById<Button>(R.id.checkout_btn).setOnClickListener { onCheckoutButtonClick() }
+    }
+
+    private fun onCheckoutButtonClick(){
+        val sharedPreferences = getEncryptedSharedPreferences(requireContext())
+        println(sharedPreferences.getString("uuid", "NOT FOUND"))
+        // TODO: send request to server with basket and uuid, signed with private key
     }
 
     private fun onProductClick(id: Long){

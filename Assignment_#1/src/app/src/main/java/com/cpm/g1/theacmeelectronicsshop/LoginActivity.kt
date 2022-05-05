@@ -2,17 +2,13 @@ package com.cpm.g1.theacmeelectronicsshop
 
 import android.app.Activity
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import com.cpm.g1.theacmeelectronicsshop.databinding.ActivityMainBinding
 import com.cpm.g1.theacmeelectronicsshop.ui.auth.LoginFragment
 import org.json.JSONObject
-import java.net.CacheResponse
-
 
 /**
  * This is the initial fragment of the program.
@@ -54,20 +50,22 @@ class LoginActivity : AppCompatActivity() {
      * Changes the LoginActivity to MainActivity
      */
     fun toMainActivity(act: Activity, jsonResponse: JSONObject) {
+        saveUuid(act, jsonResponse.getString("uuid"))
         act.startActivity(Intent(act, MainActivity::class.java))
-        saveUuid(act, jsonResponse)
     }
 
     /**
-     * Saves the uuid in the SharedPreferences.
+     * Saves the uuid in the EncryptedSharedPreferences.
      */
-    private fun saveUuid(act: Activity, jsonResponse: JSONObject) {
-        val editor: SharedPreferences.Editor =
-            act.getSharedPreferences("credentials", MODE_PRIVATE).edit()
-        editor.putString("uuid", jsonResponse.getString("uuid"))
-        editor.apply()
-        println(act.getSharedPreferences("credentials", MODE_PRIVATE).getString("uuid", "nothing"))
+    private fun saveUuid(act: Activity, uuid: String){
+        try {
+            val sharedPreferences = getEncryptedSharedPreferences(act.applicationContext)
+            with (sharedPreferences.edit()) {
+                putString("uuid", uuid)
+                apply()
+            }
+        } catch(err: Exception){
+            println(err);
+        }
     }
-
-
 }
