@@ -1,6 +1,12 @@
 package com.cpm.g1.theacmeelectronicsshop.httpService
 
+import android.app.Activity
+import android.content.Context.MODE_PRIVATE
+import android.content.Intent
+import android.content.SharedPreferences
+import androidx.core.content.ContextCompat.startActivity
 import com.cpm.g1.theacmeelectronicsshop.LoginActivity
+import com.cpm.g1.theacmeelectronicsshop.MainActivity
 import com.cpm.g1.theacmeelectronicsshop.R
 import com.cpm.g1.theacmeelectronicsshop.readStream
 import com.cpm.g1.theacmeelectronicsshop.ui.auth.LoginFragment
@@ -85,6 +91,8 @@ class Auth {
                     val response = readStream(urlConnection.inputStream)
                     val jsonResponse = JSONObject(response)
                     val uuid = jsonResponse.getString("uuid")
+                    saveUuid(act as Activity, uuid)
+                    changeActivity(act)
                 }
             } catch (err: Exception) {
                 println(err);
@@ -93,8 +101,23 @@ class Auth {
             }
         }
 
+        /**
+         * Saves keystore in
+         */
+        fun saveUuid(act: Activity, uuid: String){
+            val editor :SharedPreferences.Editor =  act.getSharedPreferences("credentials", MODE_PRIVATE).edit()
+            editor.putString("uuid", uuid)
+            editor.apply()
+            println(act.getSharedPreferences("credentials", MODE_PRIVATE).getString("uuid", "nothing"))
+        }
+
+        fun changeActivity(act: Activity){
+            act.startActivity(Intent(act, MainActivity::class.java))
+        }
 
     }
+
+
 
 
 }

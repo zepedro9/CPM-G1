@@ -14,7 +14,7 @@ const UserSchema = mongoose.Schema(
     email: String,
     password: String, // Encrypted
     card: {
-      type: {type: String},
+      cardType: String,
       number: String,
       expirationDate: String,
     },
