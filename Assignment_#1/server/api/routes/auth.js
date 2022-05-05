@@ -4,27 +4,32 @@ const bcrypt = require('bcrypt');
 const router = express.Router();
 
 router.post('/signup', async (req, res) => {
-    let hashedPassword = await encryptHash(req.body.password);
-    let user = new User(
-        {
-            ...req.body,
-            password: hashedPassword
+    try {
+        let hashedPassword = await encryptHash(req.body.password);
+        let user = new User(
+            {
+                ...req.body,
+                password: hashedPassword
+            });
+        
+        await user.save(function (err, doc) {
+            if (err) return res.status(400).send({message: err})
+            console.log("User registered with success!");
         });
-    
-    await user.save(function (err, doc) {
-        if (err) return res.status(400).send({message: err})
-        console.log("User registered with success!");
-    });
 
-    res.status(200).send({
-        message: "Registered with success!", 
-    });   
+        res.status(200).send({
+            message: "Registered with success!", 
+        });   
+    } catch(err){
+        return res.status(400).send({message: err})
+    }
 });
 
 router.post('/signin', async (req, res) => {
+    // TODO: verify all required data exists
     try {
         let user = await User.findOne({ email: req.body.email});
-        console.log(user.password);
+        // TODO: see if user exists
         if (!(await bcrypt.compare(req.body.password, user.password)))
             res.status(401).send({message: "Wrong credentials."});
         else {

@@ -1,5 +1,6 @@
 package com.cpm.g1.theacmeelectronicsshop.ui.auth
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Patterns
 import androidx.fragment.app.Fragment
@@ -7,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.annotation.RequiresApi
 import com.cpm.g1.theacmeelectronicsshop.*
 import com.cpm.g1.theacmeelectronicsshop.dataClasses.Card
 import com.cpm.g1.theacmeelectronicsshop.dataClasses.User
@@ -18,10 +20,11 @@ class RegisterFragment : Fragment() {
         super.onCreate(savedInstanceState)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val view: View = inflater.inflate(R.layout.fragment_register, container, false)
         setupCardType(view)
         view.findViewById<Button>(R.id.login_btn).setOnClickListener { onClickLogin() }
@@ -53,6 +56,7 @@ class RegisterFragment : Fragment() {
         fragmentTransaction?.commit()
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun onClickSignup(view: View) {
         val isValidFields = true //validateFields(view)
         if (isValidFields) {
@@ -64,14 +68,14 @@ class RegisterFragment : Fragment() {
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun createUserObj(view: View): User {
-        var name = view.findViewById<EditText>(R.id.reg_name_ed).text.toString()
-        var address = view.findViewById<EditText>(R.id.reg_address_ed).text.toString()
-        println(view.findViewById<EditText>(R.id.reg_nif_ed).text.toString())
-        var nif = view.findViewById<EditText>(R.id.reg_nif_ed).text.toString().toInt()
-        var email = view.findViewById<EditText>(R.id.reg_email_ed).text.toString()
-        var password = view.findViewById<EditText>(R.id.reg_password_ed).text.toString()
-        var card = createCardObj(view)
+        val name = view.findViewById<EditText>(R.id.reg_name_ed).text.toString()
+        val address = view.findViewById<EditText>(R.id.reg_address_ed).text.toString()
+        val nif = view.findViewById<EditText>(R.id.reg_nif_ed).text.toString().toInt()
+        val email = view.findViewById<EditText>(R.id.reg_email_ed).text.toString()
+        val password = view.findViewById<EditText>(R.id.reg_password_ed).text.toString()
+        val card = createCardObj(view)
         Cryptography().generateKey(activity as LoginActivity);
         val pk = Cryptography().getPubKey();
         return User(pk, name, address, nif, email, password, card)
@@ -79,9 +83,9 @@ class RegisterFragment : Fragment() {
 
 
     private fun createCardObj(view: View): Card {
-        var type = view.findViewById<EditText>(R.id.reg_card_type_ed).text.toString()
-        var number = view.findViewById<EditText>(R.id.reg_card_number_ed).text.toString()
-        var expirationDate =
+        val type = view.findViewById<EditText>(R.id.reg_card_type_ed).text.toString()
+        val number = view.findViewById<EditText>(R.id.reg_card_number_ed).text.toString()
+        val expirationDate =
             view.findViewById<EditText>(R.id.reg_card_expiration_ed).text.toString()
         return Card(type, number, expirationDate)
     }

@@ -1,5 +1,6 @@
 package com.cpm.g1.theacmeelectronicsshop.ui.basket
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.database.Cursor
@@ -15,10 +16,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import coil.imageLoader
 import coil.request.ImageRequest
-import com.cpm.g1.theacmeelectronicsshop.MainActivity
-import com.cpm.g1.theacmeelectronicsshop.R
-import com.cpm.g1.theacmeelectronicsshop.getEncryptedSharedPreferences
+import com.cpm.g1.theacmeelectronicsshop.*
+import com.cpm.g1.theacmeelectronicsshop.dataClasses.UserLogin
+import com.cpm.g1.theacmeelectronicsshop.httpService.Login
+import com.cpm.g1.theacmeelectronicsshop.httpService.sendPostRequest
 import com.cpm.g1.theacmeelectronicsshop.ui.BasketHelper
+import com.google.gson.Gson
+import com.google.gson.JsonElement
+import org.json.JSONObject
 
 @RequiresApi(Build.VERSION_CODES.N)
 class BasketFragment : Fragment() {
@@ -57,8 +62,32 @@ class BasketFragment : Fragment() {
 
     private fun onCheckoutButtonClick(){
         val sharedPreferences = getEncryptedSharedPreferences(requireContext())
-        println(sharedPreferences.getString("uuid", "NOT FOUND"))
-        // TODO: send request to server with basket and uuid, signed with private key
+        val uuid = sharedPreferences.getString("uuid", "NOT FOUND")
+        val address = "http://" + ConfigHTTP.BASE_ADDRESS + ":3000/api/basket/checkout"
+
+        val rootObject= JSONObject()
+        val dataObject= JSONObject()
+        dataObject.put("uuid", uuid)
+        dataObject.put("basket", "random")
+        rootObject.put("data",dataObject)
+
+        val signature = Cryptography().signContent(dataObject.toString())
+        rootObject.put("signature",signature)
+
+        val userJson = rootObject.toString()
+        println(userJson)
+        Thread(Checkout(address , userJson)).start()
+    }
+
+    inner class Checkout(val uri: String, val body: String) : Runnable {
+        override fun run() {
+            activity?.let { sendPostRequest(it, uri, body , this::test) }
+        }
+
+
+        private fun test(ac: Activity, jsonObject: JSONObject){
+
+        }
     }
 
     private fun onProductClick(id: Long){

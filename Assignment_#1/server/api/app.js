@@ -3,6 +3,7 @@ const app = express();
 const product = require("./routes/products"); 
 const path = require('path');
 const auth = require("./routes/auth"); 
+const basket = require("./routes/basket"); 
 const mongoose = require('mongoose'); 
 
 let mongoDB = 'mongodb://root:root@mongo:27017/shop?authSource=admin';
@@ -15,6 +16,7 @@ app.use('/api', express.static(path.join(__dirname, 'public')));
 
 app.use('/api/products', product);  // The products API
 app.use('/api/auth', auth);         // The user authentication API
+app.use('/api/basket', basket);     // The basket API
 
 const port = process.env.PORT || 3000
 app.listen(port, () => console.log(`Listening on port ${port}...`));

@@ -4,10 +4,7 @@ const uuid = require('node-uuid');
 const UserSchema = mongoose.Schema(
   {
     _id: { type: String, default: ()=>{return uuid.v1()}},
-    pk: {
-      exponent: [Number],
-      modulus: [Number],
-    },
+    pk: String,
     name: String,
     address: String,
     NIF: Number,

@@ -57,6 +57,7 @@ class LoginActivity : AppCompatActivity() {
     /**
      * Saves the uuid in the EncryptedSharedPreferences.
      */
+    // TODO - maybe save encrypted or something
     private fun saveUuid(act: Activity, uuid: String){
         try {
             val sharedPreferences = getEncryptedSharedPreferences(act.applicationContext)
