@@ -10,14 +10,16 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.cpm.g1.theacmeelectronicsshop.dataClasses.basket.Basket
 import com.cpm.g1.theacmeelectronicsshop.databinding.ActivityAppBinding
+import com.cpm.g1.theacmeelectronicsshop.ui.basketHistory.BasketHistoryAdapter
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import org.json.JSONArray
-import org.json.JSONObject
 
 class MainActivity : AppCompatActivity() {
+    // History fragment variables
     private val historyBasket = arrayListOf<Basket>();
-    private val adapter by lazy { ArrayAdapter(this, android.R.layout.simple_list_item_1, historyBasket) }
+    private val adapter by lazy { BasketHistoryAdapter(this, historyBasket) }
 
+    // Other variables
     private lateinit var binding: ActivityAppBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,6 +48,6 @@ class MainActivity : AppCompatActivity() {
      */
     fun updateHistoryAdapter(activity: Activity, response: String) {
         val jsonResponse = JSONArray(response)
-        println(jsonResponse)
+
     }
 }

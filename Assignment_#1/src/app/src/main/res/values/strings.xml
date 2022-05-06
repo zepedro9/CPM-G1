@@ -57,4 +57,11 @@
     <string name="already_have_an_account">Already have an account?</string>
     <string name="email">Email</string>
     <string name="title_basket_history">History</string>
+    <string name="date">Date</string>
+    <string name="example_date">12-02-2022</string>
+    <string name="hour">Hour</string>
+    <string name="hour_example">13:05</string>
+    <string name="num_items">Num. Items</string>
+    <string name="_3">3</string>
+    <string name="euro_symbol">€</string>
 </resources>
