@@ -1,53 +1,67 @@
 const { User } = require("../models/user");
+const { Basket } = require("../models/basket");
+
 const express = require('express');
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 const router = express.Router();
 
 router.post('/checkout', async (req, res) => {
-
-    // Validate request body params
-    if(!req.body.basket || !req.body.signature){
-        return res.status(400).send({message: "Please provide the signed basket and uuid"})
-    }   
-
-    const uuid = req.body.basket.userUUID
-    const products = req.body.basket.products
-
-    // Check siganature
+    if (!req.body.basket || !req.body.signature) {
+        return res.status(400).send({ message: "Please provide the signed basket and uuid" });
+    }
+    console.log(req.body); 
+    const uuid = req.body.basket.userUUID;
     try {
-        const verifier = crypto.createVerify('RSA-SHA256')
-
-        let user = await User.findOne({ _id: uuid});
-        let jsonBasket = JSON.stringify(req.body.basket)
-        console.log(jsonBasket)
-        verifier.update(jsonBasket)
-
-        const result = verifier.verify(user.pk, req.body.signature, 'hex')
-
-        console.log(result)
-        return res.status(200).send({"message": "Niceeeeee"})
-    } catch(err){
+        await checkSignature(uuid, req);
+        await addToDatabase(req);
+        return res.status(200).send({ "message": "Products purchased with success" });
+    } catch (err) {
         console.log(err)
-        return res.status(400).send({"message": "Something went wrong"})
+        return res.status(400).send({ "message": "Something went wrong" })
+    }
+});
+
+/**
+ * Get requests may have a body, but it shouldn't have any meaning.
+ * Thus using post seems to be the more correct option. 
+ */
+router.post('/history', async(req, res) => {
+    console.log(req.body)
+    if (!req.body.userUUID || !req.body.signature){
+        return res.status(400).send({ message: "Please provide the signed basket and uuid" });
     }
 
-    //crypto.verify()
-
-    // try {
-    //     let user = await User.findOne({ _id: uuid});
-    //     if (!(await bcrypt.compare(req.body.password, user.password)))
-    //         res.status(401).send({message: "Wrong credentials."});
-    //     else {
-    //         res.status(200).send({
-    //             message: "Logged with success!", 
-    //             uuid: user._id
-    //         });     
-    //     }
-    // } catch (err) {
-    //     console.log(err);
-    //     res.status(400).send({message: "Something went wrong. Check the credentials."});
-    // }
+    try{
+        let history = await Basket.find({userUUID: req.params.userUUID});
+        console.log(history)
+        return res.status(200).send(history);
+    } catch (err){
+        console.log(err);
+        return res.status(400).send({message: "Couldn't proceed with the request"});
+    }
 });
+
+const checkSignature = async (uuid, req) => {
+    const verifier = crypto.createVerify('RSA-SHA256')
+
+    let user = await User.findOne({ _id: uuid });
+    let jsonBasket = JSON.stringify(req.body.basket);
+    verifier.update(jsonBasket);
+
+    return verifier.verify(user.pk, req.body.signature, 'hex')
+}
+
+const addToDatabase = async (req) => {
+
+    var today = new Date().toISOString().slice(0, 10);
+    let basket = new Basket({ ...req.body.basket, date: today });
+    // TODO : verify price  
+
+    await basket.save(function (err, doc) {
+        if (err) return res.status(400).send({message: err})
+        console.log("Basket saved with successs!");
+    });
+}
 
 module.exports = router; 

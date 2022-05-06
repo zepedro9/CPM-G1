@@ -37,7 +37,7 @@ class LoginActivity : AppCompatActivity() {
     /**
      * Changes the LoginFragment to the RegisterFragment
      */
-    fun changeToRegisterFragment(activity: Activity?, jsonResponse: JSONObject) {
+    fun changeToRegisterFragment(activity: Activity?, response: String) {
         val loginFragment = LoginFragment()
         val fragmentManager = (activity as LoginActivity).supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
@@ -49,7 +49,8 @@ class LoginActivity : AppCompatActivity() {
     /**
      * Changes the LoginActivity to MainActivity
      */
-    fun toMainActivity(act: Activity, jsonResponse: JSONObject) {
+    fun toMainActivity(act: Activity, response: String) {
+        val jsonResponse = JSONObject(response)
         saveUuid(act, jsonResponse.getString("uuid"))
         act.startActivity(Intent(act, MainActivity::class.java))
     }

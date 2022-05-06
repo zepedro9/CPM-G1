@@ -57,7 +57,8 @@ class CheckoutActivity: AppCompatActivity() {
         return Gson().toJson(SignedBasket(basket, signature))
     }
 
-    fun generateQrCode(act: Activity, jsonResponse: JSONObject) {
+    fun generateQrCode(act: Activity, response: String) {
+        val jsonResponse = JSONObject(response)
         // TODO: fragment with QRCode maybe?
         println("TODO: GENERATE QR CODE")
     }

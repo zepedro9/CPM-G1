@@ -56,4 +56,5 @@
     <string name="card_info">Card Info</string>
     <string name="already_have_an_account">Already have an account?</string>
     <string name="email">Email</string>
+    <string name="title_basket_history">History</string>
 </resources>

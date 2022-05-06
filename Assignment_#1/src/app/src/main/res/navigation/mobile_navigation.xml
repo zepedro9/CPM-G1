@@ -17,4 +17,11 @@
         android:label="@string/title_basket"
         tools:layout="@layout/fragment_basket" />
 
+
+    <fragment
+        android:id="@+id/navigation_history_basket"
+        android:name="com.cpm.g1.theacmeelectronicsshop.ui.basketHistory.BasketHistoryList"
+        android:label="@string/title_basket_history"
+        tools:layout="@layout/fragment_basket_history" />
+
 </navigation>
