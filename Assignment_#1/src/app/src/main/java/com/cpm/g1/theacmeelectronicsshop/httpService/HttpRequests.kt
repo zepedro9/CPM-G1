@@ -52,9 +52,8 @@ fun sendPostRequest(
 }
 
 fun sendGetRequest(
-    act: Activity,
     uri: String,
-    onSuccess: (Activity, JSONObject) -> Unit
+    onSuccess: (JSONObject) -> Unit
 ) {
     val url: URL
     var urlConnection: HttpURLConnection? = null
@@ -74,7 +73,7 @@ fun sendGetRequest(
         if (responseCode == 200) {
             val response = readStream(urlConnection.inputStream)
             val jsonResponse = JSONObject(response)
-            onSuccess(act, jsonResponse)
+            onSuccess(jsonResponse)
         }
     } catch (err: Exception) {
         println(err);
@@ -114,8 +113,8 @@ class Checkout(private val act: CheckoutActivity?, private val uri: String) : Ru
 /**
  * Request details about basket products to the server.
  */
-class BasketDetails(private val act: Activity, private val uri: String, private val callback: (Activity, JSONObject) -> Unit) : Runnable {
+class InitBasket(private val act: Activity, private val uri: String, private val callback: (JSONObject) -> Unit) : Runnable {
     override fun run() {
-        sendGetRequest(act, uri, callback)
+        sendGetRequest(uri, callback)
     }
 }

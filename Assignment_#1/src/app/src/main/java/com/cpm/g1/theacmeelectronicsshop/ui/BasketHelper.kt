@@ -57,9 +57,9 @@ class BasketHelper(context: Context?) :
         return writableDatabase.update("BasketItem", cv, "user_id = ? AND product_id = ?", args)
     }
 
-    fun deleteById(id: String) {
-        val args = arrayOf(id)
-        writableDatabase.delete("Product", "_id = ?", args)
+    fun deleteBasketItem(userId: String, productId: String) {
+        val args = arrayOf(userId, productId)
+        writableDatabase.delete("BasketItem", "user_id = ? AND product_id=?", args)
     }
 
 /*    fun getBasketProducts(): Cursor {
@@ -69,19 +69,7 @@ class BasketHelper(context: Context?) :
         )
     }
 
-    fun getBasketTotal() : Float {
-        val cursor = readableDatabase.rawQuery(
-            "SELECT SUM(quantity*price) " +
-                "FROM Product",
-            null
-        )
 
-        if(cursor.moveToFirst()){
-            return cursor.getFloat(0)
-        }
-
-        return 0F
-    }
 
     fun getId(c: Cursor): String {
         return c.getString(0)
