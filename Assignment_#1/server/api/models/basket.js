@@ -6,8 +6,9 @@ const Basket = mongoose.model('Basket', mongoose.Schema({
         id: Number,
         quantity: Number 
     }],
-    totalPrice: String, 
-    date: String
+    total: String, 
+    date: String,
+    hour: String
 }));
 
 exports.Basket = Basket; 

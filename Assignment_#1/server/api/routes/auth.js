@@ -5,6 +5,7 @@ const router = express.Router();
 
 router.post('/signup', async (req, res) => {
     try {
+        console.log(req.body)
         let hashedPassword = await encryptHash(req.body.password);
         let user = new User(
             {

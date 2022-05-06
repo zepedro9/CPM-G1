@@ -8,7 +8,10 @@
     tools:context=".ui.basketHistory.BasketHistoryList">
 
     <ListView
+        android:divider="@android:color/transparent"
+        android:dividerHeight="7.0sp"
         android:id="@+id/basket_sv"
+        android:layout_margin="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="9dp" />
