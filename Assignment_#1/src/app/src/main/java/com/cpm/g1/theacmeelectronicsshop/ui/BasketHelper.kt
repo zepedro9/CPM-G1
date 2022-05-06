@@ -62,40 +62,4 @@ class BasketHelper(context: Context?) :
         writableDatabase.delete("BasketItem", "user_id = ? AND product_id=?", args)
     }
 
-/*    fun getBasketProducts(): Cursor {
-        return readableDatabase.rawQuery(
-            "SELECT _id, quantity FROM Product",
-            null
-        )
-    }
-
-
-
-    fun getId(c: Cursor): String {
-        return c.getString(0)
-    }
-
-    fun getName(c: Cursor): String {
-        return c.getString(1)
-    }
-
-    fun getBrand(c: Cursor): String {
-        return c.getString(2)
-    }
-
-    fun getDescription(c: Cursor): String {
-        return c.getString(3)
-    }
-
-    fun getPrice(c: Cursor): Float {
-        return c.getFloat(4)
-    }
-
-    fun getQuantity(c: Cursor): Int {
-        return c.getInt(5)
-    }
-
-    fun getImageUrl(c: Cursor): String {
-        return c.getString(6)
-    }*/
 }

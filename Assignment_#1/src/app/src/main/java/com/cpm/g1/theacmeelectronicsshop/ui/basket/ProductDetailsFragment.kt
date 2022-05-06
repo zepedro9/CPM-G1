@@ -15,7 +15,6 @@ import com.cpm.g1.theacmeelectronicsshop.ui.BasketHelper
 
 class ProductDetailsFragment : Fragment() {
     private var item: BasketItem? = null
-    private val dbHelper by lazy { BasketHelper(context) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
