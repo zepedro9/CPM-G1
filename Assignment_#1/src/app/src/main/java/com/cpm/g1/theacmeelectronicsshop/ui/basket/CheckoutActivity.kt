@@ -7,9 +7,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.cpm.g1.theacmeelectronicsshop.ConfigHTTP
 import com.cpm.g1.theacmeelectronicsshop.Cryptography
 import com.cpm.g1.theacmeelectronicsshop.dataClasses.basket.Basket
-import com.cpm.g1.theacmeelectronicsshop.dataClasses.basket.Product
+import com.cpm.g1.theacmeelectronicsshop.dataClasses.basket.ItemQuantity
 import com.cpm.g1.theacmeelectronicsshop.dataClasses.basket.SignedBasket
-import com.cpm.g1.theacmeelectronicsshop.getEncryptedSharedPreferences
+import com.cpm.g1.theacmeelectronicsshop.getUserUUID
 import com.cpm.g1.theacmeelectronicsshop.httpService.Checkout
 import com.cpm.g1.theacmeelectronicsshop.ui.BasketHelper
 import com.google.gson.Gson
@@ -28,24 +28,23 @@ class CheckoutActivity: AppCompatActivity() {
     }
 
     private fun sendCheckoutRequest(){
-        try{
+        /*try{
             val basket = getBasket()
             Thread(Checkout(this, CHECKOUT_ADDRESS , basket)).start()
         } catch(err: Exception){
             println(err.toString())
-        }
+        }*/
     }
 
-    private fun getBasket() : String {
-        val sharedPreferences = getEncryptedSharedPreferences(applicationContext)
-        val uuid = sharedPreferences.getString("uuid", "") ?: throw Exception("Missing uuid")
+    /*private fun getBasket() : String {
+        val uuid = getUserUUID(applicationContext) ?: throw Exception("Missing uuid")
         val cursor: Cursor = dbHelper.getBasketProducts()
         val total = dbHelper.getBasketTotal()
-        val products = mutableListOf<Product>()
+        val products = mutableListOf<ItemQuantity>()
 
         cursor.moveToFirst()
         while(!cursor.isAfterLast) {
-            products.add(Product(cursor.getInt(0), cursor.getInt(1)))
+            products.add(ItemQuantity(cursor.getInt(0), cursor.getInt(1)))
             cursor.moveToNext()
         }
         cursor.close()
@@ -55,7 +54,7 @@ class CheckoutActivity: AppCompatActivity() {
         println(basketJson)
         val signature = Cryptography().signContent(basketJson)
         return Gson().toJson(SignedBasket(basket, signature))
-    }
+    }*/
 
     fun generateQrCode(act: Activity, jsonResponse: JSONObject) {
         // TODO: fragment with QRCode maybe?

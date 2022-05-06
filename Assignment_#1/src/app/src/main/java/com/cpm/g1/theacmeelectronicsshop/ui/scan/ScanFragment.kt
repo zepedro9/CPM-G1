@@ -20,6 +20,7 @@ import coil.imageLoader
 import coil.request.ImageRequest
 import com.cpm.g1.theacmeelectronicsshop.MainActivity
 import com.cpm.g1.theacmeelectronicsshop.R
+import com.cpm.g1.theacmeelectronicsshop.getUserUUID
 import com.cpm.g1.theacmeelectronicsshop.readStream
 import com.cpm.g1.theacmeelectronicsshop.ui.BasketHelper
 import com.google.zxing.client.android.Intents
@@ -58,7 +59,7 @@ class ScanFragment : Fragment() {
         val addToBasketButton = view.findViewById<Button>(R.id.btnAddToBasket)
         addToBasketButton.setOnClickListener {
             if(currentProduct != null) {
-                addToBasket(currentProduct!!.id, currentProduct!!.name, currentProduct!!.brand, currentProduct!!.desc, currentProduct!!.price, currentProduct!!.imageUrl )
+                addToBasket(currentProduct!!.id)
                 val mainActivity = activity as MainActivity
                 val navController = findNavController(mainActivity, R.id.nav_host_fragment_activity_main)
                 navController.navigate(R.id.navigation_basket)
@@ -109,18 +110,18 @@ class ScanFragment : Fragment() {
             }
         }
 
-    private fun addToBasket(id: String, name: String, brand: String, desc: String, price: Float, imageUrl: String) {
-        val productCursor = dbHelper.getById(id)
-
+    private fun addToBasket(productId: String) {
+        val uuid = getUserUUID(requireContext())
+        val productCursor = dbHelper.getBasketItemById(uuid, productId)
+        println(productId)
         if(!productCursor.moveToFirst()){
             // New product
-            dbHelper.insert(id,name,brand,desc,price,imageUrl)
+            dbHelper.insertBasketItem(uuid, productId)
         } else {
             // Update quantity
-            val quantity = dbHelper.getQuantity(productCursor) + 1
-            dbHelper.updateQuantity(id, quantity)
+            val quantity = productCursor.getInt(1) + 1
+            dbHelper.updateItemQuantity(uuid, productId, quantity)
         }
-
     }
 
     private fun makeGetRequest(prodID: String?) {
@@ -129,8 +130,7 @@ class ScanFragment : Fragment() {
 
     private fun showProduct(payload: String) {
         val jsonProduct = JSONArray(payload).getJSONObject(0)
-
-        val prodId = jsonProduct.getInt("id").toString()
+        val prodId = jsonProduct.getLong("id").toString()
         val prodName = jsonProduct.getString("name")
         val prodBrand = jsonProduct.getString("brand")
         val prodPrice = jsonProduct.getString("price").toFloat()

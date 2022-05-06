@@ -5,9 +5,10 @@
  * This is will populate the database with the information necessary to run the 
  * project.   
  */
-
+const { Product } = require("../models/product");
 const mongoose = require('mongoose'); 
 const dataProducts = require("./products.json");
+
 
 // Set up the mongoDB connection.  
 let mongoDB = 'mongodb://root:root@mongo:27017/shop?authSource=admin';
@@ -15,19 +16,6 @@ mongoose.connect(mongoDB)
 .then(() => console.log("Connected to MongoDB"))
 .catch(err => console.error("Could not connect to MongoDB...", err));
 
-
-// Creating the schema 
-const productSchema = mongoose.Schema({
-    id: Number,
-    name: String,
-    brand: String, 
-    price: Number,
-    description: String,
-    image_url: String
-}); 
-
-
-const Product = mongoose.model('Product', productSchema);
 
 async function createProducts() { 
   for (let productJSON of dataProducts){

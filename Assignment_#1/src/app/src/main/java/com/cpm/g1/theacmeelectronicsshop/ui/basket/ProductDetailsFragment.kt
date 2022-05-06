@@ -24,7 +24,7 @@ class ProductDetailsFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate (R.layout.fragment_product_details, container, false)
-        val productCursor = dbHelper.getById(pos!!)
+      /*  val productCursor = dbHelper.getById(pos!!)
         productCursor.moveToFirst()
 
         val priceText = getString(R.string.product_price, dbHelper.getPrice(productCursor))
@@ -41,7 +41,7 @@ class ProductDetailsFragment : Fragment() {
             .target(image)
             .build()
 
-        context?.imageLoader?.enqueue(request)
+        context?.imageLoader?.enqueue(request)*/
         return view
     }
 

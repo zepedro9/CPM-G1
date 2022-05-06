@@ -1,4 +1,6 @@
 const { User } = require("../models/user");
+const { Product } = require("../models/product");
+const { ObjectId } = require('mongodb');
 const express = require('express');
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
@@ -48,6 +50,17 @@ router.post('/checkout', async (req, res) => {
     //     console.log(err);
     //     res.status(400).send({message: "Something went wrong. Check the credentials."});
     // }
+});
+
+router.get("/products", async(req, res) => {
+    const ids = req.query.ids.split(",").map(item => parseInt(item, 10))
+    try {
+        const products = await Product.find().where('id').in(ids)
+        return res.status(200).send({"products": products}); 
+    } catch(err){
+        console.log(err)
+        return res.status(400).send({"products": []}); 
+    }
 });
 
 module.exports = router; 

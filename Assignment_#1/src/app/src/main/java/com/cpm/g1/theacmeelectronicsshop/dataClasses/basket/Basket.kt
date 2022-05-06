@@ -4,7 +4,7 @@ import java.io.Serializable
 
 data class Basket(
     var userUUID: String,
-    var products: List<Product>,
+    var products: List<ItemQuantity>,
     var total: String
 ): Serializable {
 }
