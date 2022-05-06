@@ -53,6 +53,9 @@ class BasketFragment : Fragment() {
         mapItemToQuantity(basketCursor)
         val basketIdsList = itemQuantities.keys.joinToString()
 
+        totalView = requireView().findViewById(R.id.total)
+        totalView?.text = getString(R.string.total,0F)
+
         // Init Basket
         Thread(InitBasket(mainActivity, PRODUCTS_ADDRESS+basketIdsList, this::initBasket)).start()
     }
@@ -65,6 +68,7 @@ class BasketFragment : Fragment() {
 
     private fun initBasket(jsonResponse: JSONObject) {
         activity?.runOnUiThread {
+
             // Load Products
             loadProducts(jsonResponse)
 
@@ -74,11 +78,7 @@ class BasketFragment : Fragment() {
             productList.adapter = BasketAdapter()
 
             // Product click
-            productList.setOnItemClickListener { _, _, _, l -> onProductClick(l) }
-
-            // Set Basket Total
-            totalView = requireView().findViewById(R.id.total)
-            totalView!!.text = getString(R.string.product_price, 0F)
+            productList.setOnItemClickListener { _, _, pos, _ -> onProductClick(pos) }
 
             // Checkout
             requireView().findViewById<Button>(R.id.checkout_btn)
@@ -86,10 +86,12 @@ class BasketFragment : Fragment() {
         }
     }
 
-    private fun onProductClick(id: Long){
+    private fun onProductClick(pos: Int){
         parentFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+
+        val item = basket[pos]
         val intent = Intent(context, ProductDetailsActivity::class.java).also{
-            it.putExtra("pos", id.toString())
+            it.putExtra("item", item)
         }
         startActivity(intent)
     }
@@ -126,7 +128,8 @@ class BasketFragment : Fragment() {
 
     private fun addToTotalPrice(price: Float){
         val newTotal = priceViewToFloat(totalView!!) + price
-        val priceText = getString(R.string.product_price, newTotal)
+        val priceText = getString(R.string.total, newTotal)
+        println(priceText)
         totalView!!.text = priceText
     }
 
@@ -175,6 +178,7 @@ class BasketFragment : Fragment() {
             context.imageLoader.enqueue(request)
 
             // Add price to total
+            println(price*quantity)
             addToTotalPrice(price*quantity)
 
             // Buttons click listeners

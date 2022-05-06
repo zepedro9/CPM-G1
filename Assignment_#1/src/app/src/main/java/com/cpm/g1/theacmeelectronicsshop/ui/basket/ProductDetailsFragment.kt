@@ -10,53 +10,50 @@ import android.widget.TextView
 import coil.imageLoader
 import coil.request.ImageRequest
 import com.cpm.g1.theacmeelectronicsshop.R
+import com.cpm.g1.theacmeelectronicsshop.dataClasses.basket.BasketItem
 import com.cpm.g1.theacmeelectronicsshop.ui.BasketHelper
 
 class ProductDetailsFragment : Fragment() {
-    private var pos: String? = null
+    private var item: BasketItem? = null
     private val dbHelper by lazy { BasketHelper(context) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        pos = arguments?.getString("pos")
+        item = arguments?.getSerializable("item") as BasketItem?
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate (R.layout.fragment_product_details, container, false)
-      /*  val productCursor = dbHelper.getById(pos!!)
-        productCursor.moveToFirst()
+        val priceText = getString(R.string.product_price, item?.price)
 
-        val priceText = getString(R.string.product_price, dbHelper.getPrice(productCursor))
-
-        view.findViewById<TextView>(R.id.name).text = dbHelper.getName(productCursor)
-        view.findViewById<TextView>(R.id.brandContent).text = dbHelper.getBrand(productCursor)
+        view.findViewById<TextView>(R.id.name).text = item?.name
+        view.findViewById<TextView>(R.id.brandContent).text = item?.brand
         view.findViewById<TextView>(R.id.priceContent).text = priceText
-        view.findViewById<TextView>(R.id.descriptionContent).text =dbHelper.getDescription(productCursor)
-        view.findViewById<TextView>(R.id.descriptionContent).text =dbHelper.getDescription(productCursor)
+        view.findViewById<TextView>(R.id.descriptionContent).text = item?.description
         val image = view.findViewById<ImageView>(R.id.image)
 
         val request = ImageRequest.Builder(requireContext())
-            .data(dbHelper.getImageUrl(productCursor))
+            .data(item?.image_url)
             .target(image)
             .build()
 
-        context?.imageLoader?.enqueue(request)*/
+        context?.imageLoader?.enqueue(request)
         return view
     }
 
     companion object {
         @JvmStatic
-        fun newInstance(pos: String) =
+        fun newInstance(item: BasketItem) =
             ProductDetailsFragment().apply {
                 arguments = Bundle().apply {
-                    putString("pos", pos)
+                    putSerializable("item", item)
                 }
             }
 
         fun newInstance(bundle: Bundle): ProductDetailsFragment {
-            val pos = bundle.getString("pos", null)
-            return newInstance(pos)
+            val item = bundle.getSerializable("item") as BasketItem
+            return newInstance(item)
         }
     }
 }
