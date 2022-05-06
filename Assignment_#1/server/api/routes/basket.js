@@ -53,12 +53,12 @@ router.post('/checkout', async (req, res) => {
 });
 
 router.get("/products", async(req, res) => {
-    const ids = req.query.ids.split(",").map(item => parseInt(item, 10))
     try {
+        const ids = req.query.ids.split(",").map(item => parseInt(item, 10))
         const products = await Product.find().where('id').in(ids)
         return res.status(200).send({"products": products}); 
     } catch(err){
-        console.log(err)
+        //console.log(err)
         return res.status(400).send({"products": []}); 
     }
 });

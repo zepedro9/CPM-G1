@@ -57,24 +57,33 @@ class BasketFragment : Fragment() {
         Thread(InitBasket(mainActivity, PRODUCTS_ADDRESS+basketIdsList, this::initBasket)).start()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        basket.clear()
+        itemQuantities.clear()
+    }
+
     private fun initBasket(jsonResponse: JSONObject) {
-        // Load Products
-        loadProducts(jsonResponse)
+        activity?.runOnUiThread {
+            // Load Products
+            loadProducts(jsonResponse)
 
-        // Basket Adapter
-        val productList = requireView().findViewById<ListView>(R.id.basket_sv)
-        productList.emptyView = requireView().findViewById(R.id.empty_list)
-        productList.adapter =  BasketAdapter()
+            // Basket Adapter
+            val productList = requireView().findViewById<ListView>(R.id.basket_sv)
+            productList.emptyView = requireView().findViewById(R.id.empty_list)
+            productList.adapter = BasketAdapter()
 
-        // Product click
-        productList.setOnItemClickListener { _, _, _, l -> onProductClick(l) }
+            // Product click
+            productList.setOnItemClickListener { _, _, _, l -> onProductClick(l) }
 
-        // Set Basket Total
-        totalView = requireView().findViewById(R.id.total)
-        totalView!!.text = getString(R.string.product_price, 0F)
+            // Set Basket Total
+            totalView = requireView().findViewById(R.id.total)
+            totalView!!.text = getString(R.string.product_price, 0F)
 
-        // Checkout
-        requireView().findViewById<Button>(R.id.checkout_btn).setOnClickListener { onCheckoutButtonClick() }
+            // Checkout
+            requireView().findViewById<Button>(R.id.checkout_btn)
+                .setOnClickListener { onCheckoutButtonClick() }
+        }
     }
 
     private fun onProductClick(id: Long){
