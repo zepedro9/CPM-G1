@@ -1,6 +1,9 @@
 package com.cpm.g1.theacmeelectronicsshop.httpService
 
 import android.app.Activity
+import android.os.Build
+import android.widget.Toast
+import androidx.annotation.RequiresApi
 import com.cpm.g1.theacmeelectronicsshop.LoginActivity
 import com.cpm.g1.theacmeelectronicsshop.MainActivity
 import com.cpm.g1.theacmeelectronicsshop.readStream
@@ -11,6 +14,8 @@ import java.io.*
 import java.net.HttpURLConnection
 import java.net.URL
 
+// TODO: combine functions and show toast when errors occur or something
+// If response code is not 200 read the error message from the server(must add message to all server requests)
 fun sendPostRequest(
     act: Activity,
     uri: String,
@@ -45,7 +50,7 @@ fun sendPostRequest(
             onSuccess(act, jsonResponse)
         }
     } catch (err: Exception) {
-        println(err);
+        println(err)
     } finally {
         urlConnection?.disconnect()
     }
@@ -104,9 +109,10 @@ class Login(private val act: LoginActivity?, private val uri: String, private va
 /**
  * Makes a checkout request to the server.
  */
-class Checkout(private val act: CheckoutActivity?, private val uri: String) : Runnable {
+class Checkout(private val act: CheckoutActivity?, private val uri: String, val basket: String) : Runnable {
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun run() {
-        sendPostRequest(act as Activity, uri, "", act::generateQrCode)
+        sendPostRequest(act as Activity, uri, basket, act::generateQrCode)
     }
 }
 

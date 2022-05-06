@@ -5,6 +5,7 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 const router = express.Router();
+const node_uuid = require('node-uuid');
 
 router.post('/checkout', async (req, res) => {
 
@@ -16,40 +17,31 @@ router.post('/checkout', async (req, res) => {
     const uuid = req.body.basket.userUUID
     const products = req.body.basket.products
 
-    // Check siganature
+    // Check signature
     try {
         const verifier = crypto.createVerify('RSA-SHA256')
 
         let user = await User.findOne({ _id: uuid});
         let jsonBasket = JSON.stringify(req.body.basket)
-        console.log(jsonBasket)
         verifier.update(jsonBasket)
 
         const result = verifier.verify(user.pk, req.body.signature, 'hex')
+        
+        if(result){  
+            // TODO: verify credit card, save basket in the server with new identifier(new uuid)
+            const basket_uuid = node_uuid.v1()
+            const keyObj = crypto.createPublicKey(user.pk)
 
-        console.log(result)
-        return res.status(200).send({"message": "Niceeeeee"})
+            var encrypted = crypto.publicEncrypt({key: keyObj, padding: crypto.constants.RSA_PKCS1_PADDING}, Buffer.from(basket_uuid))
+            return res.status(200).send({"message": encrypted.toString('base64')})
+        } else {
+            return res.status(401).send({"message": "No authorization"})
+        }
+        
     } catch(err){
         console.log(err)
         return res.status(400).send({"message": "Something went wrong"})
     }
-
-    //crypto.verify()
-
-    // try {
-    //     let user = await User.findOne({ _id: uuid});
-    //     if (!(await bcrypt.compare(req.body.password, user.password)))
-    //         res.status(401).send({message: "Wrong credentials."});
-    //     else {
-    //         res.status(200).send({
-    //             message: "Logged with success!", 
-    //             uuid: user._id
-    //         });     
-    //     }
-    // } catch (err) {
-    //     console.log(err);
-    //     res.status(400).send({message: "Something went wrong. Check the credentials."});
-    // }
 });
 
 router.get("/products", async(req, res) => {

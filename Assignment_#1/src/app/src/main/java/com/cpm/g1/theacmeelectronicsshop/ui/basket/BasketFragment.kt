@@ -88,7 +88,6 @@ class BasketFragment : Fragment() {
 
     private fun onProductClick(pos: Int){
         parentFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
-
         val item = basket[pos]
         val intent = Intent(context, ProductDetailsActivity::class.java).also{
             it.putExtra("item", item)
@@ -122,14 +121,15 @@ class BasketFragment : Fragment() {
 
     private fun onCheckoutButtonClick(){
         parentFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
-        val intent = Intent(context, CheckoutActivity::class.java)
+        val intent = Intent(context, CheckoutActivity::class.java).also{
+            it.putExtra("total", priceViewToFloat(totalView!!))
+        }
         startActivity(intent)
     }
 
     private fun addToTotalPrice(price: Float){
         val newTotal = priceViewToFloat(totalView!!) + price
         val priceText = getString(R.string.total, newTotal)
-        println(priceText)
         totalView!!.text = priceText
     }
 
@@ -178,7 +178,6 @@ class BasketFragment : Fragment() {
             context.imageLoader.enqueue(request)
 
             // Add price to total
-            println(price*quantity)
             addToTotalPrice(price*quantity)
 
             // Buttons click listeners
