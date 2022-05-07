@@ -48,21 +48,29 @@ class MainActivity : AppCompatActivity() {
      * Updates the history fragment content in the BasketHistory fragment.
      */
     fun updateHistoryAdapter(activity: Activity, response: String) {
-        val jsonResponse = JSONArray(response)
-        historyBasket.clear()
-        for (jsonPos in (0 until jsonResponse.length())){
-            val jsonObject = jsonResponse.get(jsonPos) as JSONObject
-            val products = jsonObject.get("products") as JSONArray
-            val productsList: List<Product> = buildProducts(products)
+            val jsonResponse = JSONArray(response)
+            historyBasket.clear()
+            for (jsonPos in (0 until jsonResponse.length())) {
+                val jsonObject = jsonResponse.get(jsonPos) as JSONObject
+                val products = jsonObject.get("products") as JSONArray
+                val productsList: List<Product> = buildProducts(products)
 
-            val total = jsonObject.get("total")
-            val date = jsonObject.get("date")
-            val hour = jsonObject.get("hour")
+                val total = jsonObject.get("total")
+                val date = jsonObject.get("date")
+                val hour = jsonObject.get("hour")
 
-            val basket = Basket(products = productsList, total= total as String, date= date as String?, hour = hour as String?)
-            historyBasket.add(basket)
+                val basket = Basket(
+                    products = productsList,
+                    total = total as String,
+                    date = date as String?,
+                    hour = hour as String?
+                )
+                historyBasket.add(basket)
+            }
+
+        runOnUiThread {
+            adapter.notifyDataSetChanged()
         }
-        adapter.notifyDataSetChanged()
     }
 
     /**
