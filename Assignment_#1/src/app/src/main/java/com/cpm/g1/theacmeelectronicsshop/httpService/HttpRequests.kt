@@ -8,6 +8,7 @@ import com.cpm.g1.theacmeelectronicsshop.LoginActivity
 import com.cpm.g1.theacmeelectronicsshop.MainActivity
 import com.cpm.g1.theacmeelectronicsshop.readStream
 import com.cpm.g1.theacmeelectronicsshop.ui.basket.CheckoutActivity
+import com.google.gson.JsonObject
 import org.json.JSONObject
 
 import java.io.*
@@ -58,7 +59,7 @@ fun sendPostRequest(
 
 fun sendGetRequest(
     uri: String,
-    onSuccess: (JSONObject) -> Unit
+    callback: (Boolean, JSONObject) -> Unit
 ) {
     val url: URL
     var urlConnection: HttpURLConnection? = null
@@ -73,15 +74,13 @@ fun sendGetRequest(
         urlConnection.useCaches = false
 
         // Send request
-        val responseCode = urlConnection.responseCode
+        val success = urlConnection.responseCode == 200
+        val response = readStream(urlConnection.inputStream)
+        val jsonResponse = JSONObject(response)
+        callback(success, jsonResponse)
 
-        if (responseCode == 200) {
-            val response = readStream(urlConnection.inputStream)
-            val jsonResponse = JSONObject(response)
-            onSuccess(jsonResponse)
-        }
     } catch (err: Exception) {
-        println(err);
+        callback(false, JSONObject(hashMapOf("message" to "Error connecting to server: ${err.message}").toString()))
     } finally {
         urlConnection?.disconnect()
     }
@@ -119,7 +118,7 @@ class Checkout(private val act: CheckoutActivity?, private val uri: String, val 
 /**
  * Request details about basket products to the server.
  */
-class InitBasket(private val act: Activity, private val uri: String, private val callback: (JSONObject) -> Unit) : Runnable {
+class InitBasket(private val uri: String, private val callback: (Boolean, JSONObject) -> Unit) : Runnable {
     override fun run() {
         sendGetRequest(uri, callback)
     }

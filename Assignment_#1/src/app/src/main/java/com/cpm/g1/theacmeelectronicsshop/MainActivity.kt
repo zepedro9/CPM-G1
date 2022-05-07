@@ -1,6 +1,5 @@
 package com.cpm.g1.theacmeelectronicsshop
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -9,7 +8,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import com.cpm.g1.theacmeelectronicsshop.databinding.ActivityAppBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AuthenticatedUserActivity() {
 
     private lateinit var binding: ActivityAppBinding
 
@@ -32,4 +31,5 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }
+
 }

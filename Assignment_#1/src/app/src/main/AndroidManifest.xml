@@ -29,6 +29,12 @@
             tools:ignore="LockedOrientationActivity"
             android:exported="false" />
         <activity
+            android:name=".AuthenticatedUserActivity"
+            android:configChanges="uiMode"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
+            android:exported="false" />
+        <activity
             android:name=".LoginActivity"
             android:configChanges="uiMode"
             android:exported="true"

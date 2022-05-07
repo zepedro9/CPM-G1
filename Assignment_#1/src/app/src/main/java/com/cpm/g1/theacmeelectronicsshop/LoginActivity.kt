@@ -16,8 +16,6 @@ import org.json.JSONObject
  */
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    var keysGenerated = false       // tells if the security keys have been generated.
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +25,10 @@ class LoginActivity : AppCompatActivity() {
         // Visualize View
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // Check for old user
+        if(getUserUUID(applicationContext) != "")
+            startActivity(Intent(applicationContext, MainActivity::class.java))
 
         // Add fragment
         supportFragmentManager.commit {

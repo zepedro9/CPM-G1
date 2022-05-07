@@ -17,11 +17,16 @@ router.post('/checkout', async (req, res) => {
     const uuid = req.body.basket.userUUID
     const products = req.body.basket.products
 
+    if(products.length == 0)
+        return res.status(401).send({"message": "Empty basket"})
+
     // Check signature
     try {
         const verifier = crypto.createVerify('RSA-SHA256')
 
         let user = await User.findOne({ _id: uuid});
+        if(!user) return res.status(400).send({"message": "Uknown user"})
+
         let jsonBasket = JSON.stringify(req.body.basket)
         verifier.update(jsonBasket)
 
@@ -48,10 +53,10 @@ router.get("/products", async(req, res) => {
     try {
         const ids = req.query.ids.split(",").map(item => parseInt(item, 10))
         const products = await Product.find().where('id').in(ids)
-        return res.status(200).send({"products": products}); 
+        return res.status(200).send({"message": "Successfully retrieved all your products", "products": products}); 
     } catch(err){
-        //console.log(err)
-        return res.status(400).send({"products": []}); 
+        console.log(err)
+        return res.status(400).send({"message": "Error retrieving your products", "products": []}); 
     }
 });
 

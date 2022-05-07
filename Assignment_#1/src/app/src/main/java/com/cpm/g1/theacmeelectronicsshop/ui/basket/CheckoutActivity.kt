@@ -4,6 +4,7 @@ import android.app.Activity
 import android.database.Cursor
 import android.os.Build
 import android.os.Bundle
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.cpm.g1.theacmeelectronicsshop.ConfigHTTP
@@ -36,7 +37,8 @@ class CheckoutActivity: AppCompatActivity() {
             val basket = getBasket(total)
             Thread(Checkout(this, CHECKOUT_ADDRESS , basket)).start()
         } catch(err: Exception){
-            println(err.toString())
+            Toast.makeText(applicationContext, err.message, Toast.LENGTH_LONG).show()
+            finish()
         }
     }
 
@@ -51,6 +53,9 @@ class CheckoutActivity: AppCompatActivity() {
             cursor.moveToNext()
         }
         cursor.close()
+
+        if(products.isEmpty())
+            throw Exception("Empty basket")
 
         val basket = Basket(uuid, products.toList(), total.toString())
         val basketJson = Gson().toJson(basket)
