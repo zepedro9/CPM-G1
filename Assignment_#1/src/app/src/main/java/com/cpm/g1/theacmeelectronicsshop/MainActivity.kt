@@ -62,6 +62,7 @@ class MainActivity : AppCompatActivity() {
             val basket = Basket(products = productsList, total= total as String, date= date as String?, hour = hour as String?)
             historyBasket.add(basket)
         }
+        adapter.notifyDataSetChanged()
     }
 
     /**

@@ -56,7 +56,8 @@ const checkSignature = async (uuid, req) => {
 const addToDatabase = async (req) => {
     // Get hour 
     const now = new Date();
-    const current = now.getHours() + ':' + now.getMinutes();
+
+    const current = now.getHours().toString().padStart(2, 0) + ':' + now.getMinutes().toString().padStart(2, '0');
 
     var today = new Date().toISOString().slice(0, 10);
     let basket = new Basket({ ...req.body.basket, date: today, hour: current });
@@ -67,5 +68,6 @@ const addToDatabase = async (req) => {
         console.log("Basket saved with successs!");
     });
 }
+
 
 module.exports = router; 

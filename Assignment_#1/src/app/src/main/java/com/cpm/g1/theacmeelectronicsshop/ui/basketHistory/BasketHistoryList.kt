@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
 import com.cpm.g1.theacmeelectronicsshop.*
 import com.cpm.g1.theacmeelectronicsshop.httpService.GetHistory
 import com.google.gson.Gson
@@ -20,15 +21,11 @@ class BasketHistoryList : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         return inflater.inflate(R.layout.fragment_basket_history, container, false)
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val listView = view.findViewById<ListView>(R.id.basket_sv)
-        listView.adapter = (activity as MainActivity).adapter
-
         val sharedPreferences = getEncryptedSharedPreferences(requireActivity().applicationContext)
         val uuid = sharedPreferences.getString("uuid", "") ?: throw Exception("Missing uuid")
         var body = Gson().toJson(hashMapOf("userUUID" to uuid ));
@@ -36,6 +33,10 @@ class BasketHistoryList : Fragment() {
         val mainActivity = activity as MainActivity
         val signedContent = Gson().toJson(hashMapOf("userUUID" to uuid, "signature" to signature))
         Thread(GetHistory(mainActivity, HISTORY_ADDRESS, signedContent)).start()
+        // Setting the adapter.
+        val listView = view.findViewById<ListView>(R.id.basket_sv)
+        listView.adapter =  (activity as MainActivity).adapter
+
     }
 
 
