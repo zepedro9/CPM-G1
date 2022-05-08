@@ -6,7 +6,7 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 const val DATABASE_NAME = "basket"
-const val SCHEMA_VERSION = 16
+const val SCHEMA_VERSION = 21
 
 class BasketHelper(context: Context?) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, SCHEMA_VERSION) {
