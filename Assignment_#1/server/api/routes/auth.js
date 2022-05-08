@@ -5,7 +5,6 @@ const router = express.Router();
 
 router.post('/signup', async (req, res) => {
     try {
-        console.log(req.body)
         let hashedPassword = await encryptHash(req.body.password);
         let user = new User(
             {
@@ -17,8 +16,6 @@ router.post('/signup', async (req, res) => {
             if (err) return res.status(400).send({message: err})
             console.log("User registered with success!");
         });
-
-        console.log(user.pk)
 
         return res.status(200).send({
             message: "Registered with success!", 

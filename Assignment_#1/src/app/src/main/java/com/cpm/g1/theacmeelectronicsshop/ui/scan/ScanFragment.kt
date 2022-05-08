@@ -113,7 +113,7 @@ class ScanFragment : Fragment() {
     private fun addToBasket(productId: String) {
         val uuid = getUserUUID(requireContext())
         val productCursor = dbHelper.getBasketItemById(uuid, productId)
-        println(productId)
+
         if(!productCursor.moveToFirst()){
             // New product
             dbHelper.insertBasketItem(uuid, productId)

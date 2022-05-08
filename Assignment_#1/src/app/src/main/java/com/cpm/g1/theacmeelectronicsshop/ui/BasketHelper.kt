@@ -36,6 +36,11 @@ class BasketHelper(context: Context?) :
         )
     }
 
+    fun clearBasket(userId: String){
+        val args = arrayOf(userId)
+        writableDatabase.delete("BasketItem", "user_id = ?", args)
+    }
+
     fun getBasketItemById(userId: String, productId: String) : Cursor {
         val args = arrayOf(userId, productId)
         return readableDatabase.rawQuery(

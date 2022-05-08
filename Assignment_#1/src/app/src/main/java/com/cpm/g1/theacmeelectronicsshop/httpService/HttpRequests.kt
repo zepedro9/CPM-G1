@@ -18,8 +18,6 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 fun sendRequest(
-// TODO: combine functions and show toast when errors occur or something
-// If response code is not 200 read the error message from the server(must add message to all server requests)
     uri: String,
     body: String = "",
     callback: (Boolean, String) -> Unit,
@@ -51,7 +49,15 @@ fun sendRequest(
         callback(success, response)
 
         println("[RESPONSE CODE] $responseCode")
+    } catch(err: FileNotFoundException){
+        if(urlConnection?.errorStream != null){
+            val response = readStream(urlConnection.errorStream)
+            callback(false, response)
+        }
+        Log.e("ERR",  err.toString());
     } catch (err: Exception) {
+        val response = "{\"message\": \"Unexpected error occurred\"}"
+        callback(false, response)
         Log.e("ERR",  err.toString());
     } finally {
         urlConnection?.disconnect()

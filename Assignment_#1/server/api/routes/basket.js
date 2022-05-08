@@ -24,7 +24,7 @@ router.post('/checkout', async (req, res) => {
     try {
         const verifier = crypto.createVerify('RSA-SHA256')
         let user = await User.findOne({ _id: uuid});
-        if(!user) return res.status(400).send({"message": "Uknown user"})
+        if(!user) return res.status(400).send({"message": "Unknown user"})
 
         let jsonBasket = JSON.stringify(req.body.basket)
         verifier.update(jsonBasket)
@@ -33,9 +33,9 @@ router.post('/checkout', async (req, res) => {
         
         if(result){   
             let addResponse = await addToDatabase(req); 
-            console.log(addResponse);
+    
             if (addResponse.status == -1) 
-                return res.status(400).send({"message": "Something went wrong"});
+                return res.status(400).send({"message": "Checkout failed"});
 
             // TODO: verify credit card, save basket in the server with new identifier(new uuid)
             const basket_uuid = addResponse.basket.token; 

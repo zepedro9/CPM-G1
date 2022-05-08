@@ -27,7 +27,6 @@ class CheckoutActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val total = intent.getFloatExtra("total", 0F)
-        println(total)
         // Send basket to server
         sendCheckoutRequest(total)
     }
@@ -35,7 +34,6 @@ class CheckoutActivity: AppCompatActivity() {
     private fun sendCheckoutRequest(total: Float){
         try{
             val basket = getBasket(total)
-            println("BASKET " + basket);
             Thread(Checkout(this, CHECKOUT_ADDRESS , basket)).start()
         } catch(err: Exception){
             Toast.makeText(applicationContext, err.message, Toast.LENGTH_LONG).show()
@@ -66,12 +64,23 @@ class CheckoutActivity: AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     fun generateQrCode(success: Boolean, response: String) {
         val jsonResponse = JSONObject(response)
-        val basketUUID = Cryptography().decrypt(jsonResponse.getString("message"))
-        println("BASKET UUID = " + basketUUID)
-
-        val details = QRCodeFragment.newInstance(basketUUID)
-        supportFragmentManager.beginTransaction()
-            .add(android.R.id.content, details)
-            .commit()
+        runOnUiThread {
+            if (!success) {
+                println("ERROR ON SERVER")
+                finish()
+                Toast.makeText(this,
+                    jsonResponse.getString("message"),
+                    Toast.LENGTH_LONG
+                ).show()
+            } else {
+                dbHelper.clearBasket(getUserUUID(this))
+                val basketUUID = Cryptography().decrypt(jsonResponse.getString("message"))
+                val details = QRCodeFragment.newInstance(basketUUID)
+                supportFragmentManager.beginTransaction()
+                    .add(android.R.id.content, details)
+                    .commit()
+            }
+        }
     }
+
 }
