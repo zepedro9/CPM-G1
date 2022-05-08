@@ -9,6 +9,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.cpm.g1.theacmeelectronicsshop.dataClasses.basket.Basket
+import com.cpm.g1.theacmeelectronicsshop.dataClasses.basket.ItemQuantity
 import com.cpm.g1.theacmeelectronicsshop.dataClasses.basket.Product
 import com.cpm.g1.theacmeelectronicsshop.databinding.ActivityAppBinding
 import com.cpm.g1.theacmeelectronicsshop.ui.basketHistory.BasketHistoryAdapter
@@ -64,7 +65,7 @@ class MainActivity : AuthenticatedUserActivity() {
         for (jsonPos in (0 until jsonResponse.length())) {
             val jsonObject = jsonResponse.get(jsonPos) as JSONObject
             val products = jsonObject.get("products") as JSONArray
-            val productsList: List<Product> = buildProducts(products)
+            val productsList: List<ItemQuantity> = buildProducts(products)
 
             val total = jsonObject.get("total")
             val date = jsonObject.get("date")
@@ -87,13 +88,13 @@ class MainActivity : AuthenticatedUserActivity() {
     /**
      * Build the products list for basketHistory.
      */
-    fun buildProducts(products: JSONArray): List<Product> {
-        var productList = mutableListOf<Product>()
+    fun buildProducts(products: JSONArray): List<ItemQuantity> {
+        var productList = mutableListOf<ItemQuantity>()
         for (prodPos in 0 until products.length()) {
             val jsonObject = products.get(prodPos) as JSONObject
             val id = jsonObject.get("id")
             val quantity = jsonObject.get("quantity")
-            var product = Product((id as Number).toLong(), quantity as Int)
+            var product = ItemQuantity((id as Number).toLong(), quantity as Int)
             productList.add(product)
         }
 

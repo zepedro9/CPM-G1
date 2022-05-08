@@ -27,7 +27,7 @@ class CheckoutActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val total = intent.getFloatExtra("total", 0F)
-
+        println(total)
         // Send basket to server
         sendCheckoutRequest(total)
     }
@@ -35,6 +35,7 @@ class CheckoutActivity: AppCompatActivity() {
     private fun sendCheckoutRequest(total: Float){
         try{
             val basket = getBasket(total)
+            println("BASKET " + basket);
             Thread(Checkout(this, CHECKOUT_ADDRESS , basket)).start()
         } catch(err: Exception){
             Toast.makeText(applicationContext, err.message, Toast.LENGTH_LONG).show()
@@ -56,7 +57,6 @@ class CheckoutActivity: AppCompatActivity() {
 
         if(products.isEmpty())
             throw Exception("Empty basket")
-
         val basket = Basket(uuid, products.toList(), total.toString())
         val basketJson = Gson().toJson(basket)
         val signature = Cryptography().signContent(basketJson)
@@ -65,7 +65,7 @@ class CheckoutActivity: AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun generateQrCode(act: Activity, response: String) {
-        val jsonResponse = JSONOBject(response) 
+        val jsonResponse = JSONObject(response)
         val basketUUID = Cryptography().decrypt(jsonResponse.getString("message"))
         println("BASKET UUID = " + basketUUID)
 
