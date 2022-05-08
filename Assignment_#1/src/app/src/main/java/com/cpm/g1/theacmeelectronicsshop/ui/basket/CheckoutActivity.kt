@@ -69,7 +69,9 @@ class CheckoutActivity: AppCompatActivity() {
         val basketUUID = Cryptography().decrypt(jsonResponse.getString("message"))
         println("BASKET UUID = " + basketUUID)
 
-        // TODO: fragment with QRCode maybe?
-        println("TODO: GENERATE QR CODE")
+        val details = QRCodeFragment.newInstance(basketUUID)
+        supportFragmentManager.beginTransaction()
+            .add(android.R.id.content, details)
+            .commit()
     }
 }
