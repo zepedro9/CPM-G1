@@ -1,6 +1,5 @@
 package com.cpm.g1.theacmeelectronicsshop.ui.basket
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.database.Cursor
@@ -17,13 +16,7 @@ import androidx.fragment.app.FragmentManager
 import coil.imageLoader
 import coil.request.ImageRequest
 import com.cpm.g1.theacmeelectronicsshop.*
-import com.cpm.g1.theacmeelectronicsshop.dataClasses.UserLogin
-import com.cpm.g1.theacmeelectronicsshop.httpService.Login
-import com.cpm.g1.theacmeelectronicsshop.httpService.sendPostRequest
 import com.cpm.g1.theacmeelectronicsshop.ui.BasketHelper
-import com.google.gson.Gson
-import com.google.gson.JsonElement
-import org.json.JSONObject
 
 @RequiresApi(Build.VERSION_CODES.N)
 class BasketFragment : Fragment() {

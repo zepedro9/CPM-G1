@@ -45,7 +45,7 @@ class CheckoutActivity: AppCompatActivity() {
 
         cursor.moveToFirst()
         while(!cursor.isAfterLast) {
-            products.add(Product(cursor.getInt(0), cursor.getInt(1)))
+            products.add(Product(cursor.getLong(0), cursor.getInt(1)))
             cursor.moveToNext()
         }
         cursor.close()

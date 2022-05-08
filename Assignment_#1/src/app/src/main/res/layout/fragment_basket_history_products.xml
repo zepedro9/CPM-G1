@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_basket_history_products"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:fadingEdge="none"
     android:orientation="vertical"
-    tools:context=".ui.basket.BasketFragment">
+    tools:context=".ui.basketHistory.BasketHistoryProducts">
 
     <ListView
         android:id="@+id/basket_sv"
@@ -60,10 +61,5 @@
                 android:textSize="@dimen/product_thumbnail_text" />
         </LinearLayout>
 
-        <Button
-            android:id="@+id/checkout_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/checkout_text" />
     </LinearLayout>
 </RelativeLayout>

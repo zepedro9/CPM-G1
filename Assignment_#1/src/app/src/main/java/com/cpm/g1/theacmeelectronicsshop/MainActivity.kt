@@ -18,6 +18,7 @@ import org.json.JSONObject
 class MainActivity : AppCompatActivity() {
     // History fragment variables
     val historyBasket : ArrayList<Basket> = ArrayList();
+    val historyProducts: ArrayList<Product> = ArrayList();
     val adapter by lazy {BasketHistoryAdapter(this, historyBasket)}
 
     // Other variables
@@ -74,7 +75,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * Build the products list.
+     * Build the products list for basketHistory.
      */
     fun buildProducts(products: JSONArray): List<Product> {
         var productList = mutableListOf<Product>()
@@ -82,10 +83,18 @@ class MainActivity : AppCompatActivity() {
             val jsonObject = products.get(prodPos) as JSONObject
             val id = jsonObject.get("id")
             val quantity = jsonObject.get("quantity")
-            var product = Product(id as Int, quantity as Int)
+            var product = Product((id as Number).toLong(), quantity as Int)
             productList.add(product)
         }
 
         return productList.toList()
     }
+
+    fun buildBasketProducts(activity: Activity, response: String){
+        val jsonResponse = JSONObject(response)
+        println("RESPONSE")
+        println(response)
+    }
+
+
 }
