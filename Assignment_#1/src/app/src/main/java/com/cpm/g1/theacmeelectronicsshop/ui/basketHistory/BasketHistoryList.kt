@@ -1,5 +1,6 @@
 package com.cpm.g1.theacmeelectronicsshop.ui.basketHistory
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ListView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import com.cpm.g1.theacmeelectronicsshop.*
 import com.cpm.g1.theacmeelectronicsshop.dataClasses.basket.Basket
 import com.cpm.g1.theacmeelectronicsshop.httpService.GetHistory
@@ -46,27 +48,18 @@ class BasketHistoryList : Fragment() {
         listView?.onItemClickListener =
             AdapterView.OnItemClickListener { parent, view, position, id ->
                 val basket = (activity as MainActivity).historyBasket.get(position)
-                changeToBasketHistoryProducts(basket)
+                changeToProductDetails(basket)
                 println(basket)
             }
     }
 
-
-
-    /**
-     * Changes the view to a fragment that shows the items inside the history.
-     */
-    fun changeToBasketHistoryProducts(basket: Basket){
-        val tag : String? = BasketHistoryList::class.simpleName
-        println(tag)
-        val basketHistoryProducts = BasketHistoryProducts(basket)
-        val fragmentManager = (activity as MainActivity).supportFragmentManager
-        val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.container, basketHistoryProducts)
-        fragmentTransaction.addToBackStack(tag)
-        fragmentTransaction.commit()
-
+    fun changeToProductDetails(basket: Basket) {
+        val intent = Intent(context, ProductTransactionActivity::class.java).also {
+            it.putExtra("basket", basket)
+        }
+        startActivity(intent)
     }
+
 
 
 }

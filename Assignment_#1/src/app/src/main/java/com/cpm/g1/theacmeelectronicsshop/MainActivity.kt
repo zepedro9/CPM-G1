@@ -22,8 +22,7 @@ class MainActivity : AppCompatActivity() {
     val historyBasket: ArrayList<Basket> = ArrayList();
     val adapterBasket by lazy { BasketHistoryAdapter(this, historyBasket) }
 
-    val historyProducts: ArrayList<JSONObject> = ArrayList();
-    val adapterProducts by lazy { ProductHistoryAdapter(this, historyProducts) }
+
 
     // Other variables
     private lateinit var binding: ActivityAppBinding
@@ -101,17 +100,4 @@ class MainActivity : AppCompatActivity() {
         return productList.toList()
     }
 
-    fun buildBasketProducts(activity: Activity, response: String) {
-        val jsonResponse = JSONObject(response)
-        val products = jsonResponse.getJSONArray("products")
-        historyProducts.clear()
-        for (i in 0 until products.length()) {
-            val product = products.getJSONObject(i)
-            historyProducts.add(product)
-        }
-        println(historyProducts)
-        runOnUiThread {
-            adapterProducts.notifyDataSetChanged()
-        }
-    }
 }

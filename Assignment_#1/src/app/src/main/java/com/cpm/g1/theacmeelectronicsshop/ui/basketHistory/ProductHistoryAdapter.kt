@@ -8,12 +8,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import coil.imageLoader
 import coil.request.ImageRequest
-import com.cpm.g1.theacmeelectronicsshop.MainActivity
 import com.cpm.g1.theacmeelectronicsshop.R
 import org.json.JSONObject
 
 
-class ProductHistoryAdapter(val activity: MainActivity, val productsList: ArrayList<JSONObject>) :
+class ProductHistoryAdapter(val activity: ProductTransactionActivity, val productsList: ArrayList<JSONObject>) :
     ArrayAdapter<JSONObject>(activity, R.layout.product_history_row, productsList) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {

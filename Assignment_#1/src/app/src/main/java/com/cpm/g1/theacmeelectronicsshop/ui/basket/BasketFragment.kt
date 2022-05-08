@@ -60,7 +60,6 @@ class BasketFragment : Fragment() {
     }
 
     private fun onProductClick(id: Long){
-        parentFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
         val intent = Intent(context, ProductDetailsActivity::class.java).also{
             it.putExtra("pos", id.toString())
         }

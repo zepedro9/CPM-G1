@@ -2,21 +2,25 @@ package com.cpm.g1.theacmeelectronicsshop.ui.basketHistory
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.cpm.g1.theacmeelectronicsshop.ConfigHTTP
-import com.cpm.g1.theacmeelectronicsshop.MainActivity
 import com.cpm.g1.theacmeelectronicsshop.R
 import com.cpm.g1.theacmeelectronicsshop.dataClasses.basket.Basket
 import com.cpm.g1.theacmeelectronicsshop.httpService.GetProductsList
 
 
-class BasketHistoryProducts(val basket: Basket) : Fragment() {
+class BasketHistoryProducts() : Fragment() {
     val LIST_ADDRESS: String = "http://${ConfigHTTP.BASE_ADDRESS}:3000/api/products/list?"
+    lateinit var basket: Basket
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        basket = (arguments?.getSerializable("basket") as Basket?)!!
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,10 +34,10 @@ class BasketHistoryProducts(val basket: Basket) : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         (activity as AppCompatActivity?)!!.supportActionBar?.setDisplayHomeAsUpEnabled(true)
         val productsList = view.findViewById<ListView>(R.id.basket_sv)
-        productsList.adapter = (activity as MainActivity).adapterProducts
+        productsList.adapter = (activity as ProductTransactionActivity).adapterProducts
 
         val requestURI = buildProductListURI()
-        val mainActivity = activity as MainActivity
+        val mainActivity = activity as ProductTransactionActivity
         Thread(GetProductsList(mainActivity, requestURI)).start()
     }
 
@@ -48,6 +52,22 @@ class BasketHistoryProducts(val basket: Basket) : Fragment() {
             uri += "prod=" + product.id + "&"
         }
         return uri
+    }
+
+
+    companion object {
+        @JvmStatic
+        fun newInstance(basket: Basket) =
+            BasketHistoryProducts().apply {
+                arguments = Bundle().apply {
+                    putSerializable("basket", basket)
+                }
+            }
+
+        fun newInstance(bundle: Bundle): BasketHistoryProducts{
+            val basket = bundle.getSerializable("basket") as Basket
+            return newInstance(basket)
+        }
     }
 
 }

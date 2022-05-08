@@ -6,6 +6,7 @@ import com.cpm.g1.theacmeelectronicsshop.LoginActivity
 import com.cpm.g1.theacmeelectronicsshop.MainActivity
 import com.cpm.g1.theacmeelectronicsshop.readStream
 import com.cpm.g1.theacmeelectronicsshop.ui.basket.CheckoutActivity
+import com.cpm.g1.theacmeelectronicsshop.ui.basketHistory.ProductTransactionActivity
 
 import java.io.*
 import java.net.HttpURLConnection
@@ -103,7 +104,7 @@ class GetHistory(
  * Get's a list of products.
  */
 class GetProductsList(
-    private val act: MainActivity?,
+    private val act: ProductTransactionActivity?,
     private val uri: String,
 ) : Runnable {
     override fun run() {
