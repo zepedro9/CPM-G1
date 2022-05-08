@@ -43,7 +43,7 @@ class LoginFragment : Fragment() {
         val password = view.findViewById<TextInputEditText>(R.id.login_password_ed).text.toString()
         val userJson = Gson().toJson(UserLogin(email, password))
         val address = "http://" + ConfigHTTP.BASE_ADDRESS + ":3000/api/auth/signin"
-        Thread(Login(activity as LoginActivity?, address , userJson)).start()
+        Thread(Login(activity as LoginActivity, address , userJson)).start()
     }
 
     /**

@@ -39,9 +39,9 @@ class LoginActivity : AppCompatActivity() {
     /**
      * Changes the LoginFragment to the RegisterFragment
      */
-    fun changeToRegisterFragment(activity: Activity?, response: String) {
+    fun changeToRegisterFragment(success: Boolean, response: String) {
         val loginFragment = LoginFragment()
-        val fragmentManager = (activity as LoginActivity).supportFragmentManager
+        val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.main_fragment_container, loginFragment)
         fragmentTransaction.addToBackStack(null)
@@ -51,19 +51,19 @@ class LoginActivity : AppCompatActivity() {
     /**
      * Changes the LoginActivity to MainActivity
      */
-    fun toMainActivity(act: Activity, response: String) {
+    fun toMainActivity(success: Boolean, response: String) {
         val jsonResponse = JSONObject(response)
-        saveUuid(act, jsonResponse.getString("uuid"))
-        act.startActivity(Intent(act, MainActivity::class.java))
+        saveUuid(jsonResponse.getString("uuid"))
+        startActivity(Intent(this, MainActivity::class.java))
     }
 
     /**
      * Saves the uuid in the EncryptedSharedPreferences.
      */
     // TODO - maybe save encrypted or something
-    private fun saveUuid(act: Activity, uuid: String){
+    private fun saveUuid(uuid: String){
         try {
-            val sharedPreferences = getEncryptedSharedPreferences(act.applicationContext)
+            val sharedPreferences = getEncryptedSharedPreferences(applicationContext)
             with (sharedPreferences.edit()) {
                 putString("uuid", uuid)
                 apply()

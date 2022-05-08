@@ -45,7 +45,7 @@ class ProductTransactionActivity : AppCompatActivity() {
     }
 
 
-    fun buildBasketProducts(activity: Activity, response: String) {
+    fun buildBasketProducts(success: Boolean, response: String) {
         val jsonResponse = JSONObject(response)
         val products = jsonResponse.getJSONArray("products")
         historyProducts.clear()

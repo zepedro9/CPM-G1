@@ -59,7 +59,7 @@ class MainActivity : AuthenticatedUserActivity() {
     /**
      * Updates the history fragment content in the BasketHistory fragment.
      */
-    fun updateHistoryAdapter(activity: Activity, response: String) {
+    fun updateHistoryAdapter(success: Boolean, response: String) {
         val jsonResponse = JSONArray(response)
         historyBasket.clear()
         for (jsonPos in (0 until jsonResponse.length())) {

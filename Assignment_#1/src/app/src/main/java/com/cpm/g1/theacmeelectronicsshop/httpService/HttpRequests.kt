@@ -20,10 +20,9 @@ import java.net.URL
 fun sendRequest(
 // TODO: combine functions and show toast when errors occur or something
 // If response code is not 200 read the error message from the server(must add message to all server requests)
-    act: Activity,
     uri: String,
     body: String = "",
-    onSuccess: (Activity, String) -> Unit,
+    callback: (Boolean, String) -> Unit,
     type: String = "POST"
 ) {
     val url: URL
@@ -37,7 +36,6 @@ fun sendRequest(
         urlConnection.useCaches = false
 
         if (type != "GET") {
-            println("here")
             urlConnection.doOutput = true
             urlConnection.requestMethod = type
             val outputStream = DataOutputStream(urlConnection.outputStream)
@@ -48,43 +46,13 @@ fun sendRequest(
         }
         val responseCode = urlConnection.responseCode
 
-        if (responseCode == 200) {
-            val response = readStream(urlConnection.inputStream)
-            onSuccess(act, response)
-            println("[SUC] message sent!")
-        }
-        println("[RESPONSE CODE] " + responseCode)
-    } catch (err: Exception) {
-        Log.e("ERR",  err.toString());
-    } finally {
-        urlConnection?.disconnect()
-    }
-}
-
-fun sendGetRequest(
-    uri: String,
-    callback: (Boolean, JSONObject) -> Unit
-) {
-    val url: URL
-    var urlConnection: HttpURLConnection? = null
-    try {
-        url = URL(uri)
-
-        // Configure POST request
-        urlConnection = url.openConnection() as HttpURLConnection
-        urlConnection.requestMethod = "GET"
-        urlConnection.setRequestProperty("Content-Type", "application/json")
-        urlConnection.doInput = true
-        urlConnection.useCaches = false
-
-        // Send request
         val success = urlConnection.responseCode == 200
         val response = readStream(urlConnection.inputStream)
-        val jsonResponse = JSONObject(response)
-        callback(success, jsonResponse)
+        callback(success, response)
 
+        println("[RESPONSE CODE] $responseCode")
     } catch (err: Exception) {
-        callback(false, JSONObject(hashMapOf("message" to "Error connecting to server: ${err.message}").toString()))
+        Log.e("ERR",  err.toString());
     } finally {
         urlConnection?.disconnect()
     }
@@ -93,51 +61,51 @@ fun sendGetRequest(
 /**
  * Makes a signup request to the server.
  */
-class SignUp(private val act: LoginActivity?, private val uri: String, val body: String) :
+class SignUp(private val act: LoginActivity, private val uri: String, val body: String) :
     Runnable {
     override fun run() {
-        sendRequest(act as Activity, uri, body, act::changeToRegisterFragment)
+        sendRequest( uri, body, act::changeToRegisterFragment)
     }
 }
 
 /**
  * Makes a signin request to the server.
  */
-class Login(private val act: LoginActivity?, private val uri: String, private val body: String) :
+class Login(private val act: LoginActivity, private val uri: String, private val body: String) :
     Runnable {
     override fun run() {
-        sendRequest(act as Activity, uri, body, act::toMainActivity)
+        sendRequest(uri, body, act::toMainActivity)
     }
 }
 
 /**
  * Makes a checkout request to the server.
  */
-class Checkout(private val act: CheckoutActivity?, private val uri: String, val basket: String) : Runnable {
+class Checkout(private val act: CheckoutActivity, private val uri: String, val basket: String) : Runnable {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun run() {
-        sendRequest(act as Activity, uri, basket, act::generateQrCode)
+        sendRequest(uri, basket, act::generateQrCode)
     }
 }
 
 /**
  * Request details about basket products to the server.
  */
-class InitBasket(private val uri: String, private val callback: (Boolean, JSONObject) -> Unit) : Runnable {
+class InitBasket(private val uri: String, private val callback: (Boolean, String) -> Unit) : Runnable {
     override fun run() {
-        sendGetRequest(uri, callback)
+        sendRequest(uri, callback=callback, type="GET")
     }
 }
 /**
  * Request the history of purchases.
  */
 class GetHistory(
-    private val act: MainActivity?,
+    private val act: MainActivity,
     private val uri: String,
     private val body: String
 ) : Runnable {
     override fun run() {
-        sendRequest(act as Activity, uri, body, act::updateHistoryAdapter)
+        sendRequest(uri, body, act::updateHistoryAdapter)
     }
 }
 
@@ -145,11 +113,11 @@ class GetHistory(
  * Get's a list of products.
  */
 class GetProductsList(
-    private val act: ProductTransactionActivity?,
+    private val act: ProductTransactionActivity,
     private val uri: String,
 ) : Runnable {
     override fun run() {
-        sendRequest(act as Activity, uri, "", act::buildBasketProducts, "GET")
+        sendRequest(uri,  callback= act::buildBasketProducts, type= "GET")
     }
 }
 

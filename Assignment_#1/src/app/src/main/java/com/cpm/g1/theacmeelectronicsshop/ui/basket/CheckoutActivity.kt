@@ -64,7 +64,7 @@ class CheckoutActivity: AppCompatActivity() {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun generateQrCode(act: Activity, response: String) {
+    fun generateQrCode(success: Boolean, response: String) {
         val jsonResponse = JSONObject(response)
         val basketUUID = Cryptography().decrypt(jsonResponse.getString("message"))
         println("BASKET UUID = " + basketUUID)

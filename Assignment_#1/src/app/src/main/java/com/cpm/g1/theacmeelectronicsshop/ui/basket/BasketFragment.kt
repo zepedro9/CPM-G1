@@ -76,7 +76,8 @@ class BasketFragment : Fragment() {
         itemQuantities.clear()
     }
 
-    private fun initBasket(successFlag: Boolean, jsonResponse: JSONObject) {
+    private fun initBasket(successFlag: Boolean, response: String) {
+        val jsonResponse = JSONObject(response)
         activity?.runOnUiThread {
             if (!successFlag) {
                 Toast.makeText(

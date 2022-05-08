@@ -63,7 +63,7 @@ class RegisterFragment : Fragment() {
             val user = createUserObj(view)
             val userJson = Gson().toJson(user)
             val address = "http://" + ConfigHTTP.BASE_ADDRESS + ":3000/api/auth/signup"
-            Thread(SignUp(activity as LoginActivity?, address , userJson)).start()
+            Thread(SignUp(activity as LoginActivity, address , userJson)).start()
         }
     }
 
