@@ -65,4 +65,5 @@
     <string name="_3">3</string>
     <string name="euro_symbol">€</string>
     <string name="logout">Logout</string>
+    <string name="receipt">Here is your receipt:</string>
 </resources>
