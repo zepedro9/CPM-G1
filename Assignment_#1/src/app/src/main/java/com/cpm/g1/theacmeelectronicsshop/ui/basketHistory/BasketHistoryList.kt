@@ -41,7 +41,7 @@ class BasketHistoryList : Fragment() {
 
     fun setupAdapter() {
         val listView = view?.findViewById<ListView>(R.id.basket_sv)
-        listView?.adapter = (activity as MainActivity).adapter
+        listView?.adapter = (activity as MainActivity).adapterBasket
 
         listView?.onItemClickListener =
             AdapterView.OnItemClickListener { parent, view, position, id ->
@@ -57,10 +57,13 @@ class BasketHistoryList : Fragment() {
      * Changes the view to a fragment that shows the items inside the history.
      */
     fun changeToBasketHistoryProducts(basket: Basket){
+        val tag : String? = BasketHistoryList::class.simpleName
+        println(tag)
         val basketHistoryProducts = BasketHistoryProducts(basket)
         val fragmentManager = (activity as MainActivity).supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.container, basketHistoryProducts)
+        fragmentTransaction.addToBackStack(tag)
         fragmentTransaction.commit()
 
     }

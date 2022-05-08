@@ -15,14 +15,6 @@
         android:layout_above="@+id/basket_bottom"
         android:layout_marginTop="9dp" />
 
-    <TextView
-        android:id="@+id/empty_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/basket_bottom"
-        android:fontFamily="@font/roboto"
-        android:padding="@dimen/padding_low"
-        android:text="@string/empty_msg" />
 
     <LinearLayout
         android:id="@+id/basket_bottom"

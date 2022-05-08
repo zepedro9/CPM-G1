@@ -1,25 +1,29 @@
 package com.cpm.g1.theacmeelectronicsshop
 
 import android.app.Activity
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
-import androidx.navigation.ui.setupWithNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import com.cpm.g1.theacmeelectronicsshop.dataClasses.basket.Basket
 import com.cpm.g1.theacmeelectronicsshop.dataClasses.basket.Product
 import com.cpm.g1.theacmeelectronicsshop.databinding.ActivityAppBinding
 import com.cpm.g1.theacmeelectronicsshop.ui.basketHistory.BasketHistoryAdapter
+import com.cpm.g1.theacmeelectronicsshop.ui.basketHistory.ProductHistoryAdapter
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import org.json.JSONArray
 import org.json.JSONObject
 
 class MainActivity : AppCompatActivity() {
     // History fragment variables
-    val historyBasket : ArrayList<Basket> = ArrayList();
-    val historyProducts: ArrayList<Product> = ArrayList();
-    val adapter by lazy {BasketHistoryAdapter(this, historyBasket)}
+    val historyBasket: ArrayList<Basket> = ArrayList();
+    val adapterBasket by lazy { BasketHistoryAdapter(this, historyBasket) }
+
+    val historyProducts: ArrayList<JSONObject> = ArrayList();
+    val adapterProducts by lazy { ProductHistoryAdapter(this, historyProducts) }
 
     // Other variables
     private lateinit var binding: ActivityAppBinding
@@ -44,33 +48,40 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
     }
 
+    override fun onBackPressed() {
+        if (fragmentManager.backStackEntryCount > 0){
+            fragmentManager.popBackStack()
 
+        } else {
+            super.onBackPressed()
+        }
+    }
     /**
      * Updates the history fragment content in the BasketHistory fragment.
      */
     fun updateHistoryAdapter(activity: Activity, response: String) {
-            val jsonResponse = JSONArray(response)
-            historyBasket.clear()
-            for (jsonPos in (0 until jsonResponse.length())) {
-                val jsonObject = jsonResponse.get(jsonPos) as JSONObject
-                val products = jsonObject.get("products") as JSONArray
-                val productsList: List<Product> = buildProducts(products)
+        val jsonResponse = JSONArray(response)
+        historyBasket.clear()
+        for (jsonPos in (0 until jsonResponse.length())) {
+            val jsonObject = jsonResponse.get(jsonPos) as JSONObject
+            val products = jsonObject.get("products") as JSONArray
+            val productsList: List<Product> = buildProducts(products)
 
-                val total = jsonObject.get("total")
-                val date = jsonObject.get("date")
-                val hour = jsonObject.get("hour")
+            val total = jsonObject.get("total")
+            val date = jsonObject.get("date")
+            val hour = jsonObject.get("hour")
 
-                val basket = Basket(
-                    products = productsList,
-                    total = total as String,
-                    date = date as String?,
-                    hour = hour as String?
-                )
-                historyBasket.add(basket)
-            }
+            val basket = Basket(
+                products = productsList,
+                total = total as String,
+                date = date as String?,
+                hour = hour as String?
+            )
+            historyBasket.add(basket)
+        }
 
         runOnUiThread {
-            adapter.notifyDataSetChanged()
+            adapterBasket.notifyDataSetChanged()
         }
     }
 
@@ -79,7 +90,7 @@ class MainActivity : AppCompatActivity() {
      */
     fun buildProducts(products: JSONArray): List<Product> {
         var productList = mutableListOf<Product>()
-        for (prodPos in 0 until products.length()){
+        for (prodPos in 0 until products.length()) {
             val jsonObject = products.get(prodPos) as JSONObject
             val id = jsonObject.get("id")
             val quantity = jsonObject.get("quantity")
@@ -90,11 +101,17 @@ class MainActivity : AppCompatActivity() {
         return productList.toList()
     }
 
-    fun buildBasketProducts(activity: Activity, response: String){
+    fun buildBasketProducts(activity: Activity, response: String) {
         val jsonResponse = JSONObject(response)
-        println("RESPONSE")
-        println(response)
+        val products = jsonResponse.getJSONArray("products")
+        historyProducts.clear()
+        for (i in 0 until products.length()) {
+            val product = products.getJSONObject(i)
+            historyProducts.add(product)
+        }
+        println(historyProducts)
+        runOnUiThread {
+            adapterProducts.notifyDataSetChanged()
+        }
     }
-
-
 }

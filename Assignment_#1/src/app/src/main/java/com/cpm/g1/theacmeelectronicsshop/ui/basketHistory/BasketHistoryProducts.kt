@@ -2,17 +2,18 @@ package com.cpm.g1.theacmeelectronicsshop.ui.basketHistory
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.TextView
+import android.widget.ListView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.cpm.g1.theacmeelectronicsshop.ConfigHTTP
 import com.cpm.g1.theacmeelectronicsshop.MainActivity
 import com.cpm.g1.theacmeelectronicsshop.R
 import com.cpm.g1.theacmeelectronicsshop.dataClasses.basket.Basket
-import com.cpm.g1.theacmeelectronicsshop.dataClasses.basket.Product
 import com.cpm.g1.theacmeelectronicsshop.httpService.GetProductsList
+
 
 class BasketHistoryProducts(val basket: Basket) : Fragment() {
     val LIST_ADDRESS: String = "http://${ConfigHTTP.BASE_ADDRESS}:3000/api/products/list?"
@@ -26,12 +27,16 @@ class BasketHistoryProducts(val basket: Basket) : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        (activity as AppCompatActivity?)!!.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        val productsList = view.findViewById<ListView>(R.id.basket_sv)
+        productsList.adapter = (activity as MainActivity).adapterProducts
+
         val requestURI = buildProductListURI()
-        println(requestURI)
         val mainActivity = activity as MainActivity
         Thread(GetProductsList(mainActivity, requestURI)).start()
-        super.onViewCreated(view, savedInstanceState)
     }
+
 
     /**
      * Function that adds the products as queries to the request of a list of
@@ -45,17 +50,4 @@ class BasketHistoryProducts(val basket: Basket) : Fragment() {
         return uri
     }
 
-    inner class ProductAdapter(productsList: ArrayList<ProductAdapter>) :
-        ArrayAdapter<Product>(activity!!, R.layout.product_history_row) {
-        override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-            val row = convertView?: activity!!.layoutInflater.inflate(
-                R.layout.product_history_row,
-                parent,
-                false
-            )
-            val product = (activity as MainActivity).historyProducts[position]
-
-            return row
-        }
-    }
 }
