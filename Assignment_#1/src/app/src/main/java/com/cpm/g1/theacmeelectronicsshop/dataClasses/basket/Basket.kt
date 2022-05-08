@@ -5,8 +5,14 @@ import java.io.Serializable
 data class Basket(
     var userUUID: String = "",
     var products: List<Product>,
-    var total: String,
     var date: String? = "",
     var hour: String? = ""
+): Serializable {
+}
+
+data class Basket(
+    var userUUID: String,
+    var products: List<ItemQuantity>,
+    var total: String
 ): Serializable {
 }

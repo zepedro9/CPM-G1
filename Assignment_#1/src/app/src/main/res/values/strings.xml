@@ -22,7 +22,7 @@
     <string name="price">Price</string>
     <string name="product_image_content_description">Product Image</string>
     <string name="total_label">Total</string>
-    <string name="total">0</string>
+    <string name="total">%1$.2f€</string>
     <!-- REGISTER -->
     <string name="reg_name">Name</string>
     <string name="reg_nif">NIF</string>
@@ -64,4 +64,5 @@
     <string name="num_items">Num. Items</string>
     <string name="_3">3</string>
     <string name="euro_symbol">€</string>
+    <string name="logout">Logout</string>
 </resources>

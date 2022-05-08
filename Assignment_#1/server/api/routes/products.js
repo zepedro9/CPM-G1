@@ -4,7 +4,7 @@ const router = express.Router();
 
 router.get("/", async (req, res) => {
   const products = await Product.find();
-  res.send(products);
+  return res.send(products); 
 });
 
 router.get("/list", async (req, res) => {
@@ -27,7 +27,7 @@ router.get("/list", async (req, res) => {
 
 router.get("/:id", async (req, res) => {
   const products = await Product.find({ id: req.params.id });
-  res.send(products);
+  return res.send(products);
 });
 
 

@@ -18,3 +18,13 @@ fun getEncryptedSharedPreferences(context: Context): SharedPreferences {
         EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
     )
 }
+
+fun getUserUUID(context: Context): String {
+    val sharedPreferences = getEncryptedSharedPreferences(context)
+    return sharedPreferences.getString("uuid", "") ?: ""
+}
+
+fun clearUserUUID(context: Context) {
+    val sharedPreferences = getEncryptedSharedPreferences(context)
+    sharedPreferences.edit().remove("uuid").apply()
+}

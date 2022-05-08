@@ -3,13 +3,17 @@ package com.cpm.g1.theacmeelectronicsshop
 import android.os.Build
 import android.security.KeyPairGeneratorSpec
 import androidx.annotation.RequiresApi
+import okio.Utf8
 import java.io.Serializable
 import java.math.BigInteger
+import java.nio.charset.Charset
+import java.nio.charset.StandardCharsets
 import java.security.KeyPairGenerator
 import java.security.KeyStore
 import java.security.Signature
 import java.security.interfaces.RSAPrivateKey
 import java.util.*
+import javax.crypto.Cipher
 import javax.security.auth.x500.X500Principal
 
 class Cryptography {
@@ -82,24 +86,6 @@ class Cryptography {
         return ""
     }
 
-    fun getPrivKeyExponent(): ByteArray {
-        var exponent = ByteArray(0)
-        try {
-            // Retrieve the entry in the keystore
-            val entry = KeyStore.getInstance(KeyProperties.ANDROID_KEYSTORE).run {
-                load(null)
-                getEntry(KeyProperties.KEY_ALIAS, null)
-            }
-
-            val privateKey = (entry as KeyStore.PrivateKeyEntry).privateKey
-            exponent = (privateKey as RSAPrivateKey).privateExponent.toByteArray()
-        } catch (ex: Exception) {
-            println(ex)
-
-        }
-        return exponent
-    }
-
     fun signContent(content: String): String {
         return try {
             val entry = KeyStore.getInstance(KeyProperties.ANDROID_KEYSTORE).run {
@@ -117,6 +103,24 @@ class Cryptography {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun decrypt(content: String) : String {
+        return try {
+            val entry = KeyStore.getInstance(KeyProperties.ANDROID_KEYSTORE).run {
+                load(null)
+                getEntry(KeyProperties.KEY_ALIAS, null)
+            }
+            val privateKey = (entry as KeyStore.PrivateKeyEntry).privateKey
+            val cipher: Cipher = Cipher.getInstance(KeyProperties.ENC_ALGO)
+            cipher.init(Cipher.DECRYPT_MODE, privateKey)
+            val clear: ByteArray = cipher.doFinal(Base64.getDecoder().decode(content))
+            clear.toString(StandardCharsets.UTF_8)
+        } catch (e: Exception) {
+            println(e)
+            ""
+        }
+    }
+
     fun byteArrayToHex(ba: ByteArray): String {
         val sb = StringBuilder(ba.size * 2)
         for (b in ba) sb.append(String.format("%02x", b))
@@ -128,5 +132,4 @@ class Cryptography {
         val footline = "\n-----END PUBLIC KEY-----\n"
         return headline + key + footline
     }
-
 }

@@ -7,7 +7,7 @@
     "image_url": "http://127.0.0.1:3000/api/images/61234567890.jpg"
 },
 {
-    "id": 48413778121,
+    "id": 12853478357,
     "name": "Ipad Air", 
     "brand": "Apple", 
     "price": 709,
@@ -15,7 +15,7 @@
     "image_url": "http://127.0.0.1:3000/api/images/48413778121.jpg"
 },
 {
-    "id": 89533482245,
+    "id": 83248709823,
     "name": "Schwinn Bonafide Mens Mountain Bike", 
     "brand": "Apple", 
     "price": 339.99,

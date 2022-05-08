@@ -17,7 +17,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import org.json.JSONArray
 import org.json.JSONObject
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AuthenticatedUserActivity() {
     // History fragment variables
     val historyBasket: ArrayList<Basket> = ArrayList();
     val adapterBasket by lazy { BasketHistoryAdapter(this, historyBasket) }

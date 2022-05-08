@@ -2,14 +2,18 @@ package com.cpm.g1.theacmeelectronicsshop.ui.basket
 
 import android.app.Activity
 import android.database.Cursor
+import android.os.Build
 import android.os.Bundle
+import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.cpm.g1.theacmeelectronicsshop.ConfigHTTP
 import com.cpm.g1.theacmeelectronicsshop.Cryptography
 import com.cpm.g1.theacmeelectronicsshop.dataClasses.basket.Basket
-import com.cpm.g1.theacmeelectronicsshop.dataClasses.basket.Product
+import com.cpm.g1.theacmeelectronicsshop.dataClasses.basket.BasketItem
+import com.cpm.g1.theacmeelectronicsshop.dataClasses.basket.ItemQuantity
 import com.cpm.g1.theacmeelectronicsshop.dataClasses.basket.SignedBasket
-import com.cpm.g1.theacmeelectronicsshop.getEncryptedSharedPreferences
+import com.cpm.g1.theacmeelectronicsshop.getUserUUID
 import com.cpm.g1.theacmeelectronicsshop.httpService.Checkout
 import com.cpm.g1.theacmeelectronicsshop.ui.BasketHelper
 import com.google.gson.Gson
@@ -22,43 +26,49 @@ class CheckoutActivity: AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val total = intent.getFloatExtra("total", 0F)
 
         // Send basket to server
-        sendCheckoutRequest()
+        sendCheckoutRequest(total)
     }
 
-    private fun sendCheckoutRequest(){
+    private fun sendCheckoutRequest(total: Float){
         try{
-            val basket = getBasket()
+            val basket = getBasket(total)
             Thread(Checkout(this, CHECKOUT_ADDRESS , basket)).start()
         } catch(err: Exception){
-            println(err.toString())
+            Toast.makeText(applicationContext, err.message, Toast.LENGTH_LONG).show()
+            finish()
         }
     }
 
-    private fun getBasket() : String {
-        val sharedPreferences = getEncryptedSharedPreferences(applicationContext)
-        val uuid = sharedPreferences.getString("uuid", "") ?: throw Exception("Missing uuid")
-        val cursor: Cursor = dbHelper.getBasketProducts()
-        val total = dbHelper.getBasketTotal()
-        val products = mutableListOf<Product>()
+    private fun getBasket(total: Float) : String {
+        val uuid = getUserUUID(applicationContext)
+        val cursor: Cursor = dbHelper.getBasket(getUserUUID(this))
+        val products = mutableListOf<ItemQuantity>()
 
         cursor.moveToFirst()
         while(!cursor.isAfterLast) {
-            products.add(Product(cursor.getLong(0), cursor.getInt(1)))
+            products.add(ItemQuantity(cursor.getLong(0), cursor.getInt(1)))
             cursor.moveToNext()
         }
         cursor.close()
 
+        if(products.isEmpty())
+            throw Exception("Empty basket")
+
         val basket = Basket(uuid, products.toList(), total.toString())
         val basketJson = Gson().toJson(basket)
-        println(basketJson)
         val signature = Cryptography().signContent(basketJson)
         return Gson().toJson(SignedBasket(basket, signature))
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun generateQrCode(act: Activity, response: String) {
-        val jsonResponse = JSONObject(response)
+        val jsonResponse = JSONOBject(response) 
+        val basketUUID = Cryptography().decrypt(jsonResponse.getString("message"))
+        println("BASKET UUID = " + basketUUID)
+
         // TODO: fragment with QRCode maybe?
         println("TODO: GENERATE QR CODE")
     }

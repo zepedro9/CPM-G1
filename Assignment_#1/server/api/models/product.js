@@ -5,7 +5,8 @@ const Product  = mongoose.model('Product', mongoose.Schema({
         name: String,
         brand: String, 
         price: Number,
-        description: String
+        description: String,
+        image_url: String
     }));
 
 exports.Product = Product; 
