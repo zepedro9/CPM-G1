@@ -14,6 +14,7 @@ class ProductTransactionActivity : AppCompatActivity() {
 
     val historyProducts: ArrayList<JSONObject> = ArrayList();
     val adapterProducts by lazy { ProductHistoryAdapter(this, historyProducts) }
+    lateinit var basket: Basket
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

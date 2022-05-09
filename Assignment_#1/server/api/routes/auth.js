@@ -4,7 +4,14 @@ const bcrypt = require('bcrypt');
 const router = express.Router();
 
 router.post('/signup', async (req, res) => {
-    try {
+
+    try { 
+        // Checking if the user is already registered. 
+        let isRegisteredUser = await User.findOne({ email: req.body.email}); 
+        console.log(isRegisteredUser); 
+        if(isRegisteredUser) return res.status(409).send({"message": "The user is already registered"});
+        
+        // Saving and encrypting password. 
         let hashedPassword = await encryptHash(req.body.password);
         let user = new User(
             {
@@ -16,7 +23,7 @@ router.post('/signup', async (req, res) => {
             if (err) return res.status(400).send({message: err})
             console.log("User registered with success!");
         });
-
+        
         return res.status(200).send({
             message: "Registered with success!", 
         });   
@@ -28,7 +35,8 @@ router.post('/signup', async (req, res) => {
 router.post('/signin', async (req, res) => {
     // TODO: verify all required data exists
     try {
-        let user = await User.findOne({ email: req.body.email});
+        // Checking if registered user.
+        let user = await User.findOne({ email: req.body.email}); 
         if(!user) return res.status(400).send({"message": "Uknown user"})
 
         if (!(await bcrypt.compare(req.body.password, user.password)))
@@ -48,5 +56,6 @@ router.post('/signin', async (req, res) => {
 const encryptHash = async (password) => {
     return await bcrypt.hash(password, 10);
 }
+
 
 module.exports = router; 

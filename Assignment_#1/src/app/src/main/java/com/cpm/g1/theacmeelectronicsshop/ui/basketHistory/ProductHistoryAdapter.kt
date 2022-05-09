@@ -9,6 +9,7 @@ import android.widget.TextView
 import coil.imageLoader
 import coil.request.ImageRequest
 import com.cpm.g1.theacmeelectronicsshop.R
+import com.cpm.g1.theacmeelectronicsshop.dataClasses.basket.Basket
 import org.json.JSONObject
 
 
@@ -23,11 +24,16 @@ class ProductHistoryAdapter(val activity: ProductTransactionActivity, val produc
         )
         try {
             val product = productsList[position]
-            println(R.id.name_text)
-            println(R.id.brand_text)
+            val productId = product.get("id")
+
+            val basket = (activity as ProductTransactionActivity).basket
+            val itemQuantity = getQuantity(basket, productId as Long).toString()
+            println(itemQuantity)
             row.findViewById<TextView>(R.id.name_text).text = product.getString("name")
             row.findViewById<TextView>(R.id.brand_text).text = product.getString("brand")
             row.findViewById<TextView>(R.id.price_text).text = product.getString("price") + " €"
+            row.findViewById<TextView>(R.id.quantity_value).text = itemQuantity
+
             val image = row.findViewById<ImageView>(R.id.image)
 
             image!!.visibility = View.VISIBLE
@@ -42,5 +48,16 @@ class ProductHistoryAdapter(val activity: ProductTransactionActivity, val produc
 
         }
         return row
+    }
+
+    /**
+     * Get's the quantity of a product.
+     */
+    fun getQuantity(basket: Basket, productId: Long): Int {
+        for (itemQuantity in basket.products) {
+            if (itemQuantity.id == productId)
+                return itemQuantity.quantity
+        }
+        return 0
     }
 }

@@ -9,6 +9,7 @@
     tools:context=".ui.basketHistory.BasketHistoryProducts">
 
     <ListView
+        android:layout_margin="10dp"
         android:id="@+id/basket_sv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

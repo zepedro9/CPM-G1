@@ -66,4 +66,6 @@
     <string name="euro_symbol">€</string>
     <string name="logout">Logout</string>
     <string name="receipt">Here is your receipt:</string>
+    <string name="quantity">Quantity</string>
+    <string name="_0">0</string>
 </resources>
