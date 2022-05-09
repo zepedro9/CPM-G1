@@ -3,6 +3,7 @@ package com.cpm.g1.theacmeelectronicsshop
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
@@ -27,7 +28,7 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         // Check for old user
-        if(getUserUUID(applicationContext) != "")
+        if (getUserUUID(applicationContext) != "")
             startActivity(Intent(applicationContext, MainActivity::class.java))
 
         // Add fragment
@@ -40,12 +41,18 @@ class LoginActivity : AppCompatActivity() {
      * Changes the LoginFragment to the RegisterFragment
      */
     fun changeToRegisterFragment(success: Boolean, response: String) {
-        val loginFragment = LoginFragment()
-        val fragmentManager = supportFragmentManager
-        val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.main_fragment_container, loginFragment)
-        fragmentTransaction.addToBackStack(null)
-        fragmentTransaction.commit();
+        if (!success) {
+            runOnUiThread {
+                Toast.makeText(this, "This email is already registered", Toast.LENGTH_LONG).show()
+            }
+        } else {
+            val loginFragment = LoginFragment()
+            val fragmentManager = supportFragmentManager
+            val fragmentTransaction = fragmentManager.beginTransaction()
+            fragmentTransaction.replace(R.id.main_fragment_container, loginFragment)
+            fragmentTransaction.addToBackStack(null)
+            fragmentTransaction.commit();
+        }
     }
 
     /**
@@ -61,14 +68,14 @@ class LoginActivity : AppCompatActivity() {
      * Saves the uuid in the EncryptedSharedPreferences.
      */
     // TODO - maybe save encrypted or something
-    private fun saveUuid(uuid: String){
+    private fun saveUuid(uuid: String) {
         try {
             val sharedPreferences = getEncryptedSharedPreferences(applicationContext)
-            with (sharedPreferences.edit()) {
+            with(sharedPreferences.edit()) {
                 putString("uuid", uuid)
                 apply()
             }
-        } catch(err: Exception){
+        } catch (err: Exception) {
             println(err);
         }
     }
