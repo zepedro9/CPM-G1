@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="@font/roboto_medium"
-        android:layout_marginTop="@dimen/padding_highest"
+        android:layout_marginTop="@dimen/padding_veryhigh"
         android:paddingBottom="@dimen/padding_low"
         android:text="@string/receipt"
         android:textAlignment="center"
