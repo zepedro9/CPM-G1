@@ -3,4 +3,6 @@
     <string name="scan_receipt">Scan receipt</string>
     <string name="acme">ACME</string>
     <string name="shop">shop</string>
+    <string name="scan_cancelled">The scan was cancelled</string>
+    <string name="scan_failed">The scan failed</string>
 </resources>
