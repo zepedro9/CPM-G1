@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.cpm.g1.theacmeelectronicsshop.ConfigHTTP
@@ -36,12 +37,18 @@ class BasketHistoryProducts() : Fragment() {
         (activity as AppCompatActivity?)!!.supportActionBar?.setDisplayHomeAsUpEnabled(true)
         val productsList = view.findViewById<ListView>(R.id.basket_sv)
         productsList.adapter = (activity as ProductTransactionActivity).adapterProducts
-
         val requestURI = buildProductListURI()
         val mainActivity = activity as ProductTransactionActivity
         Thread(GetProductsList(mainActivity, requestURI)).start()
+        setTotal(view)
     }
 
+    /**
+     * Set the total value of the purchase in the view.
+     */
+    fun setTotal(view: View){
+        view.findViewById<TextView>(R.id.total).text = (activity as ProductTransactionActivity).basket.total.toString() + " €"
+    }
 
     /**
      * Function that adds the products as queries to the request of a list of
