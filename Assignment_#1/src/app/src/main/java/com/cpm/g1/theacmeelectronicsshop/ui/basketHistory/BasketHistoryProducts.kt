@@ -10,16 +10,17 @@ import androidx.fragment.app.Fragment
 import com.cpm.g1.theacmeelectronicsshop.ConfigHTTP
 import com.cpm.g1.theacmeelectronicsshop.R
 import com.cpm.g1.theacmeelectronicsshop.dataClasses.basket.Basket
+import com.cpm.g1.theacmeelectronicsshop.dataClasses.basket.Product
 import com.cpm.g1.theacmeelectronicsshop.httpService.GetProductsList
 
 
 class BasketHistoryProducts() : Fragment() {
     val LIST_ADDRESS: String = "http://${ConfigHTTP.BASE_ADDRESS}:3000/api/products/list?"
-    lateinit var basket: Basket
-
+    lateinit var productTransActivity: ProductTransactionActivity
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        basket = (arguments?.getSerializable("basket") as Basket?)!!
+        productTransActivity = activity as ProductTransactionActivity
+        productTransActivity.basket = (arguments?.getSerializable("basket") as Basket?)!!
     }
 
     override fun onCreateView(
@@ -48,7 +49,8 @@ class BasketHistoryProducts() : Fragment() {
      */
     fun buildProductListURI(): String{
         var uri = LIST_ADDRESS
-        for (product in basket.products){
+
+        for (product in productTransActivity.basket.products){
             uri += "prod=" + product.id + "&"
         }
         return uri

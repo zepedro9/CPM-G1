@@ -5,15 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="10dp"
+    android:descendantFocusability="blocksDescendants"
     android:orientation="horizontal"
     app:cardCornerRadius="@dimen/corner_radius"
-    app:cardElevation="@dimen/cardview_default_elevation"
-    android:descendantFocusability="blocksDescendants">
+    app:cardElevation="@dimen/cardview_default_elevation">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/padding_medium"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
         android:padding="@dimen/padding_low">
 
@@ -23,10 +24,10 @@
             android:layout_height="@dimen/product_thumbnail_side"
             android:adjustViewBounds="true"
             android:paddingStart="@dimen/padding_medium"
+            android:paddingTop="@dimen/padding_default"
             android:paddingEnd="@dimen/padding_medium"
             android:scaleType="centerCrop"
-            app:srcCompat="@drawable/_1_inchspg_5000x_fb94854f_81c5_439e_b169_6bcbbc037fac_1200x"
-            android:paddingTop="@dimen/padding_default" />
+            app:srcCompat="@drawable/_1_inchspg_5000x_fb94854f_81c5_439e_b169_6bcbbc037fac_1200x" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -35,38 +36,66 @@
             android:orientation="vertical"
             android:paddingTop="@dimen/padding_default">
 
-            <TextView
-                style="@style/CardText"
-                android:id="@+id/name_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_medium"
-                android:text="@string/product_name"
-                android:textSize="@dimen/product_thumbnail_text" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/name_text"
+                    style="@style/CardText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="@string/product_name"
+                    android:textSize="@dimen/product_thumbnail_text" />
+
+                <LinearLayout
+                    android:layout_alignParentEnd="true"
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:textStyle="bold"
+                        android:id="@+id/quantity_text"
+                        android:layout_marginEnd="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/quantity" />
+
+                    <TextView
+                        android:layout_marginEnd="5dp"
+                        android:id="@+id/quantity_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/_0" />
+                </LinearLayout>
+            </RelativeLayout>
 
             <TextView
-                style="@style/CardSecondaryText"
                 android:id="@+id/brand_text"
+                style="@style/CardSecondaryText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto"
                 android:text="@string/product_brand"
                 android:textSize="@dimen/product_thumbnail_text" />
 
-                <TextView
-                    style="@style/CardText"
-                    android:id="@+id/price_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="4dp"
-                    android:fontFamily="@font/roboto_medium"
-                    android:text="@string/product_price"
-                    android:textSize="17sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/price_text"
+                style="@style/CardText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="@string/product_price"
+                android:textSize="17sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </LinearLayout>
+
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>
