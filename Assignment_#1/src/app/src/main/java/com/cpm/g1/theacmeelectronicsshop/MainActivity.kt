@@ -3,6 +3,7 @@ package com.cpm.g1.theacmeelectronicsshop
 import android.app.Activity
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -60,28 +61,35 @@ class MainActivity : AuthenticatedUserActivity() {
      * Updates the history fragment content in the BasketHistory fragment.
      */
     fun updateHistoryAdapter(success: Boolean, response: String) {
-        val jsonResponse = JSONArray(response)
-        historyBasket.clear()
-        for (jsonPos in (0 until jsonResponse.length())) {
-            val jsonObject = jsonResponse.get(jsonPos) as JSONObject
-            val products = jsonObject.get("products") as JSONArray
-            val productsList: List<ItemQuantity> = buildProducts(products)
+        val jsonResponse = JSONObject(response)
+        if(!success){
+            runOnUiThread {
+                Toast.makeText(this, jsonResponse.getString("message"), Toast.LENGTH_LONG).show()
+            }
+        } else {
+            val jsonHistory = jsonResponse.getJSONArray("history")
+            historyBasket.clear()
+            for (jsonPos in (0 until jsonHistory.length())) {
+                val jsonObject = jsonHistory.get(jsonPos) as JSONObject
+                val products = jsonObject.get("products") as JSONArray
+                val productsList: List<ItemQuantity> = buildProducts(products)
 
-            val total = jsonObject.get("total")
-            val date = jsonObject.get("date")
-            val hour = jsonObject.get("hour")
+                val total = jsonObject.get("total")
+                val date = jsonObject.get("date")
+                val hour = jsonObject.get("hour")
 
-            val basket = Basket(
-                products = productsList,
-                total = total as String,
-                date = date as String?,
-                hour = hour as String?
-            )
-            historyBasket.add(basket)
-        }
+                val basket = Basket(
+                    products = productsList,
+                    total = total as String,
+                    date = date as String?,
+                    hour = hour as String?
+                )
+                historyBasket.add(basket)
+            }
 
-        runOnUiThread {
-            adapterBasket.notifyDataSetChanged()
+            runOnUiThread {
+                adapterBasket.notifyDataSetChanged()
+            }
         }
     }
 

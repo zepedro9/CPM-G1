@@ -32,8 +32,7 @@ class BasketHistoryList : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val sharedPreferences = getEncryptedSharedPreferences(requireActivity().applicationContext)
         val uuid = sharedPreferences.getString("uuid", "") ?: throw Exception("Missing uuid")
-        var body = Gson().toJson(hashMapOf("userUUID" to uuid));
-        val signature = Cryptography().signContent(body);
+        val signature = Cryptography().signContent(uuid);
         val mainActivity = activity as MainActivity
         val signedContent = Gson().toJson(hashMapOf("userUUID" to uuid, "signature" to signature))
         Thread(GetHistory(mainActivity, HISTORY_ADDRESS, signedContent)).start()

@@ -1,9 +1,8 @@
 const { User } = require("../models/user");
 const { Basket } = require("../models/basket");
 const { Product } = require("../models/product");
-
+const crypto_utils = require('../utils/cryptography')
 const express = require('express');
-const crypto = require('crypto');
 const router = express.Router();
 
 
@@ -22,31 +21,28 @@ router.post('/checkout', async (req, res) => {
 
     // Check signature
     try {
-        const verifier = crypto.createVerify('RSA-SHA256')
         let user = await User.findOne({ _id: uuid});
         if(!user) return res.status(400).send({"message": "Unknown user"})
 
         let jsonBasket = JSON.stringify(req.body.basket)
-        verifier.update(jsonBasket)
 
-        const result = verifier.verify(user.pk, req.body.signature, 'hex')
-        
-        if(result){   
+        const signResult = crypto_utils.checkSignature(jsonBasket, req.body.signature, user.pk)
+        if(signResult){   
             let addResponse = await addToDatabase(req); 
     
             if (addResponse.status == -1) 
                 return res.status(400).send({"message": "Checkout failed"});
 
             // TODO: verify credit card, save basket in the server with new identifier(new uuid)
-            const basket_uuid = addResponse.basket.token; 
-            const keyObj = crypto.createPublicKey(user.pk);
-            var encrypted = crypto.publicEncrypt({key: keyObj, padding: crypto.constants.RSA_PKCS1_PADDING}, Buffer.from(basket_uuid));
 
-            return res.status(200).send({"message": encrypted.toString('base64')});
+            const basket_uuid = addResponse.basket.token; 
+            const encryptResult = crypto_utils.encrypt(basket_uuid, user.pk)
+            if(encryptResult.status == -1)
+                return res.status(401).send({"message": "No authorization"});
+            return res.status(200).send({"message": encryptResult.result.toString('base64')});
         } else {
             return res.status(401).send({"message": "No authorization"});
         }
-        
     } catch(err){
         console.log(err);
         return res.status(400).send({"message": "Something went wrong"});
@@ -87,11 +83,19 @@ router.post('/history', async (req, res) => {
         return res.status(400).send({ message: "Please provide the signed basket and uuid" });
     }
 
-
     try {
+        // Get user
+        let user = await User.findOne({ _id: req.body.userUUID});
+        if(!user) return res.status(400).send({"message": "Unknown user"})
+        
+        // Check signature
+        const signResult = crypto_utils.checkSignature(req.body.userUUID, req.body.signature, user.pk)
+        if(!signResult) return res.status(401).send({"message": "No authorization"})
+        
+        // Get history
         let history = await Basket.find({ userUUID: req.params.userUUID });
         console.log(history)
-        return res.status(200).send(history);
+        return res.status(200).send({message:"Authorized", history:history});
     } catch (err) {
         console.log(err);
         return res.status(400).send({ message: "Couldn't proceed with the request" });
@@ -110,4 +114,5 @@ router.get("/products", async(req, res) => {
         return res.status(400).send({"message": "Error retrieving your products", "products": []}); 
     }
 });
+
 module.exports = router; 

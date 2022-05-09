@@ -8,6 +8,7 @@ COPY data ./data
 COPY public ./public
 COPY models ./models
 COPY routes ./routes
+COPY utils ./utils
 
 RUN npm install 
 RUN npm install -g nodemon 
