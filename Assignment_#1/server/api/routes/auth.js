@@ -37,7 +37,7 @@ router.post('/signin', async (req, res) => {
     try {
         // Checking if registered user.
         let user = await User.findOne({ email: req.body.email}); 
-        if(!user) return res.status(400).send({"message": "Uknown user"})
+        if(!user) return res.status(400).send({message: "Uknown user"})
 
         if (!(await bcrypt.compare(req.body.password, user.password)))
             return res.status(401).send({message: "Wrong credentials."});

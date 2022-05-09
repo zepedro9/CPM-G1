@@ -26,7 +26,7 @@ class ProductHistoryAdapter(val activity: ProductTransactionActivity, val produc
             val product = productsList[position]
             val productId = product.get("id")
 
-            val basket = (activity as ProductTransactionActivity).basket
+            val basket = activity.basket
             val itemQuantity = getQuantity(basket, productId as Long).toString()
             println(itemQuantity)
             row.findViewById<TextView>(R.id.name_text).text = product.getString("name")
@@ -34,14 +34,12 @@ class ProductHistoryAdapter(val activity: ProductTransactionActivity, val produc
             row.findViewById<TextView>(R.id.price_text).text = product.getString("price") + " €"
             row.findViewById<TextView>(R.id.quantity_value).text = itemQuantity
 
-            val image = row.findViewById<ImageView>(R.id.image)
-
+            val image = row.findViewById<ImageView>(R.id.product_image)
             image!!.visibility = View.VISIBLE
-            val request = ImageRequest.Builder(activity)
+            val request = ImageRequest.Builder(context)
                 .data(product.getString("image_url"))
                 .target(image).build()
-
-            context.imageLoader?.enqueue(request)
+            context.imageLoader.enqueue(request)
 
         }catch(err: Exception){
             Log.e("ERR!!", err.toString())

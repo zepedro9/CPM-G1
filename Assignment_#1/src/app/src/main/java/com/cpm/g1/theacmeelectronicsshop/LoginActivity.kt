@@ -41,9 +41,10 @@ class LoginActivity : AppCompatActivity() {
      * Changes the LoginFragment to the RegisterFragment
      */
     fun changeToRegisterFragment(success: Boolean, response: String) {
+        val jsonResponse = JSONObject(response)
         if (!success) {
             runOnUiThread {
-                Toast.makeText(this, "This email is already registered", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, jsonResponse.getString("message"), Toast.LENGTH_LONG).show()
             }
         } else {
             val loginFragment = LoginFragment()

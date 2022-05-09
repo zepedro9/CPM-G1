@@ -1,18 +1,14 @@
 package com.cpm.g1.theacmeelectronicsshop.ui.basketHistory
 
-import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
-import com.cpm.g1.theacmeelectronicsshop.MainActivity
-import com.cpm.g1.theacmeelectronicsshop.R
 import com.cpm.g1.theacmeelectronicsshop.dataClasses.basket.Basket
-import com.cpm.g1.theacmeelectronicsshop.ui.basket.ProductDetailsFragment
 import org.json.JSONObject
 
 class ProductTransactionActivity : AppCompatActivity() {
 
-    val historyProducts: ArrayList<JSONObject> = ArrayList();
+    private val historyProducts: ArrayList<JSONObject> = ArrayList()
     val adapterProducts by lazy { ProductHistoryAdapter(this, historyProducts) }
     lateinit var basket: Basket
 
@@ -36,7 +32,7 @@ class ProductTransactionActivity : AppCompatActivity() {
     /**
      * Changes the view to a fragment that shows the items inside the history.
      */
-    fun changeToBasketHistoryProducts(){
+    private fun changeToBasketHistoryProducts(){
         val basketHistoryProducts = BasketHistoryProducts.newInstance(intent.extras!!)
         val fragmentManager = this.supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()

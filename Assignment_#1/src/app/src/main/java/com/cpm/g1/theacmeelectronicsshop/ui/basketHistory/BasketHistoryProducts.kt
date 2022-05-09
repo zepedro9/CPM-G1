@@ -11,13 +11,12 @@ import androidx.fragment.app.Fragment
 import com.cpm.g1.theacmeelectronicsshop.ConfigHTTP
 import com.cpm.g1.theacmeelectronicsshop.R
 import com.cpm.g1.theacmeelectronicsshop.dataClasses.basket.Basket
-import com.cpm.g1.theacmeelectronicsshop.dataClasses.basket.Product
 import com.cpm.g1.theacmeelectronicsshop.httpService.GetProductsList
 
+const val LIST_ADDRESS: String = "http://${ConfigHTTP.BASE_ADDRESS}:3000/api/products/list?"
 
-class BasketHistoryProducts() : Fragment() {
-    val LIST_ADDRESS: String = "http://${ConfigHTTP.BASE_ADDRESS}:3000/api/products/list?"
-    lateinit var productTransActivity: ProductTransactionActivity
+class BasketHistoryProducts : Fragment() {
+    private lateinit var productTransActivity: ProductTransactionActivity
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         productTransActivity = activity as ProductTransactionActivity
@@ -46,7 +45,7 @@ class BasketHistoryProducts() : Fragment() {
     /**
      * Set the total value of the purchase in the view.
      */
-    fun setTotal(view: View){
+    private fun setTotal(view: View){
         view.findViewById<TextView>(R.id.total).text = (activity as ProductTransactionActivity).basket.total.toString() + " €"
     }
 
@@ -54,7 +53,7 @@ class BasketHistoryProducts() : Fragment() {
      * Function that adds the products as queries to the request of a list of
      * products.
      */
-    fun buildProductListURI(): String{
+    private fun buildProductListURI(): String{
         var uri = LIST_ADDRESS
 
         for (product in productTransActivity.basket.products){
