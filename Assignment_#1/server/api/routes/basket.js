@@ -104,6 +104,29 @@ router.post('/history', async (req, res) => {
 
 
 
+router.post('/receipt', async (req, res) => {
+    console.log(req.body)
+    if (!req.body.userUUID || !req.body.basketUUID) {
+        return res.status(400).send({ message: "Please provide the basket UUID and the user UUID" });
+    }
+
+    try {
+        // Get user
+        let user = await User.findOne({ _id: req.body.userUUID});
+        if(!user) return res.status(400).send({"message": "Unknown user"})
+        
+        // Get basket
+        let basket = await Basket.find({ token: req.body.basketUUID });
+        console.log(basket)
+        return res.status(200).send({message:"Authorized", basket});
+    } catch (err) {
+        console.log(err);
+        return res.status(400).send({ message: "Couldn't proceed with the request" });
+    }
+});
+
+
+
 router.get("/products", async(req, res) => {
     try {
         const ids = req.query.ids.split(",").map(item => parseInt(item, 10))
