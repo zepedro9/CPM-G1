@@ -110,10 +110,14 @@ router.post('/receipt', async (req, res) => {
         return res.status(400).send({ message: "Please provide the basket UUID" });
     }
 
-    try {        
+    try {
         // Get basket
         let basket = await Basket.find({ token: req.body.basketUUID });
         console.log(basket)
+        
+        // Get user
+        let user = await User.findOne({ _id: basket.userUuid});
+        if(!user) return res.status(400).send({"message": "Unknown user"})
 
         // Get basket products info
         let products = []
@@ -127,7 +131,7 @@ router.post('/receipt', async (req, res) => {
         Basket.findAndModify({ query: { token: req.body.basketUUID }, update: { usedToken: true } });
 
         // Return info
-        return res.status(200).send({message: "Authorized", basket: basket, products: products});
+        return res.status(200).send({message: "Authorized", user: user.name, nif:user.NIF, basket: basket, products: products});
     } catch (err) {
         console.log(err);
         return res.status(400).send({ message: "Couldn't proceed with the request" });
