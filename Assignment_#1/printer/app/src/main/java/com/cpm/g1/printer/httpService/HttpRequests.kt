@@ -3,6 +3,8 @@ package com.cpm.g1.printer.httpService
 import android.util.Log
 import com.cpm.g1.printer.MainActivity
 import com.cpm.g1.printer.readStream
+import org.json.JSONArray
+import org.json.JSONObject
 import java.io.DataOutputStream
 import java.io.FileNotFoundException
 import java.net.HttpURLConnection
@@ -48,8 +50,75 @@ fun sendRequest(
         Log.e("ERR",  err.toString());
     } catch (err: Exception) {
         val response = "{\"message\": \"Unexpected error occurred\"}"
-        callback(false, response)
-        Log.e("ERR",  err.toString());
+        //callback(false, response)
+        Log.e("ERR",  err.toString())
+
+        // TODO: Remove fake json and test for real
+
+        // FAKE JSON RESPONSE
+        val rootObject = JSONObject()
+        rootObject.put("message","Authorized")
+        rootObject.put("user","Carlos")
+        rootObject.put("nif","123456789")
+
+        val basket = JSONArray()
+
+        val basketItem1 = JSONObject()
+        basketItem1.put("_id","627a8f91223863688597b2b0")
+
+        val productsSmall = JSONArray()
+
+        val smallProductItem1 = JSONObject()
+        smallProductItem1.put("id","61234567890")
+        smallProductItem1.put("quantity","2")
+        smallProductItem1.put("_id","627a8f91223863688597b2b1")
+
+        productsSmall.put(smallProductItem1)
+
+        val smallProductItem2 = JSONObject()
+        smallProductItem2.put("id","61234567891")
+        smallProductItem2.put("quantity","3")
+        smallProductItem2.put("_id","627a8f91223863688597b2b1")
+
+        productsSmall.put(smallProductItem2)
+
+        basketItem1.put("products", productsSmall)
+        basketItem1.put("total","965.0")
+        basketItem1.put("date","2022-05-10")
+        basketItem1.put("hour","16:15")
+        basketItem1.put("token","5f3ba7f0-d07c-11ec-9b21-17c2458e7544")
+        basketItem1.put("__v","0")
+
+        basket.put(basketItem1)
+
+        rootObject.put("basket", basket)
+
+        val products = JSONArray()
+
+        val productItem1 = JSONObject()
+        productItem1.put("id","61234567890")
+        productItem1.put("name","Keyboard")
+        productItem1.put("brand","Apple")
+        productItem1.put("price","109.0")
+        productItem1.put("description","description")
+        productItem1.put("image_url","url")
+
+        products.put(productItem1)
+
+        val productItem2 = JSONObject()
+        productItem2.put("id","61234567891")
+        productItem2.put("name","Monitor")
+        productItem2.put("brand","Apple")
+        productItem2.put("price","249.0")
+        productItem2.put("description","description")
+        productItem2.put("image_url","url")
+
+        products.put(productItem2)
+
+        rootObject.put("products", products)
+        // FAKE JSON RESPONSE
+
+        callback(true, rootObject.toString())
     } finally {
         urlConnection?.disconnect()
     }

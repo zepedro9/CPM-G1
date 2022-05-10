@@ -2,6 +2,7 @@ package com.cpm.g1.printer
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import com.cpm.g1.printer.databinding.ActivityMainBinding
 import androidx.fragment.app.add
@@ -38,10 +39,10 @@ class MainActivity : AppCompatActivity() {
             }
         } else {
             val bundle = Bundle()
+            bundle.putString("user", jsonResponse.getString("user"))
+            bundle.putString("nif", jsonResponse.getString("nif"))
             bundle.putString("basket", jsonResponse.getString("basket"))
-            bundle.putString("total", jsonResponse.getString("total"))
-            bundle.putString("date", jsonResponse.getString("date"))
-            bundle.putString("hour", jsonResponse.getString("hour"))
+            bundle.putString("products", jsonResponse.getString("products"))
 
             val receiptFragment = ReceiptFragment()
             receiptFragment.arguments = bundle

@@ -52,6 +52,11 @@ class ScanFragment : Fragment() {
                 }
                 Activity.RESULT_CANCELED -> {
                     Toast.makeText(this.context, getText(R.string.scan_cancelled), Toast.LENGTH_SHORT).show()
+                    val mainActivity = activity as MainActivity
+                    val address = "http://" + ConfigHTTP.BASE_ADDRESS + ":3000/api/basket/receipt"
+                    val basketUUID: String? = it.data?.getStringExtra(Intents.Scan.RESULT)
+                    val signedContent = Gson().toJson(basketUUID)
+                    Thread(GetReceipt(mainActivity, address, signedContent)).start()
                 }
                 else -> {
                     Toast.makeText(this.context, getText(R.string.scan_failed), Toast.LENGTH_SHORT).show()
