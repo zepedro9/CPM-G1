@@ -110,13 +110,14 @@ router.post('/receipt', async (req, res) => {
         return res.status(400).send({ message: "Please provide the basket UUID" });
     }
 
-    // Missing a way to check its the actual user..
+    // TODO: Missing a way to check its the actual user..
 
     try {        
         // Get basket
         let basket = await Basket.find({ token: req.body.basketUUID });
         console.log(basket)
-        return res.status(200).send({message:"Authorized", basket});
+        res.status(200).send({message:"Authorized", basket});
+        return Basket.findOneAndDelete({ token: req.body.basketUUID }); // Have to delete the basket, the receipt operation can only happen once
     } catch (err) {
         console.log(err);
         return res.status(400).send({ message: "Couldn't proceed with the request" });
