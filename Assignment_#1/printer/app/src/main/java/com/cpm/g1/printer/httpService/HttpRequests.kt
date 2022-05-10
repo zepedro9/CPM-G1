@@ -1,15 +1,10 @@
 package com.cpm.g1.printer.httpService
 
-import android.app.Activity
-import android.os.Build
-import android.widget.Toast
-import androidx.annotation.RequiresApi
 import android.util.Log
+import com.cpm.g1.printer.MainActivity
 import com.cpm.g1.printer.readStream
-import com.google.gson.JsonObject
-import org.json.JSONObject
-
-import java.io.*
+import java.io.DataOutputStream
+import java.io.FileNotFoundException
 import java.net.HttpURLConnection
 import java.net.URL
 
@@ -61,11 +56,15 @@ fun sendRequest(
 }
 
 /**
- * Request details about basket products to the server.
+ * Request the receipt of the purchase.
  */
-class InitBasket(private val uri: String, private val callback: (Boolean, String) -> Unit) : Runnable {
+class GetReceipt(
+    private val act: MainActivity,
+    private val uri: String,
+    private val body: String
+) : Runnable {
     override fun run() {
-        sendRequest(uri, callback=callback, type="GET")
+        sendRequest(uri, body, act::changeToReceiptFragment)
     }
 }
 
