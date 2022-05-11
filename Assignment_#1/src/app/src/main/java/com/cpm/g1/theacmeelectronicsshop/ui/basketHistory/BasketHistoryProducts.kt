@@ -8,7 +8,7 @@ import android.widget.ListView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.cpm.g1.theacmeelectronicsshop.ConfigHTTP
+import com.cpm.g1.theacmeelectronicsshop.utils.ConfigHTTP
 import com.cpm.g1.theacmeelectronicsshop.R
 import com.cpm.g1.theacmeelectronicsshop.dataClasses.basket.Basket
 import com.cpm.g1.theacmeelectronicsshop.httpService.GetProductsList

@@ -1,17 +1,15 @@
-package com.cpm.g1.theacmeelectronicsshop
+package com.cpm.g1.theacmeelectronicsshop.security
 
 import android.os.Build
 import android.security.KeyPairGeneratorSpec
 import androidx.annotation.RequiresApi
-import okio.Utf8
-import java.io.Serializable
+import com.cpm.g1.theacmeelectronicsshop.utils.KeyProperties
+import com.cpm.g1.theacmeelectronicsshop.ui.auth.LoginActivity
 import java.math.BigInteger
-import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
 import java.security.KeyPairGenerator
 import java.security.KeyStore
 import java.security.Signature
-import java.security.interfaces.RSAPrivateKey
 import java.util.*
 import javax.crypto.Cipher
 import javax.security.auth.x500.X500Principal

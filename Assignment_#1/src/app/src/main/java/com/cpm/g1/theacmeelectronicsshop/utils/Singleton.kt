@@ -1,4 +1,4 @@
-package com.cpm.g1.theacmeelectronicsshop
+package com.cpm.g1.theacmeelectronicsshop.utils
 
 object KeyProperties {
     const val KEY_SIZE = 512

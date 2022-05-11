@@ -8,10 +8,13 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ListView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import com.cpm.g1.theacmeelectronicsshop.*
 import com.cpm.g1.theacmeelectronicsshop.dataClasses.basket.Basket
 import com.cpm.g1.theacmeelectronicsshop.httpService.GetHistory
+import com.cpm.g1.theacmeelectronicsshop.security.Cryptography
+import com.cpm.g1.theacmeelectronicsshop.security.getEncryptedSharedPreferences
+import com.cpm.g1.theacmeelectronicsshop.ui.MainActivity
+import com.cpm.g1.theacmeelectronicsshop.utils.ConfigHTTP
 import com.google.gson.Gson
 
 

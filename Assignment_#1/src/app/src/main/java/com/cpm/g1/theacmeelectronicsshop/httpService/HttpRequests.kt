@@ -1,16 +1,12 @@
 package com.cpm.g1.theacmeelectronicsshop.httpService
 
-import android.app.Activity
 import android.os.Build
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import android.util.Log
-import com.cpm.g1.theacmeelectronicsshop.LoginActivity
-import com.cpm.g1.theacmeelectronicsshop.MainActivity
+import com.cpm.g1.theacmeelectronicsshop.ui.auth.LoginActivity
+import com.cpm.g1.theacmeelectronicsshop.ui.MainActivity
 import com.cpm.g1.theacmeelectronicsshop.readStream
 import com.cpm.g1.theacmeelectronicsshop.ui.basket.CheckoutActivity
-import com.google.gson.JsonObject
-import org.json.JSONObject
 import com.cpm.g1.theacmeelectronicsshop.ui.basketHistory.ProductTransactionActivity
 
 import java.io.*

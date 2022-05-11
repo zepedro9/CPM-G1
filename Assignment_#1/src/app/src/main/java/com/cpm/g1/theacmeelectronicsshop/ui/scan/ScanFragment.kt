@@ -18,9 +18,9 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation.findNavController
 import coil.imageLoader
 import coil.request.ImageRequest
-import com.cpm.g1.theacmeelectronicsshop.MainActivity
+import com.cpm.g1.theacmeelectronicsshop.ui.MainActivity
 import com.cpm.g1.theacmeelectronicsshop.R
-import com.cpm.g1.theacmeelectronicsshop.getUserUUID
+import com.cpm.g1.theacmeelectronicsshop.security.getUserUUID
 import com.cpm.g1.theacmeelectronicsshop.readStream
 import com.cpm.g1.theacmeelectronicsshop.ui.BasketHelper
 import com.google.zxing.client.android.Intents

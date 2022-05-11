@@ -10,9 +10,11 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
 import com.cpm.g1.theacmeelectronicsshop.*
-import com.cpm.g1.theacmeelectronicsshop.dataClasses.Card
-import com.cpm.g1.theacmeelectronicsshop.dataClasses.User
+import com.cpm.g1.theacmeelectronicsshop.dataClasses.user.Card
+import com.cpm.g1.theacmeelectronicsshop.dataClasses.user.User
 import com.cpm.g1.theacmeelectronicsshop.httpService.SignUp
+import com.cpm.g1.theacmeelectronicsshop.security.Cryptography
+import com.cpm.g1.theacmeelectronicsshop.utils.ConfigHTTP
 import com.google.gson.Gson
 
 class RegisterFragment : Fragment() {
