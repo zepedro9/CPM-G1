@@ -11,4 +11,10 @@
         android:icon="@drawable/ic_baseline_shopping_basket_24"
         android:title="@string/title_basket" />
 
+
+    <item
+        android:id="@+id/navigation_history_basket"
+        android:icon="@drawable/ic_baseline_history_24"
+        android:title="@string/title_basket_history" />
+
 </menu>

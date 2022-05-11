@@ -10,8 +10,62 @@
     <string name="product_quantity">1</string>
     <string name="showing_code_in_fragment">Showing Code in Fragment</string>
     <string name="scan_product">Scan product</string>
+    <string name="scan_no_scanned">No product currently scanned</string>
+    <string name="scan_cancelled">The scan has been cancelled</string>
+    <string name="scan_failed">The scan has failed</string>
     <string name="name">Name</string>
     <string name="empty">---</string>
     <string name="desc">Description</string>
     <string name="result_not_found">Result not found</string>
+    <string name="add_to_basket">Add to basket</string>
+    <string name="brand">Brand</string>
+    <string name="price">Price</string>
+    <string name="product_image_content_description">Product Image</string>
+    <string name="total_label">Total</string>
+    <string name="total">%1$.2f€</string>
+    <!-- REGISTER -->
+    <string name="reg_name">Name</string>
+    <string name="reg_nif">NIF</string>
+    <string name="reg_address">Address</string>
+    <string name="credit_card">Credit Card</string>
+    <string name="info">Info</string>
+    <string name="card_type">Card Type</string>
+    <string name="card_number">Card Number</string>
+    <string name="card_expiration_date">Expiration Date</string>
+    <string name="reg_instructions">All the fields in this form are mandatory.</string>
+    <string name="register">Register</string>
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome!"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="sign_up">Sign Up</string>
+    <!-- LOGIN -->
+    <string name="acme">ACME</string>
+    <string name="shop">Shop</string>
+    <string name="login">Login</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="don_t_have_an_account">Don\'t have an account?</string>
+    <string name="card_info">Card Info</string>
+    <string name="already_have_an_account">Already have an account?</string>
+    <string name="email">Email</string>
+    <string name="title_basket_history">History</string>
+    <string name="date">Date</string>
+    <string name="example_date">12-02-2022</string>
+    <string name="hour">Hour</string>
+    <string name="hour_example">13:05</string>
+    <string name="num_items">Num. Items</string>
+    <string name="_3">3</string>
+    <string name="euro_symbol">€</string>
+    <string name="logout">Logout</string>
+    <string name="receipt">Here is your receipt:</string>
+    <string name="quantity">Quantity</string>
+    <string name="_0">0</string>
 </resources>

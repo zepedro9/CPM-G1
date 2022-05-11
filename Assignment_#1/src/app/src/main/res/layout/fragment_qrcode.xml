@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/padding_medium"
+    tools:context=".ui.basket.CheckoutActivity">
+
+    <TextView
+        android:id="@+id/name"
+        style="@style/CardText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_medium"
+        android:layout_marginTop="@dimen/padding_veryhigh"
+        android:paddingBottom="@dimen/padding_low"
+        android:text="@string/receipt"
+        android:textAlignment="center"
+        android:textSize="@dimen/product_page_title" />
+
+    <ImageView
+        android:id="@+id/qrcode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxHeight="512dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter" />
+
+
+</LinearLayout>
