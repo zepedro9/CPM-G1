@@ -242,6 +242,8 @@ class BasketFragment : Fragment() {
             val unitPrice = price / quantity
             val newQuantity = quantity + 1
 
+            if(newQuantity > 99) return
+
             // Update quantity
             quantityText.text = newQuantity.toString()
             uuid?.let { dbHelper.updateItemQuantity(it, id.toString(), newQuantity) }
