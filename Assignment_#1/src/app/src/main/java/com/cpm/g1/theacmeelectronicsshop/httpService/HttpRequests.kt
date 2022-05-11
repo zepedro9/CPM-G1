@@ -123,3 +123,12 @@ class GetProductsList(
     }
 }
 
+/**
+ * Verify if the user exists
+ */
+class UserExists(private val act: LoginActivity, private val uri: String, val userUUID: String) : Runnable {
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun run() {
+        sendRequest(uri, userUUID, act::loginOrLogout)
+    }
+}

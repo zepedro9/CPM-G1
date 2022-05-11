@@ -5,6 +5,10 @@ const router = express.Router();
 
 router.post('/signup', async (req, res) => {
 
+    if(!verifyRegisterFields(req)){
+        return res.status(400).send({message: "Email or password missing."});
+    }
+
     try { 
         // Checking if the user is already registered. 
         let isRegisteredUser = await User.findOne({ email: req.body.email}); 
@@ -33,7 +37,11 @@ router.post('/signup', async (req, res) => {
 });
 
 router.post('/signin', async (req, res) => {
-    // TODO: verify all required data exists
+    
+    if(!req.body.email || !req.body.password){
+        return res.status(400).send({message: "Email or password missing."});
+    }
+
     try {
         // Checking if registered user.
         let user = await User.findOne({ email: req.body.email}); 
@@ -53,9 +61,23 @@ router.post('/signin', async (req, res) => {
     }
 });
 
+router.post('/user', async (req, res) => {
+    if(!req.body.userUUID){
+        return res.status(400).send({message: "The userUUID is required."});
+    }
+    let user = await User.findOne({ _id: req.body.userUUID}); 
+    if(!user) return res.status(400).send({message: "Uknown user."})
+    return res.status(200).send({message: "Valid userUUID."});
+})
 const encryptHash = async (password) => {
     return await bcrypt.hash(password, 10);
 }
 
+const verifyRegisterFields = (req) => {
+    if(req.body.pk && req.body.name && req.body.address && req.body.NIF && req.body.email && req.body.password && req.body.card){
+        return (req.body.card.cardType && req.body.card.number && req.body.card.expirationDate)
+    }
+    return false;
+}
 
 module.exports = router; 

@@ -58,14 +58,17 @@ class RegisterFragment : Fragment() {
         fragmentTransaction?.commit()
     }
 
+    // TODO: fix bug in validation
     @RequiresApi(Build.VERSION_CODES.O)
     private fun onClickSignup(view: View) {
-        val isValidFields = true //validateFields(view)
+        val isValidFields = true // validateFields(view)
         if (isValidFields) {
             val user = createUserObj(view)
             val userJson = Gson().toJson(user)
             val address = "http://" + ConfigHTTP.BASE_ADDRESS + ":3000/api/auth/signup"
             Thread(SignUp(activity as LoginActivity, address , userJson)).start()
+        } else {
+            Toast.makeText(requireContext(), "Invalid fields", Toast.LENGTH_LONG).show()
         }
     }
 

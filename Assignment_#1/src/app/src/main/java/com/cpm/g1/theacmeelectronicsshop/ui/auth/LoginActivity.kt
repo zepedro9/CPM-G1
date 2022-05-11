@@ -9,9 +9,15 @@ import androidx.fragment.app.commit
 import com.cpm.g1.theacmeelectronicsshop.ui.MainActivity
 import com.cpm.g1.theacmeelectronicsshop.R
 import com.cpm.g1.theacmeelectronicsshop.databinding.ActivityMainBinding
+import com.cpm.g1.theacmeelectronicsshop.httpService.UserExists
+import com.cpm.g1.theacmeelectronicsshop.security.clearUserUUID
 import com.cpm.g1.theacmeelectronicsshop.security.getEncryptedSharedPreferences
 import com.cpm.g1.theacmeelectronicsshop.security.getUserUUID
+import com.cpm.g1.theacmeelectronicsshop.utils.ConfigHTTP
+import com.google.gson.Gson
 import org.json.JSONObject
+
+const val USER_EXISTS_ADDRESS: String = "http://" + ConfigHTTP.BASE_ADDRESS + ":3000/api/auth/user"
 
 /**
  * This is the initial fragment of the program.
@@ -30,12 +36,33 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         // Check for old user
-        if (getUserUUID(applicationContext) != "")
-            startActivity(Intent(applicationContext, MainActivity::class.java))
+        val uuid = getUserUUID(applicationContext)
+        if (uuid != ""){
+            val uuidJson = Gson().toJson(hashMapOf("userUUID" to uuid))
+            Thread(UserExists(this, USER_EXISTS_ADDRESS, uuidJson)).start()
+        } else {
+            // Add login fragment
+            supportFragmentManager.commit {
+                add<LoginFragment>(R.id.main_fragment_container)
+            }
+        }
+    }
 
-        // Add fragment
-        supportFragmentManager.commit {
-            add<LoginFragment>(R.id.main_fragment_container)
+    /**
+     * Logs in the user or logs out, depending on the answer of the server
+     */
+    fun loginOrLogout(success: Boolean, response: String){
+        runOnUiThread {
+            if (!success) {
+                // Clear user UUID and show login fragment
+                clearUserUUID(applicationContext)
+                supportFragmentManager.commit {
+                    add<LoginFragment>(R.id.main_fragment_container)
+                }
+            } else {
+                // Proceed to main
+                startActivity(Intent(applicationContext, MainActivity::class.java))
+            }
         }
     }
 
