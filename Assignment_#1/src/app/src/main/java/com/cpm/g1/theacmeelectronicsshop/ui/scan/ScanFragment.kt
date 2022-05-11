@@ -79,6 +79,10 @@ class ScanFragment : Fragment() {
         super.onViewStateRestored(state)
         if(state?.getSerializable("currentProduct") != null) {
             currentProduct = state.getSerializable("currentProduct") as ScannedProduct?
+            view?.findViewById<TextView>(R.id.nameKey)!!.visibility = View.VISIBLE
+            view?.findViewById<TextView>(R.id.brandKey)!!.visibility = View.VISIBLE
+            view?.findViewById<TextView>(R.id.descKey)!!.visibility = View.VISIBLE
+            view?.findViewById<TextView>(R.id.priceKey)!!.visibility = View.VISIBLE
             view?.findViewById<TextView>(R.id.nameContent)!!.text = currentProduct?.name
             view?.findViewById<TextView>(R.id.brandContent)!!.text = currentProduct?.brand
             view?.findViewById<TextView>(R.id.descContent)!!.text = currentProduct?.desc
@@ -140,6 +144,10 @@ class ScanFragment : Fragment() {
         activity?.runOnUiThread {
             currentProduct =
                 ScannedProduct(prodId, prodName, prodBrand, prodDesc, prodPrice, prodImage)
+            view?.findViewById<TextView>(R.id.nameKey)!!.visibility = View.VISIBLE
+            view?.findViewById<TextView>(R.id.brandKey)!!.visibility = View.VISIBLE
+            view?.findViewById<TextView>(R.id.descKey)!!.visibility = View.VISIBLE
+            view?.findViewById<TextView>(R.id.priceKey)!!.visibility = View.VISIBLE
             view?.findViewById<TextView>(R.id.nameContent)!!.text = prodName
             view?.findViewById<TextView>(R.id.brandContent)!!.text = prodBrand
             view?.findViewById<TextView>(R.id.descContent)!!.text = prodDesc

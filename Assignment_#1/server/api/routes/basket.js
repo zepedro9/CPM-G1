@@ -6,6 +6,7 @@ const express = require('express');
 const router = express.Router();
 
 
+
 router.post('/checkout', async (req, res) => {
 
     // Validate request body params
@@ -15,9 +16,21 @@ router.post('/checkout', async (req, res) => {
 
     const uuid = req.body.basket.userUUID
     const products = req.body.basket.products
+    const total = req.body.basket.total
 
     if(products.length == 0)
         return res.status(401).send({"message": "Empty basket"})
+
+    // Calculate basket cost
+    let actualTotalCost = 0
+    for (let tmp of products) {
+        const product = await Product.findOne({ id: tmp.id });
+        actualTotalCost += product.price * tmp.quantity
+    }
+
+    // Verify basket cost hasn't been tampered with, cancel otherwise
+    if(actualTotalCost != total)
+        return res.status(403).send({"message": "There was a problem with the total basket cost, please try again"})
 
     // Check signature
     try {
@@ -52,9 +65,11 @@ router.post('/checkout', async (req, res) => {
 
 const addToDatabase = async (req) => {
     // Get hour 
-    const now = new Date();
-
-    const current = now.getHours().toString().padStart(2, 0) + ':' + now.getMinutes().toString().padStart(2, '0');
+    current = new Date().toLocaleTimeString('en-US', {
+        timeZone: 'Europe/Lisbon',
+        hour12: false
+    })
+    current = current.substr(0, current.lastIndexOf(":"));
 
     var today = new Date().toISOString().slice(0, 10);
     let basket = new Basket({ ...req.body.basket, date: today, hour: current });
