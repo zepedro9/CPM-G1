@@ -66,25 +66,6 @@ class ReceiptFragment : Fragment() {
                         price = listProd.getString("price")
 
                         productsListView.addView(createProductLine(name, quantity.toInt(), price.toFloat()))
-                        productsListView.addView(createProductLine(name, quantity.toInt(), price.toFloat()))
-                        productsListView.addView(createProductLine(name, quantity.toInt(), price.toFloat()))
-                        productsListView.addView(createProductLine(name, quantity.toInt(), price.toFloat()))
-                        productsListView.addView(createProductLine(name, quantity.toInt(), price.toFloat()))
-                        productsListView.addView(createProductLine(name, quantity.toInt(), price.toFloat()))
-                        productsListView.addView(createProductLine(name, quantity.toInt(), price.toFloat()))
-                        productsListView.addView(createProductLine(name, quantity.toInt(), price.toFloat()))
-                        productsListView.addView(createProductLine(name, quantity.toInt(), price.toFloat()))
-                        productsListView.addView(createProductLine(name, quantity.toInt(), price.toFloat()))
-                        productsListView.addView(createProductLine(name, quantity.toInt(), price.toFloat()))
-                        productsListView.addView(createProductLine(name, quantity.toInt(), price.toFloat()))
-                        productsListView.addView(createProductLine(name, quantity.toInt(), price.toFloat()))
-                        productsListView.addView(createProductLine(name, quantity.toInt(), price.toFloat()))
-                        productsListView.addView(createProductLine(name, quantity.toInt(), price.toFloat()))
-                        productsListView.addView(createProductLine(name, quantity.toInt(), price.toFloat()))
-                        productsListView.addView(createProductLine(name, quantity.toInt(), price.toFloat()))
-                        productsListView.addView(createProductLine(name, quantity.toInt(), price.toFloat()))
-                        productsListView.addView(createProductLine(name, quantity.toInt(), price.toFloat()))
-                        productsListView.addView(createProductLine(name, quantity.toInt(), price.toFloat()))
                         break
                     }
                 }
