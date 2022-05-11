@@ -1,4 +1,4 @@
-package com.cpm.g1.theacmeelectronicsshop
+package com.cpm.g1.theacmeelectronicsshop.security
 
 import android.content.Context
 import android.content.SharedPreferences

@@ -20,26 +20,26 @@
         tools:targetApi="n">
         <activity
             android:name=".ui.basketHistory.ProductTransactionActivity"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".ui.MainActivity"
             android:exported="false" />
         <activity
             android:name=".ui.basket.CheckoutActivity"
             android:exported="false"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".ui.MainActivity" />
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.MainActivity"
             android:configChanges="uiMode"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity"
             android:exported="false" />
         <activity
-            android:name=".AuthenticatedUserActivity"
+            android:name=".ui.auth.AuthenticatedUserActivity"
             android:configChanges="uiMode"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity"
             android:exported="false" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".ui.auth.LoginActivity"
             android:configChanges="uiMode"
             android:exported="true"
             android:noHistory="true"
@@ -53,7 +53,7 @@
         <activity
             android:name=".ui.basket.ProductDetailsActivity"
             android:exported="true"
-            android:parentActivityName=".MainActivity"/>
+            android:parentActivityName=".ui.MainActivity"/>
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

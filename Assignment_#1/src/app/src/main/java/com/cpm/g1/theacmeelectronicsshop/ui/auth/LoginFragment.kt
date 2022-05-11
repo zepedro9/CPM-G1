@@ -6,10 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import com.cpm.g1.theacmeelectronicsshop.ConfigHTTP
-import com.cpm.g1.theacmeelectronicsshop.LoginActivity
+import com.cpm.g1.theacmeelectronicsshop.utils.ConfigHTTP
 import com.cpm.g1.theacmeelectronicsshop.R
-import com.cpm.g1.theacmeelectronicsshop.dataClasses.UserLogin
+import com.cpm.g1.theacmeelectronicsshop.dataClasses.user.UserLogin
 import com.cpm.g1.theacmeelectronicsshop.httpService.Login
 import com.google.android.material.textfield.TextInputEditText
 import com.google.gson.Gson

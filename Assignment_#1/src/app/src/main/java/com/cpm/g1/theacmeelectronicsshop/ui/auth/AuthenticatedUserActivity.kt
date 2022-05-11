@@ -1,9 +1,12 @@
-package com.cpm.g1.theacmeelectronicsshop
+package com.cpm.g1.theacmeelectronicsshop.ui.auth
 
 import android.content.Intent
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import com.cpm.g1.theacmeelectronicsshop.R
+import com.cpm.g1.theacmeelectronicsshop.security.clearUserUUID
+import com.cpm.g1.theacmeelectronicsshop.security.getUserUUID
 
 open class AuthenticatedUserActivity: AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

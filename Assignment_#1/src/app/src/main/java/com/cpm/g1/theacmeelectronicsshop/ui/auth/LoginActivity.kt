@@ -1,14 +1,16 @@
-package com.cpm.g1.theacmeelectronicsshop
+package com.cpm.g1.theacmeelectronicsshop.ui.auth
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
+import com.cpm.g1.theacmeelectronicsshop.ui.MainActivity
+import com.cpm.g1.theacmeelectronicsshop.R
 import com.cpm.g1.theacmeelectronicsshop.databinding.ActivityMainBinding
-import com.cpm.g1.theacmeelectronicsshop.ui.auth.LoginFragment
+import com.cpm.g1.theacmeelectronicsshop.security.getEncryptedSharedPreferences
+import com.cpm.g1.theacmeelectronicsshop.security.getUserUUID
 import org.json.JSONObject
 
 /**

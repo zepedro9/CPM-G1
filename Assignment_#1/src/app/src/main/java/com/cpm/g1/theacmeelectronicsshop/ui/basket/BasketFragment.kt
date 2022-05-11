@@ -1,6 +1,5 @@
 package com.cpm.g1.theacmeelectronicsshop.ui.basket
 
-import android.content.Context
 import android.content.Intent
 import android.database.Cursor
 import android.icu.text.NumberFormat
@@ -21,6 +20,9 @@ import com.cpm.g1.theacmeelectronicsshop.R.layout.product_row
 import com.cpm.g1.theacmeelectronicsshop.dataClasses.basket.BasketItem
 import com.cpm.g1.theacmeelectronicsshop.httpService.InitBasket
 import com.cpm.g1.theacmeelectronicsshop.ui.BasketHelper
+import com.cpm.g1.theacmeelectronicsshop.security.getUserUUID
+import com.cpm.g1.theacmeelectronicsshop.ui.MainActivity
+import com.cpm.g1.theacmeelectronicsshop.utils.ConfigHTTP
 import org.json.JSONObject
 import java.lang.Exception
 

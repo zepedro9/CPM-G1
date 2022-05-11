@@ -1,20 +1,17 @@
-package com.cpm.g1.theacmeelectronicsshop
+package com.cpm.g1.theacmeelectronicsshop.ui
 
-import android.app.Activity
 import android.os.Bundle
-import android.view.MenuItem
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.cpm.g1.theacmeelectronicsshop.R
 import com.cpm.g1.theacmeelectronicsshop.dataClasses.basket.Basket
 import com.cpm.g1.theacmeelectronicsshop.dataClasses.basket.ItemQuantity
-import com.cpm.g1.theacmeelectronicsshop.dataClasses.basket.Product
 import com.cpm.g1.theacmeelectronicsshop.databinding.ActivityAppBinding
+import com.cpm.g1.theacmeelectronicsshop.ui.auth.AuthenticatedUserActivity
 import com.cpm.g1.theacmeelectronicsshop.ui.basketHistory.BasketHistoryAdapter
-import com.cpm.g1.theacmeelectronicsshop.ui.basketHistory.ProductHistoryAdapter
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import org.json.JSONArray
 import org.json.JSONObject

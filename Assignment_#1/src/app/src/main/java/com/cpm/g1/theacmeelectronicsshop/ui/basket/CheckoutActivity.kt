@@ -1,19 +1,17 @@
 package com.cpm.g1.theacmeelectronicsshop.ui.basket
 
-import android.app.Activity
 import android.database.Cursor
 import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import com.cpm.g1.theacmeelectronicsshop.ConfigHTTP
-import com.cpm.g1.theacmeelectronicsshop.Cryptography
+import com.cpm.g1.theacmeelectronicsshop.utils.ConfigHTTP
+import com.cpm.g1.theacmeelectronicsshop.security.Cryptography
 import com.cpm.g1.theacmeelectronicsshop.dataClasses.basket.Basket
-import com.cpm.g1.theacmeelectronicsshop.dataClasses.basket.BasketItem
 import com.cpm.g1.theacmeelectronicsshop.dataClasses.basket.ItemQuantity
 import com.cpm.g1.theacmeelectronicsshop.dataClasses.basket.SignedBasket
-import com.cpm.g1.theacmeelectronicsshop.getUserUUID
+import com.cpm.g1.theacmeelectronicsshop.security.getUserUUID
 import com.cpm.g1.theacmeelectronicsshop.httpService.Checkout
 import com.cpm.g1.theacmeelectronicsshop.ui.BasketHelper
 import com.google.gson.Gson
