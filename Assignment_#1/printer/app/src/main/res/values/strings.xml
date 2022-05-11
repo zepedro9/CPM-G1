@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Printer</string>
+    <string name="scan_receipt">Scan receipt</string>
+    <string name="acme">ACME</string>
+    <string name="shop">shop</string>
+    <string name="scan_cancelled">The scan was cancelled</string>
+    <string name="scan_failed">The scan failed</string>
+    <string name="receipt">Here is your receipt:</string>
+    <string name="thank">"Thank you for your purchase, %1$s"</string>
+    <string name="product_name_format">%1$dx %2$s</string>
+    <string name="product_price_format">%1$.2f€</string>
+    <string name="nif">NIF</string>
+    <string name="receipt_error">There was an error printing your receipt</string>
+    <string name="product_name">Product</string>
+    <string name="product_price">Price</string>
+    <string name="total">Total</string>
+    <string name="date">Date</string>
+    <string name="time">Time</string>
+    <string name="receipt_info">Extra information</string>
+    <string name="value">Value</string>
+</resources>
