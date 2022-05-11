@@ -61,7 +61,7 @@ class RegisterFragment : Fragment() {
     // TODO: fix bug in validation
     @RequiresApi(Build.VERSION_CODES.O)
     private fun onClickSignup(view: View) {
-        val isValidFields = true // validateFields(view)
+        val isValidFields = validateFields(view)
         if (isValidFields) {
             val user = createUserObj(view)
             val userJson = Gson().toJson(user)
@@ -137,7 +137,7 @@ class RegisterFragment : Fragment() {
         var hasMinSize = true
         for (i in 0..fieldSize.size-1) {
             val field: EditText = view.findViewById<EditText>(fields[i])
-            if (fieldSize[i] != -1 && field.text.length < fieldSize[i]) {
+            if (fieldSize[i] != -1 && (field.text == null || field.text.length < fieldSize[i])) {
                 addErrorMessage(field, "Minimum size is " + fieldSize[i])
                 hasMinSize = false
             }
@@ -146,6 +146,10 @@ class RegisterFragment : Fragment() {
     }
 
     private fun addErrorMessage(field: EditText, errorMessage: String){
+        // The field might be null. Initialize on that case.
+        if (field.error.isNullOrBlank())
+            field.error = "";
+
         var splitChar = " "
         if (field.error.toString().isNotEmpty())
             splitChar = "\n"
