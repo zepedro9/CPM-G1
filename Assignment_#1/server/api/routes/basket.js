@@ -16,9 +16,21 @@ router.post('/checkout', async (req, res) => {
 
     const uuid = req.body.basket.userUUID
     const products = req.body.basket.products
+    const total = req.body.basket.total
 
     if(products.length == 0)
         return res.status(401).send({"message": "Empty basket"})
+
+    // Calculate basket cost
+    let actualTotalCost = 0
+    for (let tmp of products) {
+        const product = await Product.findOne({ id: tmp.id });
+        actualTotalCost += product.price * tmp.quantity
+    }
+
+    // Verify basket cost hasn't been tampered with, cancel otherwise
+    if(actualTotalCost != total)
+        return res.status(403).send({"message": "There was a problem with the total basket cost, please try again"})
 
     // Check signature
     try {
