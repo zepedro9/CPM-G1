@@ -15,7 +15,10 @@ import com.cpm.g1.theacmeelectronicsshop.dataClasses.user.User
 import com.cpm.g1.theacmeelectronicsshop.httpService.SignUp
 import com.cpm.g1.theacmeelectronicsshop.security.Cryptography
 import com.cpm.g1.theacmeelectronicsshop.utils.ConfigHTTP
+import com.google.android.material.textfield.TextInputEditText
 import com.google.gson.Gson
+import java.text.SimpleDateFormat
+import java.util.*
 
 class RegisterFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,11 +37,12 @@ class RegisterFragment : Fragment() {
         return view
     }
 
-    fun setupCardType(view: View){
+    fun setupCardType(view: View) {
         val textField = view.findViewById<AutoCompleteTextView>(R.id.reg_card_type_ed)
         val items = listOf("Credit", "Debit")
         val adapter = ArrayAdapter(requireContext(), R.layout.list_item, items)
         textField?.setAdapter(adapter)
+        textField.setText("Credit")
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -66,7 +70,7 @@ class RegisterFragment : Fragment() {
             val user = createUserObj(view)
             val userJson = Gson().toJson(user)
             val address = "http://" + ConfigHTTP.BASE_ADDRESS + ":3000/api/auth/signup"
-            Thread(SignUp(activity as LoginActivity, address , userJson)).start()
+            Thread(SignUp(activity as LoginActivity, address, userJson)).start()
         } else {
             Toast.makeText(requireContext(), "Invalid fields", Toast.LENGTH_LONG).show()
         }
@@ -98,87 +102,79 @@ class RegisterFragment : Fragment() {
     // FIELDS VALIDATION ==============================
 
     private fun validateFields(view: View): Boolean {
-        var containsError = false
-        val fields = arrayOf(
-            R.id.reg_name_ed,
-            R.id.reg_address_ed,
-            R.id.reg_nif_ed,
-            R.id.reg_email_ed,
-            R.id.reg_password_ed,
-            R.id.reg_card_type_ed,
-            R.id.reg_card_number_ed,
-            R.id.reg_card_expiration_ed
-        )
+        var isValid = true
 
-        val fieldSizes = arrayOf(
-            -1, 10, 9, 5, 7, -1, 15, -1
-        )
-
-        if (!checkFieldsFilled(view, fields)) containsError = true
-        if (!checkSizes(view, fieldSizes, fields)) containsError = true
+        isValid = isValid.and(validateField( view, R.id.reg_name_ed, 5, 200));
+        isValid = isValid.and(validateField( view, R.id.reg_address_ed, 7, 200));
+        isValid = isValid.and(validateField( view, R.id.reg_nif_ed, 9, 9));
+        isValid = isValid.and(validateField( view, R.id.reg_password_ed, 7, 200));
+        isValid = isValid.and(validateField( view, R.id.reg_card_number_ed, 15, 200));
+        isValid = isValid.and(validateField( view, R.id.reg_email_ed, 7, 200 ));
 
         // Check email pattern.
-        val emailField = view.findViewById<EditText>(R.id.reg_email_ed)
+        val emailField = view.findViewById<TextInputEditText>(R.id.reg_email_ed)
         if (!Patterns.EMAIL_ADDRESS.matcher(emailField.text.toString()).matches()) {
-            addErrorMessage(emailField, "Invalid email format")
-            containsError = true
-        }
-
-        return !containsError
-
-    }
-
-    /**
-     * Check the sizes of each.
-     * @param fieldSize Size of the fields. Fields with negative values are considered of not
-     * having minimum size.
-     */
-    private fun checkSizes(view: View, fieldSize: Array<Int>, fields: Array<Int>): Boolean {
-        var hasMinSize = true
-        for (i in 0..fieldSize.size-1) {
-            val field: EditText = view.findViewById<EditText>(fields[i])
-            if (fieldSize[i] != -1 && (field.text == null || field.text.length < fieldSize[i])) {
-                addErrorMessage(field, "Minimum size is " + fieldSize[i])
-                hasMinSize = false
+            val errorMessage = "Invalid email format"
+            if (emailField.error.isNullOrEmpty()) {
+                emailField.error = errorMessage
+            } else {
+                emailField.error = "${emailField.error} \n$errorMessage"
             }
-        }
-        return hasMinSize
-    }
-
-    private fun addErrorMessage(field: EditText, errorMessage: String){
-        // The field might be null. Initialize on that case.
-        if (field.error.isNullOrBlank())
-            field.error = "";
-
-        var splitChar = " "
-        if (field.error.toString().isNotEmpty())
-            splitChar = "\n"
-        field.error = field.error.toString() + splitChar + errorMessage
-    }
-
-    /**
-     * Check if all fields are filled.
-     * All the fields must be checked before returning.
-     */
-    private fun checkFieldsFilled(view: View, fields: Array<Int>): Boolean {
-        var isFilled = true
-        for (field in fields) {
-            if (!checkMandatoryField(view.findViewById(field)))
-                isFilled = false
+            isValid = false;
         }
 
-        return isFilled;
+        // Check email pattern
+        val dateField = view.findViewById<TextInputEditText>(R.id.reg_card_expiration_ed)
+        if (!checkDateFormat(dateField)) {
+            dateField.error = "Expecting format MM-yyyy"
+            isValid = false
+        }
+
+        return isValid
+
     }
 
-    /**
-     * Checks if a mandatory field is filled.
-     */
-    private fun checkMandatoryField(field: EditText): Boolean {
-        if (field.text.toString().isEmpty()) {
-            field.error = "Field is required";
-            return false
+
+    private fun validateField(view: View, id: Int, min: Int, max: Int): Boolean{
+        var isValid = true
+        val editView = view.findViewById<TextInputEditText>(id)
+        editView.error = ""
+        isValid = isValid.and(setErrorOnEmpty(editView))
+        isValid = isValid.and(setMinMax(editView, min, max))
+
+        if (editView.error.isNullOrEmpty()) {
+            editView.error = null
         }
-        return true;
+        return isValid;
+    }
+
+    private fun setErrorOnEmpty(editView: TextInputEditText): Boolean{
+        if (editView.text.isNullOrEmpty()){
+            editView.error = "${editView.error}This field must be filled"
+            return false;
+        }
+        return true
+    }
+    private fun setMinMax(editView: TextInputEditText, min: Int, max: Int): Boolean{
+        var isValid = true
+        var separator = "\n";
+        if (editView.error.isNullOrEmpty())
+            separator = "";
+        if (max != -1 && editView.length() > max) {
+            editView.error = "${editView.error} ${separator}Max size is $max"
+            isValid = false
+        } else if (min != -1 && editView.length() < min){
+            editView.error = "${editView.error} ${separator}Min size is $min"
+            isValid = false
+        }
+        return isValid
+    }
+
+
+
+    private fun checkDateFormat(field: EditText): Boolean {
+        val regex = """(1[0-2]|0[1-9]|[1-9])-(20\d{2}|19\d{2})""".toRegex()
+        return regex.matches(field.text.toString());
+
     }
 }
-

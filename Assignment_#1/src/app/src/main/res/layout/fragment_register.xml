@@ -219,7 +219,7 @@
                     android:id="@+id/reg_card_expiration_ed"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="date"
+                    android:inputType="text"
                     android:textColor="@color/black" />
 
             </com.google.android.material.textfield.TextInputLayout>
