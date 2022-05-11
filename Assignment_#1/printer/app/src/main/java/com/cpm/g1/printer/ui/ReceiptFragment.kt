@@ -1,5 +1,6 @@
 package com.cpm.g1.printer.ui
 
+import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -65,6 +66,25 @@ class ReceiptFragment : Fragment() {
                         price = listProd.getString("price")
 
                         productsListView.addView(createProductLine(name, quantity.toInt(), price.toFloat()))
+                        productsListView.addView(createProductLine(name, quantity.toInt(), price.toFloat()))
+                        productsListView.addView(createProductLine(name, quantity.toInt(), price.toFloat()))
+                        productsListView.addView(createProductLine(name, quantity.toInt(), price.toFloat()))
+                        productsListView.addView(createProductLine(name, quantity.toInt(), price.toFloat()))
+                        productsListView.addView(createProductLine(name, quantity.toInt(), price.toFloat()))
+                        productsListView.addView(createProductLine(name, quantity.toInt(), price.toFloat()))
+                        productsListView.addView(createProductLine(name, quantity.toInt(), price.toFloat()))
+                        productsListView.addView(createProductLine(name, quantity.toInt(), price.toFloat()))
+                        productsListView.addView(createProductLine(name, quantity.toInt(), price.toFloat()))
+                        productsListView.addView(createProductLine(name, quantity.toInt(), price.toFloat()))
+                        productsListView.addView(createProductLine(name, quantity.toInt(), price.toFloat()))
+                        productsListView.addView(createProductLine(name, quantity.toInt(), price.toFloat()))
+                        productsListView.addView(createProductLine(name, quantity.toInt(), price.toFloat()))
+                        productsListView.addView(createProductLine(name, quantity.toInt(), price.toFloat()))
+                        productsListView.addView(createProductLine(name, quantity.toInt(), price.toFloat()))
+                        productsListView.addView(createProductLine(name, quantity.toInt(), price.toFloat()))
+                        productsListView.addView(createProductLine(name, quantity.toInt(), price.toFloat()))
+                        productsListView.addView(createProductLine(name, quantity.toInt(), price.toFloat()))
+                        productsListView.addView(createProductLine(name, quantity.toInt(), price.toFloat()))
                         break
                     }
                 }
@@ -78,13 +98,14 @@ class ReceiptFragment : Fragment() {
 
     private fun createProductLine(name: String, quantity: Int, price: Float): LinearLayout {
         val productLineLayout = LinearLayout(requireActivity())
+        val isTotal = quantity == -1
         productLineLayout.id = View.generateViewId()
 
         productLineLayout.layoutParams = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.WRAP_CONTENT,
         )
-        if(quantity == -1) {
+        if(isTotal) {
             val params = productLineLayout.layoutParams as LinearLayout.LayoutParams
             params.setMargins(0, resources.getDimension(R.dimen.padding_default).toInt(), 0, 0)
             productLineLayout.layoutParams = params
@@ -92,8 +113,10 @@ class ReceiptFragment : Fragment() {
         productLineLayout.orientation = LinearLayout.HORIZONTAL
 
         val nameView = TextView(activity)
-        if(quantity == -1) nameView.text = getString(R.string.total)
-        else nameView.text = getString(R.string.product_name_format, quantity, name)
+        if(isTotal) {
+            nameView.text = getString(R.string.total)
+            nameView.setTypeface(nameView.typeface, Typeface.BOLD);
+        } else nameView.text = getString(R.string.product_name_format, quantity, name)
         nameView.layoutParams = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.WRAP_CONTENT,
             LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -103,6 +126,7 @@ class ReceiptFragment : Fragment() {
 
         val priceView = TextView(activity)
         priceView.text = getString(R.string.product_price_format, price)
+        if(isTotal) priceView.setTypeface(priceView.typeface, Typeface.BOLD);
         priceView.layoutParams = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.WRAP_CONTENT,
             LinearLayout.LayoutParams.WRAP_CONTENT,
