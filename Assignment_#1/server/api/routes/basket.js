@@ -65,7 +65,7 @@ const addToDatabase = async (req) => {
             console.log("Not possible to save the basket"); 
             return {status: -1} 
         }
-        console.log("Basket saved with successs!");
+        console.log("Basket saved with success!");
         return {status: 0 , basket: doc};
     });
 
@@ -112,7 +112,8 @@ router.post('/receipt', async (req, res) => {
 
     try {
         // Get basket
-        let basket = await Basket.find({ token: req.body.basketUUID });
+        let basket = await Basket.find({ token: req.body.basketUUID, usedToken: false });
+        if(basket.length == 0) return res.status(400).send({"message": "Invalid receipt or basket receipt already printed"})
         console.log(basket)
         
         // Get user
@@ -128,7 +129,7 @@ router.post('/receipt', async (req, res) => {
         }
         
         // Set used flag
-        Basket.findOneAndUpdate({ query: { token: req.body.basketUUID }, update: { usedToken: true } });
+        await Basket.updateOne({ token: req.body.basketUUID }, { $set: { usedToken: true }})
 
         // Return info
         return res.status(200).send({message: "Authorized", user: user.name, nif:user.NIF, basket: basket, products: products});
