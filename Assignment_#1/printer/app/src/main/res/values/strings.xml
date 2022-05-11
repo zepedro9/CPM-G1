@@ -18,4 +18,5 @@
     <string name="time">Time</string>
     <string name="receipt_info">Extra information</string>
     <string name="value">Value</string>
+    <string name="go_back">Go back</string>
 </resources>

@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -31,6 +32,11 @@ class ReceiptFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val back = view.findViewById<Button>(R.id.goBack)
+        back.setOnClickListener {
+            parentFragmentManager.popBackStack()
+        }
 
         val thank = view.findViewById<TextView>(R.id.thankyou)
         thank.text = getString(R.string.thank, user)
