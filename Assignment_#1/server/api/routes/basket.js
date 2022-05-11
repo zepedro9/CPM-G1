@@ -6,6 +6,7 @@ const express = require('express');
 const router = express.Router();
 
 
+
 router.post('/checkout', async (req, res) => {
 
     // Validate request body params
@@ -52,9 +53,11 @@ router.post('/checkout', async (req, res) => {
 
 const addToDatabase = async (req) => {
     // Get hour 
-    const now = new Date();
-
-    const current = now.getHours().toString().padStart(2, 0) + ':' + now.getMinutes().toString().padStart(2, '0');
+    current = new Date().toLocaleTimeString('en-US', {
+        timeZone: 'Europe/Lisbon',
+        hour12: false
+    })
+    current = current.substr(0, current.lastIndexOf(":"));
 
     var today = new Date().toISOString().slice(0, 10);
     let basket = new Basket({ ...req.body.basket, date: today, hour: current });
