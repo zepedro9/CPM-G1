@@ -31,7 +31,7 @@ class ScanFragment : Fragment() {
             val intent = Intent(this.context, CaptureActivity::class.java)
             intent.putExtra(
                 "SCAN_FORMATS",
-                "UPC_A"
+                "QR_CODE"
             )
             intent.action = Intents.Scan.ACTION
             openScan.launch(intent)
@@ -47,16 +47,11 @@ class ScanFragment : Fragment() {
                     val mainActivity = activity as MainActivity
                     val address = "http://" + ConfigHTTP.BASE_ADDRESS + ":3000/api/basket/receipt"
                     val basketUUID: String? = it.data?.getStringExtra(Intents.Scan.RESULT)
-                    val signedContent = Gson().toJson(basketUUID)
+                    val signedContent = Gson().toJson(hashMapOf("basketUUID" to basketUUID))
                     Thread(GetReceipt(mainActivity, address, signedContent)).start()
                 }
                 Activity.RESULT_CANCELED -> {
                     Toast.makeText(this.context, getText(R.string.scan_cancelled), Toast.LENGTH_SHORT).show()
-                    val mainActivity = activity as MainActivity
-                    val address = "http://" + ConfigHTTP.BASE_ADDRESS + ":3000/api/basket/receipt"
-                    val basketUUID: String? = it.data?.getStringExtra(Intents.Scan.RESULT)
-                    val signedContent = Gson().toJson(basketUUID)
-                    Thread(GetReceipt(mainActivity, address, signedContent)).start()
                 }
                 else -> {
                     Toast.makeText(this.context, getText(R.string.scan_failed), Toast.LENGTH_SHORT).show()

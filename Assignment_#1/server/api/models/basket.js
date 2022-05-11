@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const uuid = require('node-uuid');
 
 const Basket = mongoose.model('Basket', mongoose.Schema({
-    userUuid: String, 
+    userUUID: String, 
     token: { type: String, default: ()=>{return uuid.v1()}},
     usedToken: {Boolean, default: false},
     products: [{

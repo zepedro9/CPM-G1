@@ -58,7 +58,7 @@ const addToDatabase = async (req) => {
 
     var today = new Date().toISOString().slice(0, 10);
     let basket = new Basket({ ...req.body.basket, date: today, hour: current });
-    // TODO : verify price  
+    // TODO : verify price
 
     await basket.save(function (err, doc) {
         if (err) {
@@ -93,7 +93,7 @@ router.post('/history', async (req, res) => {
         if(!signResult) return res.status(401).send({"message": "No authorization"})
         
         // Get history
-        let history = await Basket.find({ userUUID: req.params.userUUID });
+        let history = await Basket.find({ userUUID: req.body.userUUID });
         console.log(history)
         return res.status(200).send({message:"Authorized", history:history});
     } catch (err) {
@@ -116,19 +116,19 @@ router.post('/receipt', async (req, res) => {
         console.log(basket)
         
         // Get user
-        let user = await User.findOne({ _id: basket.userUuid});
+        let user = await User.findOne({ _id: basket[0].userUUID});
         if(!user) return res.status(400).send({"message": "Unknown user"})
 
         // Get basket products info
         let products = []
-        for (let id of basket.products) {
-            const product = await Product.findOne({ id: id });
+        for (let tmp of basket[0].products) {
+            const product = await Product.findOne({ id: tmp.id });
             products.push(product);
             console.log(product)
         }
         
         // Set used flag
-        Basket.findAndModify({ query: { token: req.body.basketUUID }, update: { usedToken: true } });
+        Basket.findOneAndUpdate({ query: { token: req.body.basketUUID }, update: { usedToken: true } });
 
         // Return info
         return res.status(200).send({message: "Authorized", user: user.name, nif:user.NIF, basket: basket, products: products});
