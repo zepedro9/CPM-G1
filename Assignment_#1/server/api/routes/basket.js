@@ -113,7 +113,7 @@ router.post('/receipt', async (req, res) => {
     try {
         // Get basket
         let basket = await Basket.find({ token: req.body.basketUUID, usedToken: false });
-        if(!basket) return res.status(400).send({"message": "Invalid basket or basket receipt already printed"})
+        if(basket.length == 0) return res.status(400).send({"message": "Invalid receipt or basket receipt already printed"})
         console.log(basket)
         
         // Get user
@@ -129,7 +129,7 @@ router.post('/receipt', async (req, res) => {
         }
         
         // Set used flag
-        Basket.updateOne({ filter: { token: req.body.basketUUID }, update: { usedToken: true } })
+        await Basket.updateOne({ token: req.body.basketUUID }, { $set: { usedToken: true }})
 
         // Return info
         return res.status(200).send({message: "Authorized", user: user.name, nif:user.NIF, basket: basket, products: products});
