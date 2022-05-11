@@ -93,7 +93,7 @@ router.post('/history', async (req, res) => {
         if(!signResult) return res.status(401).send({"message": "No authorization"})
         
         // Get history
-        let history = await Basket.find({ userUUID: req.params.userUUID });
+        let history = await Basket.find({ userUUID: req.body.userUUID });
         console.log(history)
         return res.status(200).send({message:"Authorized", history:history});
     } catch (err) {
