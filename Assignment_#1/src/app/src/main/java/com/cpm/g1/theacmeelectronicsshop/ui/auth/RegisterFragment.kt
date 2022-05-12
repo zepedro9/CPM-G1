@@ -41,8 +41,8 @@ class RegisterFragment : Fragment() {
         val textField = view.findViewById<AutoCompleteTextView>(R.id.reg_card_type_ed)
         val items = listOf("Credit", "Debit")
         val adapter = ArrayAdapter(requireContext(), R.layout.list_item, items)
-        textField?.setAdapter(adapter)
         textField.setText("Credit")
+        textField?.setAdapter(adapter)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
