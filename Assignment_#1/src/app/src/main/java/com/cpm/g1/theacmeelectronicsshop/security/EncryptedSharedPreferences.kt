@@ -20,8 +20,12 @@ fun getEncryptedSharedPreferences(context: Context): SharedPreferences {
 }
 
 fun getUserUUID(context: Context): String {
-    val sharedPreferences = getEncryptedSharedPreferences(context)
-    return sharedPreferences.getString("uuid", "") ?: ""
+    try {
+        val sharedPreferences = getEncryptedSharedPreferences(context)
+        return sharedPreferences.getString("uuid", "") ?: ""
+    } catch(exp: Exception){
+        return ""
+    }
 }
 
 fun clearUserUUID(context: Context) {

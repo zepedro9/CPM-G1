@@ -105,6 +105,7 @@ class LoginActivity : AppCompatActivity() {
      */
     private fun saveUuid(uuid: String){
         try {
+            println("UUID $uuid")
             val sharedPreferences = getEncryptedSharedPreferences(applicationContext)
             with(sharedPreferences.edit()) {
                 putString("uuid", uuid)
