@@ -6,7 +6,7 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 const val DATABASE_NAME = "basket"
-const val SCHEMA_VERSION = 21
+const val SCHEMA_VERSION = 22
 
 class BasketHelper(context: Context?) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, SCHEMA_VERSION) {
@@ -17,7 +17,8 @@ class BasketHelper(context: Context?) :
                     "product_id LONG NOT NULL,"+
                     "user_id TEXT NOT NULL,"+
                     "quantity INTEGER DEFAULT 1, " +
-                    "date TEXT DEFAULT CURRENT_TIMESTAMP)")
+                    "date TEXT DEFAULT CURRENT_TIMESTAMP, " +
+                    "UNIQUE(product_id, user_id))")
         }
 
     override fun onUpgrade(db: SQLiteDatabase, old: Int, new: Int) {

@@ -43,6 +43,7 @@ class BasketFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        basket.clear()
         return inflater.inflate(R.layout.fragment_basket, container, false)
     }
 
