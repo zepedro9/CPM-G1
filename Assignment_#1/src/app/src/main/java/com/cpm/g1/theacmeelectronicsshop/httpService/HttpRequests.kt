@@ -50,11 +50,11 @@ fun sendRequest(
             val response = readStream(urlConnection.errorStream)
             callback(false, response)
         }
-        Log.e("ERR",  err.toString());
+        Log.e("ERR",  err.toString())
     } catch (err: Exception) {
         val response = "{\"message\": \"Unexpected error occurred\"}"
         callback(false, response)
-        Log.e("ERR",  err.toString());
+        Log.e("ERR",  err.toString())
     } finally {
         urlConnection?.disconnect()
     }

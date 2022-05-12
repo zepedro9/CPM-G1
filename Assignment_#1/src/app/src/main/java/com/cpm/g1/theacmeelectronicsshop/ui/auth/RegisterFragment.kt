@@ -21,9 +21,6 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class RegisterFragment : Fragment() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
@@ -41,13 +38,8 @@ class RegisterFragment : Fragment() {
         val textField = view.findViewById<AutoCompleteTextView>(R.id.reg_card_type_ed)
         val items = listOf("Credit", "Debit")
         val adapter = ArrayAdapter(requireContext(), R.layout.list_item, items)
-        textField.setText("Credit")
+        textField.setText(getString(R.string.credit))
         textField?.setAdapter(adapter)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
     }
 
     /**
@@ -62,7 +54,6 @@ class RegisterFragment : Fragment() {
         fragmentTransaction?.commit()
     }
 
-    // TODO: fix bug in validation
     @RequiresApi(Build.VERSION_CODES.O)
     private fun onClickSignup(view: View) {
         val isValidFields = validateFields(view)

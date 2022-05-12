@@ -18,7 +18,7 @@ import org.json.JSONObject
 
 class MainActivity : AuthenticatedUserActivity() {
     // History fragment variables
-    val historyBasket: ArrayList<Basket> = ArrayList();
+    val historyBasket: ArrayList<Basket> = ArrayList()
     val adapterBasket by lazy { BasketHistoryAdapter(this, historyBasket) }
 
 

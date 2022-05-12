@@ -29,10 +29,10 @@ open class AuthenticatedUserActivity: AppCompatActivity() {
 
     private fun logout(){
         val intent = Intent(this, LoginActivity::class.java)
-        intent.putExtra("finish", true);
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP; // To clean up all activities
+        intent.putExtra("finish", true)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP // To clean up all activities
         clearUserUUID(applicationContext)
-        startActivity(intent);
-        finish();
+        startActivity(intent)
+        finish()
     }
 }

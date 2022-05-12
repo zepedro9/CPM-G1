@@ -85,7 +85,10 @@ class LoginActivity : AppCompatActivity() {
             val fragmentTransaction = fragmentManager.beginTransaction()
             fragmentTransaction.replace(R.id.main_fragment_container, loginFragment)
             fragmentTransaction.addToBackStack(null)
-            fragmentTransaction.commit();
+            fragmentTransaction.commit()
+            runOnUiThread {
+                Toast.makeText(this, getString(R.string.reg_success), Toast.LENGTH_LONG).show()
+            }
         }
     }
 
@@ -126,7 +129,7 @@ class LoginActivity : AppCompatActivity() {
                 apply()
             }
         } catch (err: Exception) {
-            println(err);
+            println(err)
         }
     }
 
