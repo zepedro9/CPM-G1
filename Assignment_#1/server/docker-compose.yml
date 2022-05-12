@@ -35,6 +35,7 @@ services:
       - ./api/app.js:/app/app.js
       - ./api/routes/:/app/routes/
       - ./api/models/:/app/models/
+      - ./api/utils/:/app/utils/
     environment:
       - CHOKIDAR_USEPOLLING=true
     depends_on:

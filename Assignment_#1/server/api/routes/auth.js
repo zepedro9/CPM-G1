@@ -1,4 +1,5 @@
-const { User } = require("../models/user");
+const { User } = require("../models/user"); 
+const {isValidExpirationCard} = require("../utils/cardExpiration"); 
 const express = require('express');
 const bcrypt = require('bcrypt');
 const router = express.Router();
@@ -15,6 +16,8 @@ router.post('/signup', async (req, res) => {
         console.log(isRegisteredUser); 
         if(isRegisteredUser) return res.status(409).send({"message": "The user is already registered"});
         
+        if(!isValidExpirationCard(req)) return res.status(403).send({"message": "Invalid credit card expiration date"}); 
+
         // Saving and encrypting password. 
         let hashedPassword = await encryptHash(req.body.password);
         let user = new User(
@@ -79,5 +82,7 @@ const verifyRegisterFields = (req) => {
     }
     return false;
 }
+
+
 
 module.exports = router; 

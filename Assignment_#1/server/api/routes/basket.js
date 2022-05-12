@@ -1,7 +1,8 @@
 const { User } = require("../models/user");
 const { Basket } = require("../models/basket");
 const { Product } = require("../models/product");
-const crypto_utils = require('../utils/cryptography')
+const {isValidExpirationCard} = require("../utils/cardExpiration"); 
+const crypto_utils = require('../utils/cryptography');
 const express = require('express');
 const router = express.Router();
 
@@ -13,6 +14,8 @@ router.post('/checkout', async (req, res) => {
     if(!req.body.basket || !req.body.signature){
         return res.status(400).send({message: "Please provide the signed basket and uuid"})
     }   
+
+    if(!isValidExpirationCard(req)) return res.status(403).send({"message": "Invalid credit card date expiration"}); 
 
     const uuid = req.body.basket.userUUID
     const products = req.body.basket.products
