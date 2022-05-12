@@ -5,4 +5,4 @@ import java.io.Serializable
 data class ItemQuantity(
     var id: Long,
     var quantity: Int
-): Serializable {}
+): Serializable

@@ -51,7 +51,6 @@ class BasketHistoryList : Fragment() {
             AdapterView.OnItemClickListener { parent, view, position, id ->
                 val basket = (activity as MainActivity).historyBasket.get(position)
                 changeToProductDetails(basket)
-                println(basket)
             }
     }
 

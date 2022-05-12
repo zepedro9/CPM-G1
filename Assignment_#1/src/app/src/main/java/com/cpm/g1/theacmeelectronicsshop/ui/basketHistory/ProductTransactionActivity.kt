@@ -50,7 +50,6 @@ class ProductTransactionActivity : AppCompatActivity() {
             val product = products.getJSONObject(i)
             historyProducts.add(product)
         }
-        println(historyProducts)
         runOnUiThread {
             adapterProducts.notifyDataSetChanged()
         }

@@ -6,6 +6,4 @@ data class Card(
     var cardType: String,
     var number: String,
     var expirationDate: String,
-) : Serializable {
-
-}
+) : Serializable

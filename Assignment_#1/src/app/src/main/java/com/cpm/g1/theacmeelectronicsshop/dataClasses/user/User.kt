@@ -10,6 +10,4 @@ data class User (
     val email: String,
     val password: String,   // encrypted.
     val card: Card,
-) : Serializable {
-
-}
+) : Serializable

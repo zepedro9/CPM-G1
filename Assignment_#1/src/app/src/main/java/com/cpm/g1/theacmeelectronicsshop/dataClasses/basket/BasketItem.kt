@@ -10,5 +10,5 @@ data class BasketItem(
     var description: String,
     var image_url: String,
     var quantity: Int
-): Serializable {}
+): Serializable
 

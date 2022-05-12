@@ -28,7 +28,6 @@ class ProductHistoryAdapter(val activity: ProductTransactionActivity, val produc
 
             val basket = activity.basket
             val itemQuantity = getQuantity(basket, productId as Long).toString()
-            println(itemQuantity)
             row.findViewById<TextView>(R.id.name_text).text = product.getString("name")
             row.findViewById<TextView>(R.id.brand_text).text = product.getString("brand")
             row.findViewById<TextView>(R.id.price_text).text = product.getString("price") + " €"

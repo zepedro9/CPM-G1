@@ -113,7 +113,6 @@ class LoginActivity : AppCompatActivity() {
 
     fun keysUpdated(success: Boolean, response: String){
         val json = JSONObject(response)
-        println(json.get("message"))
     }
 
     /**
@@ -121,7 +120,6 @@ class LoginActivity : AppCompatActivity() {
      */
     private fun saveUuid(uuid: String){
         try {
-            println("UUID $uuid")
             val sharedPreferences = getEncryptedSharedPreferences(applicationContext)
             with(sharedPreferences.edit()) {
                 putString("uuid", uuid)

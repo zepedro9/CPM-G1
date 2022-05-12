@@ -8,5 +8,4 @@ data class Basket(
     var total: String? = "",
     var date: String? = "",
     var hour: String? = "",
-): Serializable {
-}
+): Serializable
