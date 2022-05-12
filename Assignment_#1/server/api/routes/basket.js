@@ -16,6 +16,9 @@ router.post('/checkout', async (req, res) => {
     }   
     let user = await User.findOne({"_id": req.body.basket.userUUID});
     if(!isValidExpirationCard(user.card.expirationDate)) return res.status(403).send({"message": "Invalid credit card date expiration"}); 
+    
+    let hasFunds = Math.floor(Math.random() * 100)
+    if(hasFunds < 5) return res.status(400).send({message: "Purchase cancelled due to insufficient funds"})
 
     const uuid = req.body.basket.userUUID
     const products = req.body.basket.products
@@ -48,8 +51,6 @@ router.post('/checkout', async (req, res) => {
     
             if (addResponse.status == -1) 
                 return res.status(400).send({"message": "Checkout failed"});
-
-            // TODO: verify credit card, save basket in the server with new identifier(new uuid)
 
             const basket_uuid = addResponse.basket.token; 
             const encryptResult = crypto_utils.encrypt(basket_uuid, user.pk)
