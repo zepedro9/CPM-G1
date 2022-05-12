@@ -75,6 +75,7 @@ class SignUp(private val act: LoginActivity, private val uri: String, val body: 
  */
 class Login(private val act: LoginActivity, private val uri: String, private val body: String) :
     Runnable {
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun run() {
         sendRequest(uri, body, act::toMainActivity)
     }
@@ -130,5 +131,15 @@ class UserExists(private val act: LoginActivity, private val uri: String, val us
     @RequiresApi(Build.VERSION_CODES.O)
     override fun run() {
         sendRequest(uri, userUUID, act::loginOrLogout)
+    }
+}
+
+/**
+ * Update the keys.
+ */
+class UpdateKeys(private val act: LoginActivity, private val uri: String, val body: String): Runnable{
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun run() {
+        sendRequest(uri, body, act::keysUpdated)
     }
 }

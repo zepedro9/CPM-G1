@@ -1,15 +1,19 @@
 package com.cpm.g1.theacmeelectronicsshop.ui.auth
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import com.cpm.g1.theacmeelectronicsshop.ui.MainActivity
 import com.cpm.g1.theacmeelectronicsshop.R
 import com.cpm.g1.theacmeelectronicsshop.databinding.ActivityMainBinding
+import com.cpm.g1.theacmeelectronicsshop.httpService.UpdateKeys
 import com.cpm.g1.theacmeelectronicsshop.httpService.UserExists
+import com.cpm.g1.theacmeelectronicsshop.security.Cryptography
 import com.cpm.g1.theacmeelectronicsshop.security.clearUserUUID
 import com.cpm.g1.theacmeelectronicsshop.security.getEncryptedSharedPreferences
 import com.cpm.g1.theacmeelectronicsshop.security.getUserUUID
@@ -18,7 +22,7 @@ import com.google.gson.Gson
 import org.json.JSONObject
 
 const val USER_EXISTS_ADDRESS: String = "http://" + ConfigHTTP.BASE_ADDRESS + ":3000/api/auth/user"
-
+const val UPDATE_SECRET_ADDRESS: String = "http://" + ConfigHTTP.BASE_ADDRESS + ":3000/api/auth/update-key"
 /**
  * This is the initial fragment of the program.
  * The activity remains active until the user logs in.
@@ -88,6 +92,7 @@ class LoginActivity : AppCompatActivity() {
     /**
      * Changes the LoginActivity to MainActivity
      */
+    @RequiresApi(Build.VERSION_CODES.O)
     fun toMainActivity(success: Boolean, response: String) {
         val jsonResponse = JSONObject(response)
         if(!success){
@@ -96,8 +101,19 @@ class LoginActivity : AppCompatActivity() {
             }
         } else {
             saveUuid(jsonResponse.getString("uuid"))
+
+            Cryptography().generateKey(this)
+            val pk = Cryptography().getPubKey()
+            val uuid = getUserUUID(this)
+            val body = Gson().toJson(hashMapOf("uuid" to uuid, "pk" to pk))
+            Thread(UpdateKeys(this, UPDATE_SECRET_ADDRESS, body)).start()
             startActivity(Intent(this, MainActivity::class.java))
         }
+    }
+
+    fun keysUpdated(success: Boolean, response: String){
+        val json = JSONObject(response)
+        println(json.get("message"))
     }
 
     /**
@@ -105,6 +121,7 @@ class LoginActivity : AppCompatActivity() {
      */
     private fun saveUuid(uuid: String){
         try {
+            println("UUID $uuid")
             val sharedPreferences = getEncryptedSharedPreferences(applicationContext)
             with(sharedPreferences.edit()) {
                 putString("uuid", uuid)
@@ -114,4 +131,6 @@ class LoginActivity : AppCompatActivity() {
             println(err);
         }
     }
+
+
 }
