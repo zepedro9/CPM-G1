@@ -9,7 +9,6 @@ router.get("/", async (req, res) => {
 
 router.get("/list", async (req, res) => {
   let products = req.query.prod;
-  console.log(products);
   let response = []
   if (!Array.isArray(products)) {
     const product = await Product.findOne({ products });
@@ -18,10 +17,8 @@ router.get("/list", async (req, res) => {
     for (let id of products) {
       const product = await Product.findOne({ id: id });
       response.push(product);
-      console.log(product)
     }
   }
-  console.log(response);
   res.status(200).send({ message: "OK", products: response });
 });
 

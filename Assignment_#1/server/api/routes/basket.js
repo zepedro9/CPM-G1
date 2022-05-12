@@ -14,8 +14,8 @@ router.post('/checkout', async (req, res) => {
     if(!req.body.basket || !req.body.signature){
         return res.status(400).send({message: "Please provide the signed basket and uuid"})
     }   
-
-    if(!isValidExpirationCard(req)) return res.status(403).send({"message": "Invalid credit card date expiration"}); 
+    let user = await User.findOne({"_id": req.body.basket.userUUID});
+    if(!isValidExpirationCard(user.card.expirationDate)) return res.status(403).send({"message": "Invalid credit card date expiration"}); 
 
     const uuid = req.body.basket.userUUID
     const products = req.body.basket.products
@@ -96,7 +96,6 @@ const addToDatabase = async (req) => {
  * Thus using post seems to be the more correct option. 
  */
 router.post('/history', async (req, res) => {
-    console.log(req.body)
     if (!req.body.userUUID || !req.body.signature) {
         return res.status(400).send({ message: "Please provide the signed basket and uuid" });
     }
@@ -112,7 +111,6 @@ router.post('/history', async (req, res) => {
         
         // Get history
         let history = await Basket.find({ userUUID: req.body.userUUID });
-        console.log(history)
         return res.status(200).send({message:"Authorized", history:history});
     } catch (err) {
         console.log(err);
@@ -123,7 +121,6 @@ router.post('/history', async (req, res) => {
 
 
 router.post('/receipt', async (req, res) => {
-    console.log(req.body)
     if (!req.body.basketUUID) {
         return res.status(400).send({ message: "Please provide the basket UUID" });
     }
@@ -143,7 +140,6 @@ router.post('/receipt', async (req, res) => {
         for (let tmp of basket[0].products) {
             const product = await Product.findOne({ id: tmp.id });
             products.push(product);
-            console.log(product)
         }
         
         // Set used flag
