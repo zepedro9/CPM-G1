@@ -5,10 +5,9 @@
     <string name="product_name">Product Name</string>
     <string name="product_brand">Brand</string>
     <string name="product_price">%1$.2f€</string>
-    <string name="empty_msg">Your card is empty</string>
+    <string name="empty_msg">Your basket is empty</string>
     <string name="checkout_text">Checkout</string>
     <string name="product_quantity">1</string>
-    <string name="showing_code_in_fragment">Showing Code in Fragment</string>
     <string name="scan_product">Scan product</string>
     <string name="scan_no_scanned">No product currently scanned</string>
     <string name="scan_cancelled">The scan has been cancelled</string>
