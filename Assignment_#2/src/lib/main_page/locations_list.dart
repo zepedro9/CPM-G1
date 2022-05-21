@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:wheather_forecast/components/city_card.dart';
+import 'package:wheather_forecast/components/card/city_card.dart';
+import 'package:wheather_forecast/data/weather.dart';
 
 class LocationsList extends StatefulWidget {
   const LocationsList({Key? key}) : super(key: key);
@@ -8,22 +9,12 @@ class LocationsList extends StatefulWidget {
   State<LocationsList> createState() => _LocationsListState();
 }
 
+// TODO: Put a different state here.
 class _LocationsListState extends State<LocationsList> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
+    // TODO: get information using requests.
     final List<String> countryNames = <String>[
       "Portugal",
       "Portugal",
@@ -61,6 +52,7 @@ class _LocationsListState extends State<LocationsList> {
                     return CityCard(
                         cityName: cityNames.elementAt(index),
                         countryName: countryNames.elementAt(index),
+                        weatherStatus: WeatherStatus.SUNNY,
                         date: "May 3th 2022",
                         temperature: "28ºC");
                   }),

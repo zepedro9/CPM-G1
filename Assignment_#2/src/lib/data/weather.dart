@@ -1,0 +1,4 @@
+enum WeatherStatus {
+  SUNNY, 
+  CLOUDY
+}
