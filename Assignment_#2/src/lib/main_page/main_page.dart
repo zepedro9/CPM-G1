@@ -17,17 +17,22 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Column(
+          child: Stack(children: [
+        Icon(
+          MdiIcons.fromString(getTemperatureIcon(WeatherStatus.SUNNY)),
+          size: 480,
+          color: Color.fromRGBO(255,255,255,0.1)
+        ),
+        Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            mainTemperature("25", WeatherStatus.CLOUDY),
+            mainTemperature("25", WeatherStatus.SUNNY),
             const LocationsList(), // TODO: make possible adding information to the list.
           ],
         ),
-      ),
+      ])),
     );
   }
-
 
   /// Temperature main display
   Expanded mainTemperature(String temperature, WeatherStatus weatherStatus) {
@@ -79,7 +84,7 @@ class _MyHomePageState extends State<MyHomePage> {
         color: Colors.white, fontSize: 16, fontWeight: FontWeight.w300);
     String temperatureDescription = "<empty>";
 
-    switch (weatherStatus){
+    switch (weatherStatus) {
       case WeatherStatus.CLOUDY:
         temperatureDescription = "Partly cloudy";
         break;
