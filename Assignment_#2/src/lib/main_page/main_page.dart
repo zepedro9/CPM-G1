@@ -18,11 +18,12 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       body: Center(
           child: Stack(children: [
-        Icon(
+        /*Icon(
           MdiIcons.fromString(getTemperatureIcon(WeatherStatus.SUNNY)),
           size: 480,
           color: Color.fromRGBO(255,255,255,0.1)
-        ),
+        ),*/
+        Image.asset('assets/images/sunny.png', color: const Color.fromRGBO(255, 255, 255, 0.4), colorBlendMode: BlendMode.modulate,),
         Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
