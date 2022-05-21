@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:wheather_forecast/components/card/city_card.dart';
-import 'package:wheather_forecast/data/weather.dart';
+import 'package:wheather_forecast/components/city_card/city_card.dart';
+import 'package:wheather_forecast/utils/temperature_icons.dart';
 
 class LocationsList extends StatefulWidget {
   const LocationsList({Key? key}) : super(key: key);

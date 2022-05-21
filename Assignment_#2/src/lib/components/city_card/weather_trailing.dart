@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:wheather_forecast/data/weather.dart';
+import 'package:wheather_forecast/utils/temperature_icons.dart';
+
 
 /// This file contains the functions and methods used to generate the card trailing, that contains:
 /// -- Temperature icon
@@ -20,12 +21,5 @@ Row getTrailing(String temperature, WeatherStatus weatherStatus) {
   ]);
 }
 
-/// Verifies what should be the
-String getTemperatureIcon(WeatherStatus wheaterStatus) {
-  switch (wheaterStatus) {
-    case WeatherStatus.SUNNY:
-      return "weather-sunny";
-    default:
-      return "weather-sunny";
-  }
-}
+
+
