@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wheather_forecast/main_page/locations_list.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
@@ -28,8 +29,9 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: const <Widget>[
-            Text("It's raining man, aleluja",
-                style: TextStyle(color: Colors.white)),
+            Expanded(child: Text("It's raining man, aleluja",
+                style: TextStyle(color: Colors.white))),
+               LocationsList(),
           ],
         ),
       ),
