@@ -1,9 +1,12 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
+import 'package:wheather_forecast/utils/future_builder.dart';
 import 'package:wheather_forecast/utils/temperature_icons.dart';
+import 'package:wheather_forecast/utils/utils.dart';
 import 'package:wheather_forecast/main_page/locations_list.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:wheather_forecast/httpRequests/weather_api.dart';
+
+const String country = "Portugal";
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
@@ -13,6 +16,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  String currentCity = "Porto";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,11 +28,15 @@ class _MyHomePageState extends State<MyHomePage> {
           size: 480,
           color: Color.fromRGBO(255,255,255,0.1)
         ),*/
-        Image.asset('assets/images/sunny.png', color: const Color.fromRGBO(255, 255, 255, 0.4), colorBlendMode: BlendMode.modulate,),
+        Image.asset(
+          'assets/images/sunny.png',
+          color: const Color.fromRGBO(255, 255, 255, 0.4),
+          colorBlendMode: BlendMode.modulate,
+        ),
         Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            mainTemperature("25", WeatherStatus.SUNNY),
+            mainTemperature(),
             const LocationsList(), // TODO: make possible adding information to the list.
           ],
         ),
@@ -36,26 +45,37 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   /// Temperature main display
-  Expanded mainTemperature(String temperature, WeatherStatus weatherStatus) {
+  Expanded mainTemperature() {
+    Future<String> response = getWeather(country, currentCity);
+    Widget body(data) => Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            getDate(currentCity),
+            getTemperatureValue(
+                getWeatherStatus(data["weather"][0]["icon"]), data["main"]["temp"].toString()),
+            getTemperatureDescription(data["weather"][0]["description"])
+          ],
+        );
+
     return Expanded(
-        child: Align(
-      alignment: Alignment.center,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          getDate(),
-          getTemperatureValue(weatherStatus, temperature),
-          getTemperatureDescription(weatherStatus)
-        ],
-      ),
-    ));
+      child: Align(
+          alignment: Alignment.center, child: getFutureBuilder(response, body)),
+    );
   }
 
-  Widget getDate() {
+  Widget getDate(String city) {
     TextStyle dateStyle = const TextStyle(color: Colors.white, fontSize: 14);
+    TextStyle locationStyle = const TextStyle(color: Colors.white, fontSize: 16);
+    String today = getCurrentDay();
+
     return Padding(
         padding: const EdgeInsets.all(20),
-        child: Text("Sat, May 20th 2022", style: dateStyle));
+        child: Column(children: <Widget>[
+          Padding(
+              padding: const EdgeInsets.all(4),
+              child: Text("$city, $country", style: locationStyle)),
+          Text(today, style: dateStyle),
+        ]));
   }
 
   Widget getTemperatureValue(WeatherStatus weatherStatus, String temperature) {
@@ -80,22 +100,13 @@ class _MyHomePageState extends State<MyHomePage> {
         ]);
   }
 
-  Widget getTemperatureDescription(WeatherStatus weatherStatus) {
+  Widget getTemperatureDescription(String weatherDescription) {
     TextStyle weatherDescriptionStyle = const TextStyle(
         color: Colors.white, fontSize: 16, fontWeight: FontWeight.w300);
     String temperatureDescription = "<empty>";
 
-    switch (weatherStatus) {
-      case WeatherStatus.CLOUDY:
-        temperatureDescription = "Partly cloudy";
-        break;
-      case WeatherStatus.SUNNY:
-        temperatureDescription = "A nice sunny day";
-        break;
-    }
-
     return Text(
-      temperatureDescription,
+      weatherDescription.capitalize(),
       style: weatherDescriptionStyle,
     );
   }
