@@ -41,43 +41,47 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       body: Center(
           child: Stack(children: [
-        Image.asset(
-          'assets/images/sunny.png',
-          color: const Color.fromRGBO(240, 240, 240, 0.4),
-          colorBlendMode: BlendMode.modulate,
+        Positioned.fill(
+          child: Image.asset(
+            'assets/images/sunny.png',
+            color: const Color.fromRGBO(240, 240, 240, 0.4),
+            colorBlendMode: BlendMode.modulate,
+            fit: cities.isNotEmpty ? BoxFit.fill : BoxFit.cover,
+          ),
         ),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
+        Stack(
+          children: [
             optionsButton(),
-            mainTemperature(),
-            LocationsList(cities: cities),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                mainTemperature(),
+                if (cities.isNotEmpty) LocationsList(cities: cities),
+              ],
+            ),
           ],
-        ),
+        )
       ])),
     );
   }
 
   // Button to manage the cities
-  Align optionsButton(){
+  Align optionsButton() {
     return Align(
-      alignment: Alignment.centerRight,
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(0,30,8,0),
-        child: IconButton(
-        icon: Icon(
-          MdiIcons.fromString('plus'),
-          color: Colors.white,
-          size: 35),
-        tooltip: 'Manage Locations',
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const ManageLocationsPage()),
-          ).then((_) => fetchCities());
-        },
-        )
-    ));
+        alignment: Alignment.topRight,
+        child: Padding(
+            padding: const EdgeInsets.fromLTRB(0, 30, 8, 0),
+            child: IconButton(
+              icon: const Icon(Icons.add, color: Colors.white, size: 35),
+              tooltip: 'Manage Locations',
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const ManageLocationsPage()),
+                ).then((_) => fetchCities());
+              },
+            )));
   }
 
   /// Temperature main display
@@ -87,25 +91,27 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             getDate(currentCity),
-            getTemperatureValue(
-                getWeatherStatus(data["weather"][0]["icon"]), data["main"]["temp"].toString()),
+            getTemperatureValue(getWeatherStatus(data["weather"][0]["icon"]),
+                data["main"]["temp"].toString()),
             getTemperatureDescription(data["weather"][0]["description"])
           ],
         );
 
     return Expanded(
       child: Align(
-          alignment: Alignment.center, child: getStringFutureBuilder(response, body)),
+          alignment: Alignment.center,
+          child: getStringFutureBuilder(response, body)),
     );
   }
 
   Widget getDate(String city) {
     TextStyle dateStyle = const TextStyle(color: Colors.white, fontSize: 14);
-    TextStyle locationStyle = const TextStyle(color: Colors.white, fontSize: 16);
+    TextStyle locationStyle =
+        const TextStyle(color: Colors.white, fontSize: 16);
     String today = getCurrentDay();
 
     return Padding(
-        padding: const EdgeInsets.fromLTRB(0,0,0,20),
+        padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
         child: Column(children: <Widget>[
           Padding(
               padding: const EdgeInsets.fromLTRB(0, 0, 0, 4),
