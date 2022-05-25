@@ -90,4 +90,27 @@ class DBHelper {
     );
   }
 
+  Future<void> updateCities(List<int> citiesOfInterest) async {
+    Database db = await instance.database;
+    int nArgs = citiesOfInterest.length;
+
+    await db.transaction((txn) async {
+      // Set cities of interest
+      await db.update(
+        'city',
+        {'isOfInterest': 1},
+        where: 'id IN (${List.filled(nArgs, '?').join(',')})',
+        whereArgs: citiesOfInterest,
+      );
+
+      // Remove cities that are not of interest
+      await db.update(
+        'city',
+        {'isOfInterest': 0},
+        where: 'id = ?',
+        whereArgs: citiesOfInterest,
+      );
+    });
+  }
+
 }

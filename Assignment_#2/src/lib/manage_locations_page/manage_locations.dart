@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wheather_forecast/components/city_checkbox_tile.dart';
 import 'package:wheather_forecast/models/city.dart';
-import 'package:wheather_forecast/utils/future_builder.dart';
 import '../databases/database.dart';
 
 class ManageLocationsPage extends StatefulWidget {
@@ -13,9 +12,10 @@ class ManageLocationsPage extends StatefulWidget {
 
 class _ManageLocationsPageState extends State<ManageLocationsPage> {
   List<City> cities = [];
+  DBHelper db = DBHelper.instance;
 
   Future fetchCities() async {
-    List<City> response = await DBHelper.instance.getCities();
+    List<City> response = await db.getCities();
     setState(() {
       cities = response;
     });
@@ -30,12 +30,15 @@ class _ManageLocationsPageState extends State<ManageLocationsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color.fromARGB(255, 247, 247, 247),
+        backgroundColor: const Color.fromARGB(255, 247, 247, 247),
         appBar: AppBar(
           title: const Text('Manage Locations'),
           backgroundColor: const Color.fromRGBO(32, 82, 209, 1),
         ),
-        body: citiesListView());
+        floatingActionButton: saveButton(),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        body: citiesListView()
+        );
   }
 
   Widget citiesListView() {
@@ -50,5 +53,23 @@ class _ManageLocationsPageState extends State<ManageLocationsPage> {
                 });
               },
             ));
+  }
+
+  Widget saveButton(){
+    return FloatingActionButton.extended(
+      elevation: 4.0,
+      icon: const Icon(Icons.save),
+      label: const Text('Save'),
+      onPressed: () {saveCities();},
+      backgroundColor: const Color.fromRGBO(32, 82, 209, 1),
+    );
+  }
+  
+  Future<void> saveCities() async {
+    List<int> checked = cities.where(
+      (element) => element.isOfInterest == true
+    ).toList().map((e) => e.id!).toList();
+    
+    await db.updateCities(checked);
   }
 }

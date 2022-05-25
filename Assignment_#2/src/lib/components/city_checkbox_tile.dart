@@ -19,7 +19,7 @@ class CityCheckBoxTile extends StatelessWidget{
         title: Text(
           title,
           style: const TextStyle(
-              fontSize: 14, fontWeight: FontWeight.w600, letterSpacing: 0.5),
+              fontSize: 15, fontWeight: FontWeight.w500),
         ),
         value: value,
         onChanged: (bool? val) {
