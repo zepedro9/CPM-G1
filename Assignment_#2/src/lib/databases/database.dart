@@ -5,7 +5,6 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:wheather_forecast/models/city.dart';
 
-
 class DBHelper {
   static const _databaseName = 'cities_database.db';
   static const _databaseVersion = 2;
@@ -15,7 +14,7 @@ class DBHelper {
   static Database? _database;
 
   Future<Database> get database async {
-    if (_database != null){ 
+    if (_database != null) {
       return _database!;
     }
 
@@ -27,8 +26,7 @@ class DBHelper {
     String path = join(await getDatabasesPath(), _databaseName);
 
     return await openDatabase(path,
-        version: _databaseVersion,
-        onCreate: _onCreate);
+        version: _databaseVersion, onCreate: _onCreate);
   }
 
   Future _onCreate(Database db, int version) async {
@@ -43,13 +41,34 @@ class DBHelper {
   }
 
   Future<void> populate() async {
-    final String response = await rootBundle.loadString('assets/data/locations.json');
+    final String response =
+        await rootBundle.loadString('assets/data/locations.json');
     final data = await json.decode(response);
 
-    for(int i = 0; i < data.length; i++){
+    for (int i = 0; i < data.length; i++) {
       City city = City(id: null, name: data[i], isOfInterest: false);
       addCity(city);
     }
+  }
+
+  Future<List<City>> getCitiesOfInterest() async {
+    Database db = await instance.database;
+    const int isOfInterest = 1;
+
+    final List<Map<String, dynamic>> maps = await db.query(
+      'city',
+      where: 'isOfInterest = ?',
+      whereArgs: [isOfInterest],
+    );
+
+    // Convert the List<Map<String, dynamic> into a List<City>.
+    return List.generate(maps.length, (i) {
+      return City(
+        id: maps[i]['id'],
+        name: maps[i]['name'],
+        isOfInterest: maps[i]['isOfInterest'] == 1 ? true : false,
+      );
+    });
   }
 
   Future<List<City>> getCities() async {
@@ -61,7 +80,7 @@ class DBHelper {
       return City(
         id: maps[i]['id'],
         name: maps[i]['name'],
-        isOfInterest: maps[i]['isOfInterest'] == 1 ? true: false,
+        isOfInterest: maps[i]['isOfInterest'] == 1 ? true : false,
       );
     });
   }
@@ -70,7 +89,7 @@ class DBHelper {
     Database db = await instance.database;
     Map<String, dynamic> data = city.toMap();
     data.remove('id');
-    data.update('isOfInterest',  (value) => city.isOfInterest ? 1 : 0);
+    data.update('isOfInterest', (value) => city.isOfInterest ? 1 : 0);
 
     await db.insert(
       'city',
@@ -94,23 +113,26 @@ class DBHelper {
     Database db = await instance.database;
     int nArgs = citiesOfInterest.length;
 
-    await db.transaction((txn) async {
-      // Set cities of interest
-      await db.update(
-        'city',
-        {'isOfInterest': 1},
-        where: 'id IN (${List.filled(nArgs, '?').join(',')})',
-        whereArgs: citiesOfInterest,
-      );
+    try {
+      await db.transaction((txn) async {
+        // Set cities of interest
+        await txn.update(
+          'city',
+          {'isOfInterest': 1},
+          where: 'id IN (${List.filled(nArgs, '?').join(',')})',
+          whereArgs: citiesOfInterest,
+        );
 
-      // Remove cities that are not of interest
-      await db.update(
-        'city',
-        {'isOfInterest': 0},
-        where: 'id = ?',
-        whereArgs: citiesOfInterest,
-      );
-    });
+        // Remove cities that are not of interest
+        await txn.update(
+          'city',
+          {'isOfInterest': 0},
+          where: 'id NOT IN (${List.filled(nArgs, '?').join(',')})',
+          whereArgs: citiesOfInterest,
+        );
+      });
+    } on Exception catch (err) {
+      print(err);
+    }
   }
-
 }

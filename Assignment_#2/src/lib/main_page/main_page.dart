@@ -7,7 +7,8 @@ import 'package:wheather_forecast/main_page/locations_list.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:wheather_forecast/httpRequests/weather_api.dart';
 
-const String country = "Portugal";
+import '../databases/database.dart';
+import '../models/city.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
@@ -17,7 +18,23 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  String currentCity = "Porto";
+  static const String country = "Portugal";
+  String currentCity = "Porto"; // TODO: set and get favorite
+  List<City> cities = [];
+  DBHelper db = DBHelper.instance;
+
+  Future fetchCities() async {
+    List<City> response = await db.getCitiesOfInterest();
+    setState(() {
+      cities = response;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchCities();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +43,7 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Stack(children: [
         Image.asset(
           'assets/images/sunny.png',
-          color: const Color.fromRGBO(255, 255, 255, 0.4),
+          color: const Color.fromRGBO(240, 240, 240, 0.4),
           colorBlendMode: BlendMode.modulate,
         ),
         Column(
@@ -34,7 +51,7 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             optionsButton(),
             mainTemperature(),
-            const LocationsList(), // TODO: make possible adding information to the list.
+            LocationsList(cities: cities),
           ],
         ),
       ])),
@@ -57,7 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const ManageLocationsPage()),
-          );
+          ).then((_) => fetchCities());
         },
         )
     ));
@@ -88,10 +105,10 @@ class _MyHomePageState extends State<MyHomePage> {
     String today = getCurrentDay();
 
     return Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.fromLTRB(0,0,0,20),
         child: Column(children: <Widget>[
           Padding(
-              padding: const EdgeInsets.all(4),
+              padding: const EdgeInsets.fromLTRB(0, 0, 0, 4),
               child: Text("$city, $country", style: locationStyle)),
           Text(today, style: dateStyle),
         ]));

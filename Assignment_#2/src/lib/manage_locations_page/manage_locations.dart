@@ -69,7 +69,7 @@ class _ManageLocationsPageState extends State<ManageLocationsPage> {
     List<int> checked = cities.where(
       (element) => element.isOfInterest == true
     ).toList().map((e) => e.id!).toList();
-    
     await db.updateCities(checked);
+    Navigator.pop(context);
   }
 }
