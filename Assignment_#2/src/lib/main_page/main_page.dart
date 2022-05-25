@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wheather_forecast/manage_locations_page/manage_locations.dart';
 import 'package:wheather_forecast/utils/future_builder.dart';
 import 'package:wheather_forecast/utils/temperature_icons.dart';
 import 'package:wheather_forecast/utils/utils.dart';
@@ -23,11 +24,6 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       body: Center(
           child: Stack(children: [
-        /*Icon(
-          MdiIcons.fromString(getTemperatureIcon(WeatherStatus.SUNNY)),
-          size: 480,
-          color: Color.fromRGBO(255,255,255,0.1)
-        ),*/
         Image.asset(
           'assets/images/sunny.png',
           color: const Color.fromRGBO(255, 255, 255, 0.4),
@@ -36,12 +32,35 @@ class _MyHomePageState extends State<MyHomePage> {
         Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            optionsButton(),
             mainTemperature(),
             const LocationsList(), // TODO: make possible adding information to the list.
           ],
         ),
       ])),
     );
+  }
+
+  // Button to manage the cities
+  Align optionsButton(){
+    return Align(
+      alignment: Alignment.centerRight,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 30.0, horizontal: 8.0),
+        child: IconButton(
+        icon: Icon(
+          MdiIcons.fromString('plus'),
+          color: Colors.white,
+          size: 35),
+        tooltip: 'Manage Locations',
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const ManageLocationsPage()),
+          );
+        },
+        )
+    ));
   }
 
   /// Temperature main display
