@@ -46,7 +46,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Align(
       alignment: Alignment.centerRight,
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 30.0, horizontal: 8.0),
+        padding: const EdgeInsets.fromLTRB(0,30,8,0),
         child: IconButton(
         icon: Icon(
           MdiIcons.fromString('plus'),
@@ -78,7 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return Expanded(
       child: Align(
-          alignment: Alignment.center, child: getFutureBuilder(response, body)),
+          alignment: Alignment.center, child: getStringFutureBuilder(response, body)),
     );
   }
 

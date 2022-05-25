@@ -1,6 +1,7 @@
-
 import 'package:flutter/material.dart';
 import 'package:wheather_forecast/models/city.dart';
+import 'package:wheather_forecast/utils/future_builder.dart';
+import '../databases/database.dart';
 
 class ManageLocationsPage extends StatefulWidget {
   const ManageLocationsPage({Key? key}) : super(key: key);
@@ -10,19 +11,40 @@ class ManageLocationsPage extends StatefulWidget {
 }
 
 class _ManageLocationsPageState extends State<ManageLocationsPage> {
-  Future<City> response = getWeather(country, currentCity);
+  List<City> cities = [];
+  List<bool> checkedState = [];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Manage Locations'),
-        backgroundColor:  Color.fromRGBO(32, 82, 209, 1),
+        backgroundColor: const Color.fromRGBO(32, 82, 209, 1),
       ),
-      body: Center(
-          child: Stack(children: [
-            ListView.builder(itemBuilder: itemBuilder)
-      ])),
+      body: citiesFutureBuilder(),
+    );
+  }
+
+  FutureBuilder<List<City>> citiesFutureBuilder() {
+    Future<List<City>> citiesFuture = DBHelper.instance.getCities();
+    Widget body(data) => citiesListView(data);
+
+    return getCityListFutureBuilder(citiesFuture, body);
+  }
+
+  Widget citiesListView(List<City> data) {
+    cities = data;
+    return ListView.builder(
+      itemCount: data.length,
+      itemBuilder: (BuildContext context, int index) {
+        City city = data[index];
+        return CheckboxListTile(
+            title: Text(city.name), 
+						value: city.isOfInterest,
+						onChanged: (bool? val) {
+							setState(() { city.isOfInterest = val!;});
+						});
+      },
     );
   }
 

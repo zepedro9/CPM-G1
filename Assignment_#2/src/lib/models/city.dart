@@ -1,9 +1,9 @@
 class City {
-  final int? id;
+  int? id;
   final String name;
-  final bool isOfInterest;
+  bool isOfInterest;
 
-  const City({
+  City({
     required this.id,
     required this.name,
     required this.isOfInterest

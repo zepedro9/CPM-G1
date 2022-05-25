@@ -7,16 +7,18 @@ import 'package:wheather_forecast/models/city.dart';
 
 
 class DBHelper {
-  static const _databaseName = 'city_databases.db';
-  static const _databaseVersion = 1;
+  static const _databaseName = 'cities_database.db';
+  static const _databaseVersion = 2;
 
   DBHelper._privateConstructor();
   static final DBHelper instance = DBHelper._privateConstructor();
   static Database? _database;
 
   Future<Database> get database async {
-    if (_database != null) return _database!;
-    // lazily instantiate the db the first time it is accessed
+    if (_database != null){ 
+      return _database!;
+    }
+
     _database = await _initDatabase();
     return _database!;
   }
@@ -34,31 +36,41 @@ class DBHelper {
           CREATE TABLE city (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
-            isOfInterest BOOLEAN NOT NULL
+            isOfInterest INTEGER NOT NULL
           )
           ''');
-    populate();
+    await populate();
   }
 
   Future<void> populate() async {
     final String response = await rootBundle.loadString('assets/data/locations.json');
     final data = await json.decode(response);
 
-    for(int i = 0; i < data.locations.length; i++){
-      City city = City(id: null, name: data.locations[i].name, isOfInterest: false);
+    for(int i = 0; i < data.length; i++){
+      City city = City(id: null, name: data[i], isOfInterest: false);
       addCity(city);
     }
   }
 
-  Future<List<Map<String, dynamic>>> getCities() async {
+  Future<List<City>> getCities() async {
     Database db = await instance.database;
-    return await db.query('city');
+    final List<Map<String, dynamic>> maps = await db.query('city');
+
+    // Convert the List<Map<String, dynamic> into a List<City>.
+    return List.generate(maps.length, (i) {
+      return City(
+        id: maps[i]['id'],
+        name: maps[i]['name'],
+        isOfInterest: maps[i]['isOfInterest'] == 1 ? true: false,
+      );
+    });
   }
 
   Future<void> addCity(City city) async {
     Database db = await instance.database;
     Map<String, dynamic> data = city.toMap();
     data.remove('id');
+    data.update('isOfInterest',  (value) => city.isOfInterest ? 1 : 0);
 
     await db.insert(
       'city',
