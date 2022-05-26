@@ -87,35 +87,42 @@ class _CityPageState extends State<CityPage> {
     TextStyle dateStyle = const TextStyle(color: Colors.white70, fontSize: 12);
     double screenWidth = MediaQuery.of(context).size.width;
 
-    Widget body(data) => ListView.builder(
-      scrollDirection: Axis.horizontal,
-      itemCount: data["list"].length,
-      itemBuilder: (BuildContext context, int i) {
-        return Column(
-          children: [
-            GestureDetector(
-              onTap: () => setSelected(i),
-              child: Container(
-                width: screenWidth / 4,
-                color: i == selected ? Colors.blue : Colors.transparent,
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                child: Column(
-                  children: [
-                    Icon(
-                      MdiIcons.fromString(getTemperatureIcon(getWeatherStatus(data["list"][i]["weather"][0]["icon"]))),
-                      size: 40,
-                      color: Colors.white70,
-                    ),
-                    getSmallTemperature(data["list"][i]["main"]["temp"].toString()),
-                    Text(getTime(data["list"][i]["dt_txt"]), style: timeStyle),
-                    Text(getWeekDay(data["list"][i]["dt_txt"]), style: dateStyle),
-                  ],
+    Widget body(data) => RawScrollbar(
+      thumbVisibility: true,
+      trackVisibility: true,
+      interactive: false,
+      thumbColor: Colors.lightBlueAccent,
+      thickness: 2,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: data["list"].length,
+        itemBuilder: (BuildContext context, int i) {
+          return Column(
+            children: [
+              GestureDetector(
+                onTap: () => setSelected(i),
+                child: Container(
+                  width: screenWidth / 4,
+                  color: i == selected ? Colors.blue : Colors.transparent,
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: Column(
+                    children: [
+                      Icon(
+                        MdiIcons.fromString(getTemperatureIcon(getWeatherStatus(data["list"][i]["weather"][0]["icon"]))),
+                        size: 40,
+                        color: Colors.white70,
+                      ),
+                      getSmallTemperature(data["list"][i]["main"]["temp"].toString()),
+                      Text(getTime(data["list"][i]["dt_txt"]), style: timeStyle),
+                      Text(getWeekDay(data["list"][i]["dt_txt"]), style: dateStyle),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
-        );
-      },
+            ],
+          );
+        },
+      ),
     );
 
     return Container(
@@ -149,7 +156,7 @@ class _CityPageState extends State<CityPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(data["list"][selected]["main"]["pressure"].toString() + "hPa", style: valueStyle),
+                    Text(data["list"][selected]["main"]["pressure"].toString() + " hPa", style: valueStyle),
                     Text("Pressure", style: titleStyle),
                   ],
                 ),
@@ -175,7 +182,7 @@ class _CityPageState extends State<CityPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text((double.parse(data["list"][selected]["pop"].toString()) * 100).toString() + "%", style: valueStyle),
+                    Text((double.parse(data["list"][selected]["pop"].toString()) * 100).round().toString() + "%", style: valueStyle),
                     Text("Precipitation", style: titleStyle),
                   ],
                 ),
@@ -195,7 +202,7 @@ class _CityPageState extends State<CityPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(data["list"][selected]["wind"]["speed"].toString() + "m/s", style: valueStyle),
+                    Text(data["list"][selected]["wind"]["speed"].toString() + " m/s", style: valueStyle),
                     Text("Wind speed", style: titleStyle),
                   ],
                 ),
@@ -208,7 +215,7 @@ class _CityPageState extends State<CityPage> {
 
     return Expanded(
       child: Container(
-          color: const Color.fromRGBO(0, 0, 0, 0.75),
+          color: const Color.fromRGBO(0, 0, 0, 0.8),
           child: getFutureBuilder(response, body)
       ),
     );
