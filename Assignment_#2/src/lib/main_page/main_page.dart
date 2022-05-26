@@ -19,7 +19,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   static const String country = "Portugal";
-  String currentCity = "Porto"; // TODO: set and get favorite
+  String currentCity = "Lisboa";
   List<City> cities = [];
   DBHelper db = DBHelper.instance;
 
@@ -28,6 +28,14 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       cities = response;
     });
+
+    if(cities.isNotEmpty){
+      setState(() {
+        currentCity = cities.where((element) => element.isFavorite == true).first.name;
+      });
+    } else {
+      currentCity = "Lisboa";
+    }
   }
 
   @override
