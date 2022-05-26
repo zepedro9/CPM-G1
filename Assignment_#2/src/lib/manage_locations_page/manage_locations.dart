@@ -42,8 +42,12 @@ class _ManageLocationsPageState extends State<ManageLocationsPage> {
   }
 
   Widget citiesListView() {
-    return ListView.builder(
+    return ListView.separated(
         itemCount: cities.length,
+        separatorBuilder: (context, index) => const Divider(
+        thickness: 1,
+        color: Color.fromARGB(255, 192, 192, 192),
+      ),
         itemBuilder: (BuildContext context, int index) => CityCheckBoxTile(
               title: cities[index].name,
               value: cities[index].isOfInterest,
