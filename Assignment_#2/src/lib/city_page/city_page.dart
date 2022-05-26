@@ -19,6 +19,7 @@ class CityPage extends StatefulWidget {
 
 class _CityPageState extends State<CityPage> {
   int selected = 0;
+  ScrollController scrollBarController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -88,12 +89,14 @@ class _CityPageState extends State<CityPage> {
     double screenWidth = MediaQuery.of(context).size.width;
 
     Widget body(data) => RawScrollbar(
+      controller: scrollBarController,
       thumbVisibility: true,
       trackVisibility: true,
       interactive: false,
       thumbColor: Colors.lightBlueAccent,
       thickness: 2,
       child: ListView.builder(
+        controller: scrollBarController,
         scrollDirection: Axis.horizontal,
         itemCount: data["list"].length,
         itemBuilder: (BuildContext context, int i) {
@@ -136,11 +139,21 @@ class _CityPageState extends State<CityPage> {
     TextStyle valueStyle = const TextStyle(color: Colors.white, fontSize: 28);
     TextStyle titleStyle = const TextStyle(color: Colors.white, fontSize: 15);
 
-    Widget body(data) => Expanded(child:Column(
+    Widget body(data) => Column(
       children: [
         Expanded(
           child: Row(
             children: [
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(data["list"][selected]["main"]["humidity"].toString() + "%", style: valueStyle),
+                    Text("Humidity", style: titleStyle),
+                  ],
+                ),
+              ),
               Expanded(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -158,16 +171,6 @@ class _CityPageState extends State<CityPage> {
                   children: [
                     Text(data["list"][selected]["main"]["pressure"].toString() + " hPa", style: valueStyle),
                     Text("Pressure", style: titleStyle),
-                  ],
-                ),
-              ),
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(data["list"][selected]["main"]["humidity"].toString() + "%", style: valueStyle),
-                    Text("Humidity", style: titleStyle),
                   ],
                 ),
               ),
@@ -211,7 +214,7 @@ class _CityPageState extends State<CityPage> {
           ),
         ),
       ],
-    ));
+    );
 
     return Expanded(
       child: Container(
