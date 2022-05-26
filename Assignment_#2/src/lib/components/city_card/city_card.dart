@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wheather_forecast/city_page/city_page.dart';
 import 'package:wheather_forecast/utils/temperature_icons.dart';
 import 'package:wheather_forecast/components/city_card/weather_trailing.dart'; 
 
@@ -24,12 +25,24 @@ class CityCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return GestureDetector(
+      onTap: () => {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CityPage(country: countryName, city: cityName),
+          ),
+        )
+      },
+      child: Card(
         color: const Color.fromRGBO(233, 238, 250, 1),
         child: ListTile(
-            title: Text(cardTitle, style: titleStyle),
-            subtitle: Text(date),
-            trailing: getTrailing(temperature, weatherStatus)));
+          title: Text(cardTitle, style: titleStyle),
+          subtitle: Text(date),
+          trailing: getTrailing(temperature, weatherStatus)
+        ),
+      )
+    );
   }
 
   
