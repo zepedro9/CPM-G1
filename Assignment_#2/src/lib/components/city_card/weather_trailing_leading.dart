@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:wheather_forecast/utils/temperature_icons.dart';
 
-
 /// This file contains the functions and methods used to generate the card trailing, that contains:
 /// -- Temperature icon
 /// -- Temperature value
@@ -21,5 +20,20 @@ Row getTrailing(String temperature, WeatherStatus weatherStatus) {
   ]);
 }
 
+Row getLeading(int id, bool isFavorite, void Function(int) onPressed) {
 
-
+  return Row(
+    mainAxisSize: MainAxisSize.min,
+    mainAxisAlignment: MainAxisAlignment.start, 
+    crossAxisAlignment: CrossAxisAlignment.center,
+    children: [
+    IconButton(
+      icon: isFavorite ? const Icon(Icons.favorite_rounded) : const Icon(Icons.favorite_border_rounded), 
+      onPressed: () {
+        if(!isFavorite){
+          onPressed(id);
+        }
+      },
+    )
+  ]);
+}

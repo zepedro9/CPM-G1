@@ -56,7 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 mainTemperature(),
-                if (cities.isNotEmpty) LocationsList(cities: cities),
+                if (cities.isNotEmpty) LocationsList(setFavorite: setFavorite, cities: cities),
               ],
             ),
           ],
@@ -72,7 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Padding(
             padding: const EdgeInsets.fromLTRB(0, 30, 8, 0),
             child: IconButton(
-              icon: const Icon(Icons.add, color: Colors.white, size: 35),
+              icon: const Icon(Icons.add_rounded, color: Colors.white, size: 35),
               tooltip: 'Manage Locations',
               onPressed: () {
                 Navigator.push(
@@ -145,11 +145,15 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget getTemperatureDescription(String weatherDescription) {
     TextStyle weatherDescriptionStyle = const TextStyle(
         color: Colors.white, fontSize: 16, fontWeight: FontWeight.w300);
-    String temperatureDescription = "<empty>";
 
     return Text(
       weatherDescription.capitalize(),
       style: weatherDescriptionStyle,
     );
+  }
+
+  void setFavorite(int id) async {
+    await db.updateFavoriteCity(id);
+    await fetchCities();
   }
 }

@@ -6,20 +6,16 @@ import 'package:wheather_forecast/utils/utils.dart';
 import '../httpRequests/weather_api.dart';
 import '../models/city.dart';
 
-class LocationsList extends StatefulWidget {
+class LocationsList extends StatelessWidget {
+  final List<City> cities;
+  final void Function(int) setFavorite;
+  static const String country = "Portugal";
+
   const LocationsList({
     Key? key,
     required this.cities,
+    required this.setFavorite
   }) : super(key: key);
-
-  final List<City> cities;
-
-  @override
-  State<LocationsList> createState() => _LocationsListState();
-}
-
-class _LocationsListState extends State<LocationsList> {
-  static const String country = "Portugal";
 
   @override
   Widget build(BuildContext context) {
@@ -45,9 +41,9 @@ class _LocationsListState extends State<LocationsList> {
         height: 10,
       ),
       padding: const EdgeInsets.fromLTRB(15, 25, 15, 2),
-      itemCount: widget.cities.length,
+      itemCount: cities.length,
       itemBuilder: (BuildContext context, int index) {
-        City city = widget.cities[index];
+        City city = cities[index];
         return cityFutureBuilder(city);
       },
     );
@@ -57,12 +53,16 @@ class _LocationsListState extends State<LocationsList> {
   FutureBuilder<String> cityFutureBuilder(City city) {
     Future<String> response = getWeather(country, city.name);
     Widget body(data) => CityCard(
+        id: city.id!,
         cityName: city.name,
         countryName: country,
+        isFavorite: city.isFavorite,
+        setFavorite: setFavorite,
         weatherStatus: getWeatherStatus(data["weather"][0]["icon"]),
         description: data["weather"][0]["description"].toString().capitalize(),
         temperature: data["main"]["temp"].toString());
 
     return getStringFutureBuilder(response, body);
   }
+
 }

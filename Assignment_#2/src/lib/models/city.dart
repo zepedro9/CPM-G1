@@ -2,11 +2,13 @@ class City {
   int? id;
   final String name;
   bool isOfInterest;
+  bool isFavorite;
 
   City({
     required this.id,
     required this.name,
-    required this.isOfInterest
+    required this.isOfInterest,
+    required this.isFavorite,
   });
 
   Map<String, dynamic> toMap() {
@@ -14,13 +16,12 @@ class City {
       'id': id,
       'name': name,
       'isOfInterest': isOfInterest,
+      'isFavorite': isFavorite,
     };
   }
 
-  // Implement toString to make it easier to see information about
-  // each dog when using the print statement.
   @override
   String toString() {
-    return 'City{id: $id, name: $name, isOfInterest: $isOfInterest}';
+    return 'City{id: $id, name: $name, isOfInterest: $isOfInterest, isFavorite: $isFavorite}';
   }
 }
