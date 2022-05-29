@@ -1,34 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:wheather_forecast/components/city_card/city_card.dart';
+import 'package:wheather_forecast/utils/future_builder.dart';
 import 'package:wheather_forecast/utils/temperature_icons.dart';
+import 'package:wheather_forecast/utils/utils.dart';
+import '../httpRequests/weather_api.dart';
+import '../models/city.dart';
 
-class LocationsList extends StatefulWidget {
-  const LocationsList({Key? key}) : super(key: key);
+class LocationsList extends StatelessWidget {
+  final List<City> cities;
+  final void Function(int) setFavorite;
+  static const String country = "Portugal";
 
-  @override
-  State<LocationsList> createState() => _LocationsListState();
-}
-
-// TODO: Put a different state here.
-class _LocationsListState extends State<LocationsList> {
+  const LocationsList({
+    Key? key,
+    required this.cities,
+    required this.setFavorite
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // TODO: get information using requests.
-    final List<String> countryNames = <String>[
-      "Portugal",
-      "Portugal",
-      "Portugal",
-      "Portugal",
-      "Portugal"
-    ];
-    final List<String> cityNames = <String>[
-      "Porto",
-      "Braga",
-      "Aveiro",
-      "Viseu",
-      "Lisboa"
-    ];
     double screenHeight = MediaQuery.of(context).size.height;
 
     return Center(
@@ -41,21 +31,38 @@ class _LocationsListState extends State<LocationsList> {
               height: screenHeight * 0.4,
               width: double.infinity,
               // The builder only loads the visible elements. It increases the performance.
-              child: ListView.separated(
-                  // Compacts the item in this element.
-                  separatorBuilder: (context, index) => const SizedBox(
-                        height: 10,
-                      ),
-                  padding: const EdgeInsets.fromLTRB(15, 25, 15, 2),
-                  itemCount: countryNames.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return CityCard(
-                        cityName: cityNames.elementAt(index),
-                        countryName: countryNames.elementAt(index),
-                        weatherStatus: WeatherStatus.SUNNY,
-                        date: "May 3th 2022",
-                        temperature: "28ºC");
-                  }),
+              child: citiesOfInterestListView(),
             )));
   }
+
+  Widget citiesOfInterestListView() {
+    return ListView.separated(
+      separatorBuilder: (context, index) => const SizedBox(
+        height: 10,
+      ),
+      padding: const EdgeInsets.fromLTRB(15, 25, 15, 2),
+      itemCount: cities.length,
+      itemBuilder: (BuildContext context, int index) {
+        City city = cities[index];
+        return cityFutureBuilder(city);
+      },
+    );
+  }
+
+  /// Temperature main display
+  FutureBuilder<String> cityFutureBuilder(City city) {
+    Future<String> response = getWeather(country, city.name);
+    Widget body(data) => CityCard(
+        id: city.id!,
+        cityName: city.name,
+        countryName: country,
+        isFavorite: city.isFavorite,
+        setFavorite: setFavorite,
+        weatherStatus: getWeatherStatus(data["weather"][0]["icon"]),
+        description: data["weather"][0]["description"].toString().capitalize(),
+        temperature: data["main"]["temp"].toString());
+
+    return getStringFutureBuilder(response, body);
+  }
+
 }
