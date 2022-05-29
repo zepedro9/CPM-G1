@@ -10,31 +10,31 @@ enum WeatherStatus {
 }
 
 /// Verifies what should be the
-String getTemperatureIcon(WeatherStatus wheaterStatus) {
-  switch (wheaterStatus) {
+String getTemperatureIcon(WeatherStatus weatherStatus) {
+  switch (weatherStatus) {
     case WeatherStatus.SUNNY:
-      return "weather-sunny";
+      return "weatherSunny";
     case WeatherStatus.PARTLY_CLOUDS:
-      return "weather-partly-cloudy";
+      return "weatherPartlyCloudy";
     case WeatherStatus.CLOUDY:
-      return "weather-cloudy";
+      return "weatherCloudy";
     case WeatherStatus.RAIN:
-      return "weather-pouring";
+      return "weatherPouring";
     case WeatherStatus.THUNDERSTORM:
-      return "weather-lightning";
+      return "weatherLightning";
     case WeatherStatus.SNOW:
-      return "weather-snowy";
+      return "weatherSnowy";
     case WeatherStatus.MIST:
-      return "weather-fog";
+      return "weatherFog";
     case WeatherStatus.PARTLY_RAINING: 
-      return "weather-partly-raining";
+      return "weatherPartlyRainy";
     default:
-      return "weather-sunny";
+      return "weatherSunny";
   }
 }
 
 WeatherStatus getWeatherStatus(String iconId) {
-    iconId = iconId.substring(0, 2); 
+    iconId = iconId.substring(0, 2);
     switch(iconId){
       case "01":
         return WeatherStatus.SUNNY;

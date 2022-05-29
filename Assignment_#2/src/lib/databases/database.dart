@@ -27,10 +27,12 @@ class DBHelper {
     String path = join(await getDatabasesPath(), _databaseName);
 
     return await openDatabase(path,
-        version: _databaseVersion, onCreate: _onCreate);
+        version: _databaseVersion, 
+        onCreate: _onCreate);
   }
 
   Future _onCreate(Database db, int version) async {
+    print("create database");
     await db.execute('''
           CREATE TABLE city (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -39,24 +41,24 @@ class DBHelper {
             isFavorite INTEGER NOT NULL
           )
           ''');
-    await populate();
+    await populate(db);
   }
 
-  Future<void> populate() async {
+  Future<void> populate(Database db) async {
+    //print("populate database");
     final String response =
         await rootBundle.loadString('assets/data/locations.json');
     final data = await json.decode(response);
-    Database db = await instance.database;
-
+    
     for (int i = 0; i < data.length; i++) {
-      Map<String, dynamic> data = {};
-      data.putIfAbsent('name', () => data[i]);
-      data.update('isOfInterest', (value) => 0);
-      data.update('isFavorite', (value) => 0);
+      Map<String, dynamic> dataMap = {};
+      dataMap.putIfAbsent('name', () => data[i]);
+      dataMap.putIfAbsent('isOfInterest', () => 0);
+      dataMap.putIfAbsent('isFavorite', () => 0);
 
       await db.insert(
         _tableName,
-        data,
+        dataMap,
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
     }

@@ -9,7 +9,6 @@ import 'package:wheather_forecast/httpRequests/weather_api.dart';
 
 import '../databases/database.dart';
 import '../models/city.dart';
-
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
 
@@ -21,7 +20,8 @@ class _MyHomePageState extends State<MyHomePage> {
   static const String country = "Portugal";
   String currentCity = "Lisboa";
   List<City> cities = [];
-  DBHelper db = DBHelper.instance;
+  DBHelper db  = DBHelper.instance; 
+ 
 
   Future fetchCities() async {
     List<City> response = await db.getCitiesOfInterest();
@@ -39,7 +39,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   @override
-  void initState() {
+  void initState() { 
     super.initState();
     fetchCities();
   }

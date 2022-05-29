@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import "main_page/main_page.dart";
+import "databases/database.dart"; 
 
 void main() {
   runApp(const MyApp());
@@ -16,7 +17,6 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         scaffoldBackgroundColor: const Color.fromRGBO(32, 82, 209, 1),
       ),
-      home: const MyHomePage(),
-    );
+      home: const MyHomePage());
   }
 }
