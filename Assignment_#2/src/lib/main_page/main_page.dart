@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:wheather_forecast/manage_locations_page/manage_locations.dart';
-import 'package:wheather_forecast/utils/future_builder.dart';
-import 'package:wheather_forecast/utils/temperature_icons.dart';
-import 'package:wheather_forecast/utils/utils.dart';
-import 'package:wheather_forecast/main_page/locations_list.dart';
+import 'package:weather_forecast/manage_locations_page/manage_locations.dart';
+import 'package:weather_forecast/utils/future_builder.dart';
+import 'package:weather_forecast/utils/temperature_icons.dart';
+import 'package:weather_forecast/utils/utils.dart';
+import 'package:weather_forecast/main_page/locations_list.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:wheather_forecast/httpRequests/weather_api.dart';
+import 'package:weather_forecast/httpRequests/weather_api.dart';
 
 import '../databases/database.dart';
 import '../models/city.dart';

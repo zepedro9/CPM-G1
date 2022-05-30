@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:wheather_forecast/components/city_card/city_card.dart';
-import 'package:wheather_forecast/utils/future_builder.dart';
-import 'package:wheather_forecast/utils/temperature_icons.dart';
-import 'package:wheather_forecast/utils/utils.dart';
+import 'package:weather_forecast/components/city_card/city_card.dart';
+import 'package:weather_forecast/utils/future_builder.dart';
+import 'package:weather_forecast/utils/temperature_icons.dart';
+import 'package:weather_forecast/utils/utils.dart';
 import '../httpRequests/weather_api.dart';
 import '../models/city.dart';
 

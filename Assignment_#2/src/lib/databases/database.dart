@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:wheather_forecast/models/city.dart';
+import 'package:weather_forecast/models/city.dart';
 
 class DBHelper {
   static const _databaseName = 'cities_database.db';
@@ -32,7 +32,6 @@ class DBHelper {
   }
 
   Future _onCreate(Database db, int version) async {
-    print("create database");
     await db.execute('''
           CREATE TABLE city (
             id INTEGER PRIMARY KEY AUTOINCREMENT,

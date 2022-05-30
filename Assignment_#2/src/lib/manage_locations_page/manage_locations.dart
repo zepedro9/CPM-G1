@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:wheather_forecast/components/city_checkbox_tile.dart';
-import 'package:wheather_forecast/models/city.dart';
+import 'package:weather_forecast/components/city_checkbox_tile.dart';
+import 'package:weather_forecast/models/city.dart';
 import '../databases/database.dart';
 
 class ManageLocationsPage extends StatefulWidget {

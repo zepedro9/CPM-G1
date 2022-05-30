@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:wheather_forecast/city_page/city_page.dart';
-import 'package:wheather_forecast/utils/temperature_icons.dart';
-import 'package:wheather_forecast/components/city_card/weather_trailing_leading.dart';
+import 'package:weather_forecast/city_page/city_page.dart';
+import 'package:weather_forecast/utils/temperature_icons.dart';
+import 'package:weather_forecast/components/city_card/weather_trailing_leading.dart';
 
 class CityCard extends StatelessWidget {
   final String countryName;

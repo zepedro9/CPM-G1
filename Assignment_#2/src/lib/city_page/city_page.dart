@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:wheather_forecast/httpRequests/weather_api.dart';
-import 'package:wheather_forecast/utils/utils.dart';
+import 'package:weather_forecast/httpRequests/weather_api.dart';
+import 'package:weather_forecast/utils/utils.dart';
 
 import '../utils/future_builder.dart';
 import '../utils/temperature_icons.dart';

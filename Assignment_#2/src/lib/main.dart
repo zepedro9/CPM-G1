@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import "main_page/main_page.dart";
-import "databases/database.dart"; 
 
 void main() {
   runApp(const MyApp());

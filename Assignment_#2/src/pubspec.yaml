@@ -1,5 +1,5 @@
-name: wheather_forecast
-description: An weather application
+name: weather_forecast
+description: A simple yet intuitive portuguese weather application
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -39,6 +39,10 @@ dependencies:
   http: ^0.13.4
   flutter_dotenv: ^5.0.2
   intl: ^0.17.0
+  flutter_launcher_icons:
+    git:
+      url: https://github.com/Davenchy/flutter_launcher_icons.git
+      ref: fixMinSdkParseFlutter2.8
 
 
 dev_dependencies:
@@ -54,6 +58,12 @@ dev_dependencies:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path_android: "assets/icon/icon_android.png"
+  image_path_ios: "assets/icon/icon_ios.jpg"
 
 # The following section is specific to Flutter.
 flutter:
