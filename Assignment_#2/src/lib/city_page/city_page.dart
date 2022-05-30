@@ -5,7 +5,7 @@ import 'package:weather_forecast/httpRequests/weather_api.dart';
 import 'package:weather_forecast/utils/utils.dart';
 
 import '../utils/future_builder.dart';
-import '../utils/temperature_icons.dart';
+import '../utils/temperature_utils.dart';
 
 class CityPage extends StatefulWidget {
   const CityPage({Key? key, required this.country, required this.city}) : super(key: key);
@@ -49,15 +49,14 @@ class _CityPageState extends State<CityPage> {
   }
 
   Positioned getWeatherIcon(Future<String> response) {
-    Widget body(data) => Icon(
-      MdiIcons.fromString(getTemperatureIcon(getWeatherStatus(data["list"][selected]["weather"][0]["icon"]))),
-      size: 800,
-      color: const Color.fromRGBO(255, 255, 255, 0.1)
+    Widget body(data) => Image.asset(
+      getWeatherImage(data["list"][selected]["weather"][0]["icon"]),
+      color: const Color.fromRGBO(240, 240, 240, 0.4),
+      colorBlendMode: BlendMode.modulate,
+      fit: BoxFit.fill,
     );
 
-    return Positioned(
-      bottom: 0,
-      right: 0,
+    return Positioned.fill(
       child: getStringFutureBuilder(response, body),
     );
   }
@@ -225,16 +224,16 @@ class _CityPageState extends State<CityPage> {
   }
 
   Widget getTemperature(String temperature) {
-    TextStyle grausStyle = const TextStyle(color: Colors.white, fontSize: 40, fontWeight: FontWeight.bold);
+    TextStyle grausStyle = const TextStyle(color: Colors.white, fontSize: 20);
     TextStyle temperatureValueStyle = const TextStyle(
-        color: Colors.white, fontWeight: FontWeight.w300, fontSize: 80);
+        color: Colors.white, fontWeight: FontWeight.bold, fontSize: 55);
 
     return Row(
         mainAxisAlignment: MainAxisAlignment.center, // Aligns in the horizontal center
         crossAxisAlignment: CrossAxisAlignment.start, // Aligns in the vertical center
         children: <Widget>[
           Text(double.parse(temperature).round().toString(), style: temperatureValueStyle),
-          Text("º", style: grausStyle),
+          Text("ºC", style: grausStyle),
         ]);
   }
 

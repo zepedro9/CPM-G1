@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:weather_forecast/manage_locations_page/manage_locations.dart';
 import 'package:weather_forecast/utils/future_builder.dart';
-import 'package:weather_forecast/utils/temperature_icons.dart';
+import 'package:weather_forecast/utils/temperature_utils.dart';
 import 'package:weather_forecast/utils/utils.dart';
 import 'package:weather_forecast/main_page/locations_list.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -47,29 +47,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-          child: Stack(children: [
-        Positioned.fill(
-          child: Image.asset(
-            'assets/images/sunny.png',
-            color: const Color.fromRGBO(240, 240, 240, 0.4),
-            colorBlendMode: BlendMode.modulate,
-            fit: cities.isNotEmpty ? BoxFit.fill : BoxFit.cover,
-          ),
-        ),
-        Stack(
-          children: [
-            optionsButton(),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                mainTemperature(),
-                if (cities.isNotEmpty) LocationsList(setFavorite: setFavorite, cities: cities),
-              ],
-            ),
-          ],
-        )
-      ])),
+      body: mainView(),
     );
   }
 
@@ -93,9 +71,42 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   /// Temperature main display
-  Expanded mainTemperature() {
+  Center mainView() {
     Future<String> response = getWeather(country, currentCity);
-    Widget body(data) => Column(
+
+    Widget body(data) => Stack(children: [
+        Positioned.fill(
+          child: Image.asset(
+            getWeatherImage(data["weather"][0]["icon"]),
+            color: const Color.fromRGBO(240, 240, 240, 0.4),
+            colorBlendMode: BlendMode.modulate,
+            fit: cities.isNotEmpty ? BoxFit.fill : BoxFit.cover,
+          ),
+        ),
+        Stack(
+          children: [
+            optionsButton(),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                mainTemperature(data),
+                if (cities.isNotEmpty) LocationsList(setFavorite: setFavorite, cities: cities),
+              ],
+            ),
+          ],
+        )
+    ]);
+
+    return Center(
+      child: getStringFutureBuilder(response, body),
+    );
+  }
+
+  Widget mainTemperature(data){
+    return Expanded(
+      child: Align(
+          alignment: Alignment.center,
+          child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             getDate(currentCity),
@@ -103,13 +114,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 data["main"]["temp"].toString()),
             getTemperatureDescription(data["weather"][0]["description"])
           ],
-        );
-
-    return Expanded(
-      child: Align(
-          alignment: Alignment.center,
-          child: getStringFutureBuilder(response, body)),
-    );
+        ),
+    ));
   }
 
   Widget getDate(String city) {

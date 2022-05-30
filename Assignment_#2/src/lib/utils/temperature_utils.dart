@@ -9,7 +9,6 @@ enum WeatherStatus {
   PARTLY_RAINING,
 }
 
-/// Verifies what should be the
 String getTemperatureIcon(WeatherStatus weatherStatus) {
   switch (weatherStatus) {
     case WeatherStatus.SUNNY:
@@ -58,4 +57,29 @@ WeatherStatus getWeatherStatus(String iconId) {
         return WeatherStatus.SUNNY; 
       
     }
+}
+
+String getWeatherImage(String iconId){
+  String url = 'assets/images/';
+  iconId = iconId.substring(0, 2);
+  switch (iconId) {
+    case "01":
+      return "${url}sunny.jpg";
+    case "02":
+    case "04":
+      return "${url}partly_cloudy.jpg";
+    case "03":
+      return "${url}cloudy.jpg";
+    case "09":
+    case "10":
+      return "${url}rain.jpg";
+    case "11":
+      return "${url}storm.jpg";
+    case "13":
+      return "${url}snow.jpg";
+    case "50":
+      return "${url}fog.jpg";
+    default:
+      return "${url}default.png";
+  }
 }
