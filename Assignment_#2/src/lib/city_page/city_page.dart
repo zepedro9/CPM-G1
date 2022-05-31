@@ -22,37 +22,36 @@ class _CityPageState extends State<CityPage> {
   int selected = 0;
   ScrollController scrollBarController = ScrollController();
 
-  Future<void> _firstScroll() async {
+  Future<void> teachScroll() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     if(prefs.getBool("first_load") ?? true) {
-      while(scrollBarController.positions.isEmpty) {}
-      scrollBarController.animateTo(
-        scrollBarController.position.maxScrollExtent,
-        duration: const Duration(milliseconds: 1500),
-        curve: Curves.easeInOut,
-      ).then((value) => {
+      if (!scrollBarController.hasClients) {
+        Future.delayed(const Duration(milliseconds: 50), () async {
+          await teachScroll();
+        });
+      } else {
         scrollBarController.animateTo(
-          scrollBarController.position.minScrollExtent,
+          scrollBarController.position.maxScrollExtent,
           duration: const Duration(milliseconds: 1500),
           curve: Curves.easeInOut,
-        )
-      });
-      prefs.setBool("first_load", false);
+        ).then((value) => {
+          scrollBarController.animateTo(
+            scrollBarController.position.minScrollExtent,
+            duration: const Duration(milliseconds: 1500),
+            curve: Curves.easeInOut,
+          )
+        });
+        prefs.setBool("first_load", false);
+      }
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    Future.delayed(const Duration(seconds: 1), () => {
-      _firstScroll()
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     Future<String> data = get5dayForecast(widget.country, widget.city);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => teachScroll());
 
     return Scaffold(
       body: Stack(
@@ -105,10 +104,9 @@ class _CityPageState extends State<CityPage> {
     );
 
     return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.only(top: 30),
-        child: getStringFutureBuilder(response, body),
-      ),
+      child: Align(
+        alignment: Alignment.center,
+        child: getStringFutureBuilder(response, body)),
     );
   }
 
@@ -160,7 +158,10 @@ class _CityPageState extends State<CityPage> {
     return Container(
       height: 121,
       color: const Color.fromRGBO(0, 0, 0, 0.75),
-      child: getStringFutureBuilder(response, body)
+      child: Align(
+        alignment: Alignment.center,
+        child: getStringFutureBuilder(response, body),
+      ),
     );
   }
 
@@ -198,8 +199,8 @@ class _CityPageState extends State<CityPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(data["list"][selected]["main"]["pressure"].toString() + " hPa", style: valueStyle),
-                    Text("Pressure", style: titleStyle),
+                    Text((double.parse(data["list"][selected]["pop"].toString()) * 100).round().toString() + "%", style: valueStyle),
+                    Text("Precipitation", style: titleStyle),
                   ],
                 ),
               ),
@@ -214,8 +215,8 @@ class _CityPageState extends State<CityPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text((double.parse(data["list"][selected]["pop"].toString()) * 100).round().toString() + "%", style: valueStyle),
-                    Text("Precipitation", style: titleStyle),
+                    Text(data["list"][selected]["clouds"]["all"].toString() + "%", style: valueStyle),
+                    Text("Cloudiness", style: titleStyle),
                   ],
                 ),
               ),
@@ -224,8 +225,8 @@ class _CityPageState extends State<CityPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(data["list"][selected]["clouds"]["all"].toString() + "%", style: valueStyle),
-                    Text("Cloudiness", style: titleStyle),
+                    Text(data["list"][selected]["main"]["pressure"].toString() + " hPa", style: valueStyle),
+                    Text("Pressure", style: titleStyle),
                   ],
                 ),
               ),
@@ -247,8 +248,11 @@ class _CityPageState extends State<CityPage> {
 
     return Expanded(
       child: Container(
-          color: const Color.fromRGBO(0, 0, 0, 0.8),
+        color: const Color.fromRGBO(0, 0, 0, 0.8),
+        child: Align(
+          alignment: Alignment.center,
           child: getStringFutureBuilder(response, body),
+        ),
       ),
     );
   }
