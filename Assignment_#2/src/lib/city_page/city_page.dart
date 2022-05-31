@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weather_forecast/httpRequests/weather_api.dart';
 import 'package:weather_forecast/utils/utils.dart';
 
@@ -20,6 +21,34 @@ class CityPage extends StatefulWidget {
 class _CityPageState extends State<CityPage> {
   int selected = 0;
   ScrollController scrollBarController = ScrollController();
+
+  Future<void> _firstScroll() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    if(prefs.getBool("first_load") ?? true) {
+      while(scrollBarController.positions.isEmpty) {}
+      scrollBarController.animateTo(
+        scrollBarController.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 1500),
+        curve: Curves.easeInOut,
+      ).then((value) => {
+        scrollBarController.animateTo(
+          scrollBarController.position.minScrollExtent,
+          duration: const Duration(milliseconds: 1500),
+          curve: Curves.easeInOut,
+        )
+      });
+      prefs.setBool("first_load", false);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(const Duration(milliseconds: 200), () => {
+      _firstScroll()
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -219,7 +248,7 @@ class _CityPageState extends State<CityPage> {
     return Expanded(
       child: Container(
           color: const Color.fromRGBO(0, 0, 0, 0.8),
-          child: getStringFutureBuilder(response, body)
+          child: getStringFutureBuilder(response, body),
       ),
     );
   }
