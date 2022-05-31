@@ -45,7 +45,7 @@ class _CityPageState extends State<CityPage> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(milliseconds: 200), () => {
+    Future.delayed(const Duration(seconds: 1), () => {
       _firstScroll()
     });
   }
