@@ -60,7 +60,7 @@ class _CityPageState extends State<CityPage> {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              getLocation(data),
+              getLocationMain(data),
               Expanded(
                 child: Column(
                   children: [
@@ -90,7 +90,7 @@ class _CityPageState extends State<CityPage> {
     );
   }
 
-  Expanded getLocation(Future<String> response) {
+  Expanded getLocationMain(Future<String> response) {
     TextStyle locationWeatherStyle = const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w300);
 
     Widget body(data) => Column(
