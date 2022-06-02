@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weather_forecast/httpRequests/weather_api.dart';
 import 'package:weather_forecast/utils/utils.dart';
 
 import '../utils/future_builder.dart';
-import '../utils/temperature_icons.dart';
+import '../utils/temperature_utils.dart';
 
 class CityPage extends StatefulWidget {
   const CityPage({Key? key, required this.country, required this.city}) : super(key: key);
@@ -21,9 +22,36 @@ class _CityPageState extends State<CityPage> {
   int selected = 0;
   ScrollController scrollBarController = ScrollController();
 
+  Future<void> teachScroll() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    if(prefs.getBool("first_load") ?? true) {
+      if (!scrollBarController.hasClients) {
+        Future.delayed(const Duration(milliseconds: 50), () async {
+          await teachScroll();
+        });
+      } else {
+        scrollBarController.animateTo(
+          scrollBarController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 1500),
+          curve: Curves.easeInOut,
+        ).then((value) => {
+          scrollBarController.animateTo(
+            scrollBarController.position.minScrollExtent,
+            duration: const Duration(milliseconds: 1500),
+            curve: Curves.easeInOut,
+          )
+        });
+        prefs.setBool("first_load", false);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Future<String> data = get5dayForecast(widget.country, widget.city);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => teachScroll());
 
     return Scaffold(
       body: Stack(
@@ -32,7 +60,7 @@ class _CityPageState extends State<CityPage> {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              getLocation(data),
+              getLocationMain(data),
               Expanded(
                 child: Column(
                   children: [
@@ -49,20 +77,19 @@ class _CityPageState extends State<CityPage> {
   }
 
   Positioned getWeatherIcon(Future<String> response) {
-    Widget body(data) => Icon(
-      MdiIcons.fromString(getTemperatureIcon(getWeatherStatus(data["list"][selected]["weather"][0]["icon"]))),
-      size: 800,
-      color: const Color.fromRGBO(255, 255, 255, 0.1)
+    Widget body(data) => Image.asset(
+      getWeatherImage(data["list"][selected]["weather"][0]["icon"]),
+      color: const Color.fromRGBO(240, 240, 240, 0.4),
+      colorBlendMode: BlendMode.modulate,
+      fit: BoxFit.fill,
     );
 
-    return Positioned(
-      bottom: 0,
-      right: 0,
+    return Positioned.fill(
       child: getStringFutureBuilder(response, body),
     );
   }
 
-  Expanded getLocation(Future<String> response) {
+  Expanded getLocationMain(Future<String> response) {
     TextStyle locationWeatherStyle = const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w300);
 
     Widget body(data) => Column(
@@ -76,10 +103,9 @@ class _CityPageState extends State<CityPage> {
     );
 
     return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.only(top: 30),
-        child: getStringFutureBuilder(response, body),
-      ),
+      child: Align(
+        alignment: Alignment.center,
+        child: getStringFutureBuilder(response, body)),
     );
   }
 
@@ -131,7 +157,10 @@ class _CityPageState extends State<CityPage> {
     return Container(
       height: 121,
       color: const Color.fromRGBO(0, 0, 0, 0.75),
-      child: getStringFutureBuilder(response, body)
+      child: Align(
+        alignment: Alignment.center,
+        child: getStringFutureBuilder(response, body),
+      ),
     );
   }
 
@@ -169,8 +198,8 @@ class _CityPageState extends State<CityPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(data["list"][selected]["main"]["pressure"].toString() + " hPa", style: valueStyle),
-                    Text("Pressure", style: titleStyle),
+                    Text((double.parse(data["list"][selected]["pop"].toString()) * 100).round().toString() + "%", style: valueStyle),
+                    Text("Precipitation", style: titleStyle),
                   ],
                 ),
               ),
@@ -185,8 +214,8 @@ class _CityPageState extends State<CityPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text((double.parse(data["list"][selected]["pop"].toString()) * 100).round().toString() + "%", style: valueStyle),
-                    Text("Precipitation", style: titleStyle),
+                    Text(data["list"][selected]["clouds"]["all"].toString() + "%", style: valueStyle),
+                    Text("Cloudiness", style: titleStyle),
                   ],
                 ),
               ),
@@ -195,8 +224,8 @@ class _CityPageState extends State<CityPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(data["list"][selected]["clouds"]["all"].toString() + "%", style: valueStyle),
-                    Text("Cloudiness", style: titleStyle),
+                    Text(data["list"][selected]["main"]["pressure"].toString() + " hPa", style: valueStyle),
+                    Text("Pressure", style: titleStyle),
                   ],
                 ),
               ),
@@ -218,23 +247,26 @@ class _CityPageState extends State<CityPage> {
 
     return Expanded(
       child: Container(
-          color: const Color.fromRGBO(0, 0, 0, 0.8),
-          child: getStringFutureBuilder(response, body)
+        color: const Color.fromRGBO(0, 0, 0, 0.8),
+        child: Align(
+          alignment: Alignment.center,
+          child: getStringFutureBuilder(response, body),
+        ),
       ),
     );
   }
 
   Widget getTemperature(String temperature) {
-    TextStyle grausStyle = const TextStyle(color: Colors.white, fontSize: 40, fontWeight: FontWeight.bold);
+    TextStyle grausStyle = const TextStyle(color: Colors.white, fontSize: 20);
     TextStyle temperatureValueStyle = const TextStyle(
-        color: Colors.white, fontWeight: FontWeight.w300, fontSize: 80);
+        color: Colors.white, fontWeight: FontWeight.bold, fontSize: 55);
 
     return Row(
         mainAxisAlignment: MainAxisAlignment.center, // Aligns in the horizontal center
         crossAxisAlignment: CrossAxisAlignment.start, // Aligns in the vertical center
         children: <Widget>[
           Text(double.parse(temperature).round().toString(), style: temperatureValueStyle),
-          Text("º", style: grausStyle),
+          Text("ºC", style: grausStyle),
         ]);
   }
 

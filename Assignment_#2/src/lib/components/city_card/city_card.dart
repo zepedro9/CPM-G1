@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:weather_forecast/city_page/city_page.dart';
-import 'package:weather_forecast/utils/temperature_icons.dart';
+import 'package:weather_forecast/utils/temperature_utils.dart';
 import 'package:weather_forecast/components/city_card/weather_trailing_leading.dart';
 
 class CityCard extends StatelessWidget {
@@ -14,7 +14,7 @@ class CityCard extends StatelessWidget {
   final void Function(int) setFavorite;
 
   String get cardTitle => "$cityName - $countryName";
-  final TextStyle titleStyle = const TextStyle(fontWeight: FontWeight.w500);
+  final TextStyle titleStyle = const TextStyle(fontSize: 15, fontWeight: FontWeight.w500);
 
   const CityCard({
     Key? key,

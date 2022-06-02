@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'dart:convert';
-
-import '../models/city.dart';
 
 /// Renders a response for an http request.
 FutureBuilder<String> getStringFutureBuilder(
@@ -12,23 +11,16 @@ FutureBuilder<String> getStringFutureBuilder(
         if (snapshot.hasData) {
           return widget(json.decode(snapshot.data!));
         } else if (snapshot.hasError) {
-          return Text('${snapshot.error}');
-        } else {
-          return const CircularProgressIndicator();
-        }
-      });
-}
-
-// Returns a FutureBuilder for a list of cities.
-FutureBuilder<List<City>> getCityListFutureBuilder(
-  Future<List<City>> futureCities, Widget Function(dynamic) listViewWidget) {
-  return FutureBuilder<List<City>>(
-      future: futureCities,
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          return listViewWidget(snapshot.data!);
-        } else if (snapshot.hasError) {
-          return Text('${snapshot.error}');
+          Fluttertoast.showToast(
+            msg: snapshot.error.toString(),
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: const Color.fromARGB(255, 213, 128, 104),
+            textColor: Colors.white,
+            fontSize: 16.0
+          );
+          return const Text("");
         } else {
           return const CircularProgressIndicator();
         }
