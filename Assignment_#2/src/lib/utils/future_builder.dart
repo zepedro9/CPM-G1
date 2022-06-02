@@ -18,19 +18,3 @@ FutureBuilder<String> getStringFutureBuilder(
         }
       });
 }
-
-// Returns a FutureBuilder for a list of cities.
-FutureBuilder<List<City>> getCityListFutureBuilder(
-  Future<List<City>> futureCities, Widget Function(dynamic) listViewWidget) {
-  return FutureBuilder<List<City>>(
-      future: futureCities,
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          return listViewWidget(snapshot.data!);
-        } else if (snapshot.hasError) {
-          return Text('${snapshot.error}');
-        } else {
-          return const CircularProgressIndicator();
-        }
-      });
-}
